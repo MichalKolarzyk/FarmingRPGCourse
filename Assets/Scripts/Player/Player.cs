@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player : SingletonMonoBehaviour<Player>
+public class Player : MonoBehaviour
 {
   Rigidbody2D rigidBody2D;
   Direction playerDirection;
@@ -8,10 +8,8 @@ public class Player : SingletonMonoBehaviour<Player>
   private float movementSpeed;
   private bool PlayerInputIsDisabled { get; set; }
 
-  protected override void Awake()
+  void Awake()
   {
-    base.Awake();
-
     rigidBody2D = GetComponent<Rigidbody2D>();
   }
 
