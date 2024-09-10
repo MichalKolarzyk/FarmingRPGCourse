@@ -12,7 +12,7 @@ public class Tags{
 
 public class PlayerMovementSettings{
     public float runnintSpeed = 5.333f;
-    public float walkingSpped = 2.666f;
+    public float walkingSpeed = 2.666f;
 }
 
 

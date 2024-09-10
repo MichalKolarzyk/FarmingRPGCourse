@@ -1,24 +1,26 @@
 using UnityEngine;
 
-public class MovementAnimationParaterControll : MonoBehaviour
+public class MovementAnimationController : MonoBehaviour
 {
     private Animator animator;
+    private MovementPublisher playerMovement;
     void Awake()
     {
         animator = GetComponent<Animator>();
+        playerMovement = GetComponentInParent<MovementPublisher>();
     }
 
     void OnEnable()
     {
-        EventHandler.MovementEvent += SetAnimationParameters;
+        playerMovement.OnMovementEvent += SetAnimationParameters;
     }
 
     void OnDisable()
     {
-        EventHandler.MovementEvent -= SetAnimationParameters;
+        playerMovement.OnMovementEvent -= SetAnimationParameters;
     }
 
-    private void SetAnimationParameters(MovementEventArgs args)
+    private void SetAnimationParameters(object sender, MovementModel args)
     {
         if (args == null) return;
         animator.SetFloat(AnimatorParamsIds.inputX, args.inputX);

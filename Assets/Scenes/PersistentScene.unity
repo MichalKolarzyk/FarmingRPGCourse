@@ -942,6 +942,7 @@ GameObject:
   - component: {fileID: 7644947036966362711}
   - component: {fileID: 7644947036966362712}
   - component: {fileID: 7644947036966362713}
+  - component: {fileID: 7644947036966362714}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1164,34 +1165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37fc5ef7647acb4ea617474afb1ec52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementEventArgs:
-    inputX: 0
-    inputY: 0
-    isWalking: 0
-    isRunning: 0
-    isIdle: 0
-    isCarrying: 0
-    toolEffect: 0
-    isUsingToolRight: 0
-    isUsingToolLeft: 0
-    isUsingToolUp: 0
-    isUsingToolDown: 0
-    isLiftingToolRight: 0
-    isLiftingToolLeft: 0
-    isLiftingToolUp: 0
-    isLiftingToolDown: 0
-    isPickingRight: 0
-    isPickingLeft: 0
-    isPickingUp: 0
-    isPickingDown: 0
-    isSwingingToolRight: 0
-    isSwingingToolLeft: 0
-    isSwingingToolUp: 0
-    isSwingingToolDown: 0
-    idleUp: 0
-    idleDown: 0
-    idleLeft: 0
-    idleRight: 0
+  playerMovementPublisher: {fileID: 0}
 --- !u!61 &7644947036966362712
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1247,6 +1221,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 500d031bb9408514fad5e3235e3e1b11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7644947036966362714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4601058428133063988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d4475d406131b347b58a35af5c1869c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7707003032263361721
