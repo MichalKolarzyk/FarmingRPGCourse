@@ -21,32 +21,32 @@ public class MovementAnimationParaterControll : MonoBehaviour
     private void SetAnimationParameters(MovementEventArgs args)
     {
         if (args == null) return;
-        animator.SetFloat(AnimatorParams.inputX, args.inputX);
-        animator.SetFloat(AnimatorParams.inputY, args.inputY);
-        animator.SetBool(AnimatorParams.isWalking, args.isWalking);
-        animator.SetBool(AnimatorParams.isRunning, args.isRunning);
-        animator.SetInteger(AnimatorParams.toolEffect, (int)args.toolEffect);
+        animator.SetFloat(AnimatorParamsIds.inputX, args.inputX);
+        animator.SetFloat(AnimatorParamsIds.inputY, args.inputY);
+        animator.SetBool(AnimatorParamsIds.isWalking, args.isWalking);
+        animator.SetBool(AnimatorParamsIds.isRunning, args.isRunning);
+        animator.SetInteger(AnimatorParamsIds.toolEffect, (int)args.toolEffect);
 
-        if (args.isUsingToolRight) animator.SetTrigger(AnimatorParams.isUsingToolRight);
-        if (args.isUsingToolLeft) animator.SetTrigger(AnimatorParams.isUsingToolLeft);
-        if (args.isUsingToolUp) animator.SetTrigger(AnimatorParams.isUsingToolUp);
-        if (args.isUsingToolDown) animator.SetTrigger(AnimatorParams.isUsingToolDown);
-        if (args.isLiftingToolRight) animator.SetTrigger(AnimatorParams.isLiftingToolRight);
-        if (args.isLiftingToolLeft) animator.SetTrigger(AnimatorParams.isLiftingToolLeft);
-        if (args.isLiftingToolUp) animator.SetTrigger(AnimatorParams.isLiftingToolUp);
-        if (args.isLiftingToolDown) animator.SetTrigger(AnimatorParams.isLiftingToolDown);
-        if (args.isPickingRight) animator.SetTrigger(AnimatorParams.isPickingRight);
-        if (args.isPickingLeft) animator.SetTrigger(AnimatorParams.isPickingLeft);
-        if (args.isPickingUp) animator.SetTrigger(AnimatorParams.isPickingUp);
-        if (args.isPickingDown) animator.SetTrigger(AnimatorParams.isPickingDown);
-        if (args.isSwingingToolRight) animator.SetTrigger(AnimatorParams.isSwingingToolRight);
-        if (args.isSwingingToolLeft) animator.SetTrigger(AnimatorParams.isSwingingToolLeft);
-        if (args.isSwingingToolUp) animator.SetTrigger(AnimatorParams.isSwingingToolUp);
-        if (args.isSwingingToolDown) animator.SetTrigger(AnimatorParams.isSwingingToolDown);
-        if (args.idleUp) animator.SetTrigger(AnimatorParams.idleUp);
-        if (args.idleDown) animator.SetTrigger(AnimatorParams.idleDown);
-        if (args.idleLeft) animator.SetTrigger(AnimatorParams.idleLeft);
-        if (args.idleRight) animator.SetTrigger(AnimatorParams.idleRight);
+        if (args.isUsingToolRight) animator.SetTrigger(AnimatorParamsIds.isUsingToolRight);
+        if (args.isUsingToolLeft) animator.SetTrigger(AnimatorParamsIds.isUsingToolLeft);
+        if (args.isUsingToolUp) animator.SetTrigger(AnimatorParamsIds.isUsingToolUp);
+        if (args.isUsingToolDown) animator.SetTrigger(AnimatorParamsIds.isUsingToolDown);
+        if (args.isLiftingToolRight) animator.SetTrigger(AnimatorParamsIds.isLiftingToolRight);
+        if (args.isLiftingToolLeft) animator.SetTrigger(AnimatorParamsIds.isLiftingToolLeft);
+        if (args.isLiftingToolUp) animator.SetTrigger(AnimatorParamsIds.isLiftingToolUp);
+        if (args.isLiftingToolDown) animator.SetTrigger(AnimatorParamsIds.isLiftingToolDown);
+        if (args.isPickingRight) animator.SetTrigger(AnimatorParamsIds.isPickingRight);
+        if (args.isPickingLeft) animator.SetTrigger(AnimatorParamsIds.isPickingLeft);
+        if (args.isPickingUp) animator.SetTrigger(AnimatorParamsIds.isPickingUp);
+        if (args.isPickingDown) animator.SetTrigger(AnimatorParamsIds.isPickingDown);
+        if (args.isSwingingToolRight) animator.SetTrigger(AnimatorParamsIds.isSwingingToolRight);
+        if (args.isSwingingToolLeft) animator.SetTrigger(AnimatorParamsIds.isSwingingToolLeft);
+        if (args.isSwingingToolUp) animator.SetTrigger(AnimatorParamsIds.isSwingingToolUp);
+        if (args.isSwingingToolDown) animator.SetTrigger(AnimatorParamsIds.isSwingingToolDown);
+        if (args.idleUp) animator.SetTrigger(AnimatorParamsIds.idleUp);
+        if (args.idleDown) animator.SetTrigger(AnimatorParamsIds.idleDown);
+        if (args.idleLeft) animator.SetTrigger(AnimatorParamsIds.idleLeft);
+        if (args.idleRight) animator.SetTrigger(AnimatorParamsIds.idleRight);
     }
 
     private void AnimationEventPlayFootstepSound()
@@ -54,7 +54,7 @@ public class MovementAnimationParaterControll : MonoBehaviour
 
     }
 
-    private static class AnimatorParams
+    private static class AnimatorParamsIds
     {
         public static int inputX = Animator.StringToHash("xInput");
         public static int inputY = Animator.StringToHash("yInput");
