@@ -1,0 +1,4 @@
+repository "FarmingRPGCourse@Ritharn@cloud"
+  path "/"
+    br "/main"
+    co "/main"
