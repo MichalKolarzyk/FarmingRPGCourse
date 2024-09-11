@@ -1,8 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-//[CreateAssetMenu(fileName = "ItemDetails", menuName = "ScriptableObjects/Item/ItemDetails")]
-[System.Serializable]
-public class ItemDetails 
+[CreateAssetMenu(fileName = "ItemDefinition", menuName = "ScriptableObjects/Item/ItemDefinition")]
+public class ItemDefinition : ScriptableObject
 {
     public int code;
     public ItemType itemType;
@@ -16,19 +17,4 @@ public class ItemDetails
     public bool canBeDropped;
     public bool canBeEaten;
     public bool canBeCarried;
-}
-
-public enum ItemType{
-    Seed,
-    Commodity,
-    WateringTool,
-    HoeingTool,
-    ChoppingTool,
-    BreakingTool,
-    ReapingTool,
-    CollectingTool,
-    RepableScenary,
-    Furniture,
-    None,
-    Count,
 }
