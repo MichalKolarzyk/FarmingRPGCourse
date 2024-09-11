@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1e51d29c330de42895926a252b8249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemCode: 0
+  itemDefinition: {fileID: 0}
 --- !u!1 &2787813338828715575
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,4 +175,4 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 1
+  m_SpriteSortPoint: 0

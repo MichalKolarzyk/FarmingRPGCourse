@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    [SerializeField]
-    private ItemDefinition itemDefinition;
+    public ItemDefinition itemDefinition;
     private SpriteRenderer spriteRenderer;
 
     void Awake(){
