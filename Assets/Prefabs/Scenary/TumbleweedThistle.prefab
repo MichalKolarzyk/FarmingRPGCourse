@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6547176147497862836}
   - component: {fileID: 7133885419154772861}
   - component: {fileID: 7526223637555267995}
+  - component: {fileID: 7233595638050113410}
   m_Layer: 0
   m_Name: TumbleweedThistle
   m_TagString: Untagged
@@ -143,3 +144,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544c80a7f6d5c0c41bbeff69f5b48e61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7233595638050113410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7896469530493745538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc2a6a3d8c4a44dadb679055611ee3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRotateDegrees: 4

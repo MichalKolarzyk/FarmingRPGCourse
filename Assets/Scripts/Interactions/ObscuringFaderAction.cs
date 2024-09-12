@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class ObscuriongScenaryFader : MonoBehaviour
+public class ObscuringFaderAction : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
     void Awake()

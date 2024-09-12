@@ -18,3 +18,18 @@ public class ItemDefinition : ScriptableObject
     public bool canBeEaten;
     public bool canBeCarried;
 }
+
+public enum ItemType{
+    Seed,
+    Commodity,
+    WateringTool,
+    HoeingTool,
+    ChoppingTool,
+    BreakingTool,
+    ReapingTool,
+    CollectingTool,
+    RepableScenary,
+    Furniture,
+    None,
+    Count,
+}

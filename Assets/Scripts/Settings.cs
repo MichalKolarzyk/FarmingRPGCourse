@@ -1,8 +1,9 @@
 public static class Settings
 {
     public static PlayerMovementSettings playerMovement = new();
-    public static ObscuringItemFading obscuringItemFading = new();
-    public static Tags Tags = new();
+    public static ObscuringItemFadingSettings obscuringItemFading = new();
+    public static Tags tags = new();
+    public static InventorySettings inventory;
 }
 
 public class Tags{
@@ -16,8 +17,13 @@ public class PlayerMovementSettings{
 }
 
 
-public class ObscuringItemFading{
+public class ObscuringItemFadingSettings{
     public float fadeInSeconds = 0.25f;
     public float fadeOutSeconds = 0.35f;
     public float targetAlpha = 0.45f;
+}
+
+public class InventorySettings{
+    public int playerInitialInventoryCapacity = 24;
+    public int playerMaximumInventoryCapacity = 48;
 }

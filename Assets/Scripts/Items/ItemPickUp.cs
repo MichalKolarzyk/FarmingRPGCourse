@@ -9,7 +9,6 @@ public class ItemPickUp : MonoBehaviour
         if(!collision.TryGetComponent<Item>(out var item))
             return;
         
-        print(item.itemDefinition.description);
-
+        print(item.itemDefinition.GetHashCode());
     }
 }
