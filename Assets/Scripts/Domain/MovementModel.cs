@@ -89,3 +89,17 @@ public class MovementSpeedDefinition{
         this.runningSpeed = runningSpeed;
     }
 }
+
+public enum ToolEffect
+{
+    none,
+    watering,
+}
+
+public enum Direction{
+    none,
+    up,
+    down,
+    left,
+    right,
+}
