@@ -1,9 +1,10 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class ItemDefinition
 {
-    public int code;
+    public Sprite sprite;
     public ItemType itemType;
     public string description;
     public string longDescription;

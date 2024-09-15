@@ -3,7 +3,7 @@ public static class Settings
     public static PlayerMovementSettings playerMovement = new();
     public static ObscuringItemFadingSettings obscuringItemFading = new();
     public static Tags tags = new();
-    public static InventorySettings inventory;
+    public static InventorySettings inventory = new();
 }
 
 public class Tags{
