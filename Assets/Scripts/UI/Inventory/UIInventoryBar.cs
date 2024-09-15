@@ -6,10 +6,12 @@ public class UIInventoryBar : MonoBehaviour
     private RectTransform rectTransform;
     private bool isInventoryBarPositionBottom = true;
     Camera mainCamera;
+    UIInventorySlot[] inventorySlots;
     void Awake()
     {
         mainCamera = Camera.main;
         rectTransform = GetComponent<RectTransform>();
+        inventorySlots = GetComponentsInChildren<UIInventorySlot>();
     }
 
     void Update()
@@ -30,7 +32,10 @@ public class UIInventoryBar : MonoBehaviour
 
     void OnInventoryUpdated(InventoryModel inventoryModel)
     {
-        print("Inventory updated from UI");
+        var itemCount = inventoryModel?.items?.Count ?? 0;
+        for(int i = 0; i < itemCount; i++){
+            inventorySlots[i].SetModel(inventoryModel?.items[i]);
+        }
     }
 
     private void SwitchInventoryBarPosition()

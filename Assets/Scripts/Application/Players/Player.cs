@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
   MovementModel input;
   MovementPublisher playerMovementPublisher;
   MovementSpeedDefinition movementSpeedDefinition;
-  private bool PlayerInputIsDisabled { get; set; }
+  private bool inputsEnabled = true;
 
   void Awake()
   {
@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
 
   void Update()
   {
+    if(!inputsEnabled)
+      return;
+
     var inputX = Input.GetAxisRaw("Horizontal");
     var inputY = Input.GetAxisRaw("Vertical");
     var isWalking = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -29,5 +32,14 @@ public class Player : MonoBehaviour
   void FixedUpdate(){
     if(input == null) return;
     rigidBody2D.MovePosition(rigidBody2D.position + input.GetMovement());
+  }
+
+
+  public void DisableInputs(){
+    inputsEnabled = false;
+  }
+
+  public void EnableInputs(){
+    inputsEnabled = true;
   }
 }

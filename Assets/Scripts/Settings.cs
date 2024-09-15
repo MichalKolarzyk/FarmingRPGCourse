@@ -9,6 +9,7 @@ public static class Settings
 public class Tags{
     public string BoundsConfiner = "BoundsConfiner";
     public string Player = "Player";
+    public string ItemsParent = "ItemsParent";
 }
 
 public class PlayerMovementSettings{
@@ -24,6 +25,6 @@ public class ObscuringItemFadingSettings{
 }
 
 public class InventorySettings{
-    public int playerInitialInventoryCapacity = 24;
+    public int playerInitialInventoryCapacity = 12;
     public int playerMaximumInventoryCapacity = 48;
 }
