@@ -1,17 +1,28 @@
+using System.Linq;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UIInventoryBar : MonoBehaviour
 {
     public Inventory inventory;
+    public GameObject draggedItemPrefab;
+    public GameObject ItemPrefab;
+    GameObject draggedItem;
     private RectTransform rectTransform;
     private bool isInventoryBarPositionBottom = true;
     Camera mainCamera;
     UIInventorySlot[] inventorySlots;
+    GameObject itemsParent;
+
     void Awake()
     {
         mainCamera = Camera.main;
         rectTransform = GetComponent<RectTransform>();
         inventorySlots = GetComponentsInChildren<UIInventorySlot>();
+        itemsParent = GameObject.FindGameObjectWithTag(Settings.tags.ItemsParent);
     }
 
     void Update()
@@ -19,22 +30,89 @@ public class UIInventoryBar : MonoBehaviour
         SwitchInventoryBarPosition();
     }
 
-
     void OnEnable()
     {
         inventory.inventoryModel.OnInventoryUpdated.Subscribe(OnInventoryUpdated);
+
+        foreach (var inventorySlot in inventorySlots)
+        {
+            inventorySlot.OnBeginDragEvent += OnBeginDragEventHandler;
+            inventorySlot.OnDragEven += OnDragEvenHandler;
+            inventorySlot.OnEndDragEvent += OnEndDragEventHandler;
+        }
     }
 
     void OnDisable()
     {
         inventory.inventoryModel.OnInventoryUpdated.Unsubscribe(OnInventoryUpdated);
+
+        foreach (var inventorySlot in inventorySlots)
+        {
+            inventorySlot.OnBeginDragEvent -= OnBeginDragEventHandler;
+            inventorySlot.OnDragEven -= OnDragEvenHandler;
+            inventorySlot.OnEndDragEvent -= OnEndDragEventHandler;
+        }
+    }
+
+    private void OnBeginDragEventHandler(object sender, PointerEventData e)
+    {
+        var slot = sender as UIInventorySlot;
+        var slotModel = slot.model;
+        if (slotModel == null)
+            return;
+
+        draggedItem = Instantiate(draggedItemPrefab, transform);
+        var image = draggedItem.GetComponentInChildren<Image>();
+        image.sprite = slotModel.itemDefinition.sprite;
+
+    }
+
+    private void OnDragEvenHandler(object sender, PointerEventData e)
+    {
+        if (draggedItem == null)
+            return;
+
+        draggedItem.transform.position = Input.mousePosition;
+    }
+
+    private void OnEndDragEventHandler(object sender, PointerEventData e)
+    {
+        if (draggedItem == null)
+            return;
+        var slot = sender as UIInventorySlot;
+
+        var canRemove = inventory.inventoryModel.TryRemoveItem(new InventoryItemModel{
+            itemDefinition = slot.model.itemDefinition,
+            quantity = 1,
+        });
+
+        if(!canRemove)
+            return;
+
+        var wordPosition = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
+        var itemGameObject = Instantiate(ItemPrefab, wordPosition, Quaternion.identity, itemsParent.transform);
+        var item = itemGameObject.GetComponent<Item>();
+
+        string[] guids = AssetDatabase.FindAssets("t:ItemInfo");
+        List<ItemInfo> itemInfos = new();
+        foreach(var guid in guids){
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            ItemInfo itemInfo = AssetDatabase.LoadAssetAtPath<ItemInfo>(path);
+            itemInfos.Add(itemInfo);
+        }
+
+        item.itemInfo = itemInfos.Find(i => i.itemDefinition.description == slot.model.itemDefinition.description);
+
+        Destroy(draggedItem);
     }
 
     void OnInventoryUpdated(InventoryModel inventoryModel)
     {
-        var itemCount = inventoryModel?.items?.Count ?? 0;
-        for(int i = 0; i < itemCount; i++){
-            inventorySlots[i].SetModel(inventoryModel?.items[i]);
+        var slotsLength = inventorySlots.Length;
+        for (int i = 0; i < slotsLength; i++)
+        {
+            var item = inventoryModel.items.ElementAtOrDefault(i);
+            inventorySlots[i].SetModel(item);
         }
     }
 

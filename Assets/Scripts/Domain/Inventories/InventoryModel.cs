@@ -38,6 +38,26 @@ public class InventoryModel
             return false;
         }
     }
+
+    public bool TryRemoveItem(InventoryItemModel inventoryItemModel){
+        if(!inventoryItemModel.itemDefinition.canBeDropped)
+            return false;
+
+        var existingItem = items.Find(i => i.itemDefinition == inventoryItemModel.itemDefinition);
+        if(existingItem.quantity < inventoryItemModel.quantity){
+            return false;
+        }
+        else if(existingItem.quantity == inventoryItemModel.quantity){
+            items.Remove(existingItem);
+            OnInventoryUpdated.Call(this);
+            return true;
+        }
+        else{
+            existingItem.quantity -= inventoryItemModel.quantity;
+            OnInventoryUpdated.Call(this);
+            return true;
+        }
+    }
 }
 
 public enum InventoryType{

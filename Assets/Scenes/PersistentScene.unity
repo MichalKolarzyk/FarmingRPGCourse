@@ -1338,6 +1338,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 7644947036966362716}
+  draggedItemPrefab: {fileID: 5449574280831401876, guid: 6e13b6cbc1206414d8bc9fd3df3f4a09, type: 3}
+  ItemPrefab: {fileID: 541253250901223107, guid: 4a0b3f069b844744081311d4bc0dd30f, type: 3}
 --- !u!224 &1686115553 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1424037883880947250, guid: 0175c0213e0c2ea46a33ef8182f0022c, type: 3}
