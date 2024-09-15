@@ -4360,10 +4360,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1388207684}
     m_Modifications:
-    - target: {fileID: 318326940888317733, guid: 9cbbcb14ba64431479517f57d0696ac8, type: 3}
-      propertyPath: itemDefinition
-      value: 
-      objectReference: {fileID: 11400000, guid: 741b1824115e76a418c2b606a5b88819, type: 2}
     - target: {fileID: 1814791946092105767, guid: 9cbbcb14ba64431479517f57d0696ac8, type: 3}
       propertyPath: m_Name
       value: Parsnip

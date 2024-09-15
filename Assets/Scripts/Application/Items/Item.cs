@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public ItemDefinition itemDefinition;
+    public ItemInfo itemDefinition;
     private SpriteRenderer spriteRenderer;
 
     void Awake(){
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
     }
 }

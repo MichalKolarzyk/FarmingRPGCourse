@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-[CreateAssetMenu(fileName = "ItemDefinition", menuName = "ScriptableObjects/Item/ItemDefinition")]
-public class ItemDefinition : ScriptableObject
+[Serializable]
+public class ItemDefinition
 {
     public int code;
     public ItemType itemType;
     public string description;
     public string longDescription;
-    public Sprite sprite;
     public short useGridRadius;
     public float useRadius;
     public bool isStartingItem;

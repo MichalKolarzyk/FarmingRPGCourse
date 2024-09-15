@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5dffa194c3f48c3469a1897d44ff831a, type: 3}
-  m_Name: Grass2
+  m_Name: Sweetcorn
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: e452dd2aa629f624390a9ba516a7c47e, type: 3}
+  sprite: {fileID: 21300000, guid: 081b5033ea188cb48b5d44b99ab920bc, type: 3}
   itemDefinition:
     code: 0
-    itemType: 6
-    description: 
-    longDescription: 
-    useGridRadius: 0
+    itemType: 1
+    description: Sweet corn description
+    longDescription: Sweet corn long description
+    useGridRadius: 2
     useRadius: 0
     isStartingItem: 0
-    canBePickedUp: 0
-    canBeDropped: 0
-    canBeEaten: 0
-    canBeCarried: 0
+    canBePickedUp: 1
+    canBeDropped: 1
+    canBeEaten: 1
+    canBeCarried: 1
