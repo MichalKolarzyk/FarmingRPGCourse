@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +13,7 @@ public class UIInventoryBar : MonoBehaviour
     private bool isInventoryBarPositionBottom = true;
     Camera mainCamera;
     UIInventorySlot[] uiInventorySlots;
+    UIInventoryPopup uiInventoryPopup;
     ScriptableObjectService<ItemInfo> itemInfosService;
     ItemFactory itemFactory;
 
@@ -21,12 +23,14 @@ public class UIInventoryBar : MonoBehaviour
         mainCamera = Camera.main;
         rectTransform = GetComponent<RectTransform>();
         uiInventorySlots = GetComponentsInChildren<UIInventorySlot>();
+        uiInventoryPopup = GetComponentInChildren<UIInventoryPopup>();
     }
 
     void Start()
     {
         itemInfosService = ServiceContainer.Instance.GetComponent<ScriptableObjectService<ItemInfo>>();
         itemFactory = ServiceContainer.Instance.GetComponent<ItemFactory>();
+        OnInventoryUpdated(inventory.model);
     }
 
     void Update()
@@ -43,6 +47,8 @@ public class UIInventoryBar : MonoBehaviour
             inventorySlot.OnBeginDragEvent += OnBeginDragEventHandler;
             inventorySlot.OnDragEven += OnDragEvenHandler;
             inventorySlot.OnEndDragEvent += OnEndDragEventHandler;
+            inventorySlot.OnPointerEnterEvent += OnPointerEnterEventHandler;
+            inventorySlot.OnPointerExitEvent += OnPointerExitEventHandler;
         }
     }
 
@@ -55,6 +61,8 @@ public class UIInventoryBar : MonoBehaviour
             inventorySlot.OnBeginDragEvent -= OnBeginDragEventHandler;
             inventorySlot.OnDragEven -= OnDragEvenHandler;
             inventorySlot.OnEndDragEvent -= OnEndDragEventHandler;
+            inventorySlot.OnPointerEnterEvent -= OnPointerEnterEventHandler;
+            inventorySlot.OnPointerExitEvent -= OnPointerExitEventHandler;
         }
     }
 
@@ -122,6 +130,18 @@ public class UIInventoryBar : MonoBehaviour
             return true;
         }
     }
+
+    private void OnPointerExitEventHandler(object sender, PointerEventData e)
+    {
+        uiInventoryPopup.Hide();
+    }
+
+    private void OnPointerEnterEventHandler(object sender, PointerEventData e)
+    {
+        var uiSlot = sender as UIInventorySlot;
+        uiInventoryPopup.Show(uiSlot.model.content.itemDefinition);
+    }
+
 
     void OnInventoryUpdated(InventoryModel inventoryModel)
     {

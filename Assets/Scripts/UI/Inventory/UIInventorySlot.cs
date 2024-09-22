@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
-public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Image inventorySlotHighlight;
     public Image inventorySlotImage;
@@ -15,6 +15,8 @@ public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public event EventHandler<PointerEventData> OnBeginDragEvent;
     public event EventHandler<PointerEventData> OnDragEven;
     public event EventHandler<PointerEventData> OnEndDragEvent;
+    public event EventHandler<PointerEventData> OnPointerEnterEvent;
+    public event EventHandler<PointerEventData> OnPointerExitEvent;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -29,6 +31,16 @@ public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnEndDrag(PointerEventData eventData)
     {
         OnEndDragEvent?.Invoke(this, eventData);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        OnPointerEnterEvent?.Invoke(this, eventData);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        OnPointerExitEvent?.Invoke(this, eventData);
     }
 
     public void SetModel(InventorySlotModel inventorySlotModel)
