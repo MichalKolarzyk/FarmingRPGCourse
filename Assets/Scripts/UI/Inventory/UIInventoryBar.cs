@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,20 +7,25 @@ public class UIInventoryBar : MonoBehaviour
 {
     public Inventory inventory;
     public GameObject draggedItemPrefab;
-    public GameObject ItemPrefab;
     GameObject draggedItem;
     private RectTransform rectTransform;
     private bool isInventoryBarPositionBottom = true;
     Camera mainCamera;
     UIInventorySlot[] inventorySlots;
-    GameObject itemsParent;
+    ScriptableObjectService<ItemInfo> itemInfosService;
+    ItemFactory itemFactory;
+
 
     void Awake()
     {
         mainCamera = Camera.main;
         rectTransform = GetComponent<RectTransform>();
         inventorySlots = GetComponentsInChildren<UIInventorySlot>();
-        itemsParent = GameObject.FindGameObjectWithTag(Settings.tags.ItemsParent);
+    }
+
+    void Start(){
+        itemInfosService = ServiceContainer.Instance.GetComponent<ScriptableObjectService<ItemInfo>>();
+        itemFactory = ServiceContainer.Instance.GetComponent<ItemFactory>();
     }
 
     void Update()
@@ -80,9 +83,10 @@ public class UIInventoryBar : MonoBehaviour
         if (draggedItem == null)
             return;
         var slot = sender as UIInventorySlot;
+        var itemDefinitionToRemove = slot.model.itemDefinition;
 
         var canRemove = inventory.inventoryModel.TryRemoveItem(new InventoryItemModel{
-            itemDefinition = slot.model.itemDefinition,
+            itemDefinition = itemDefinitionToRemove,
             quantity = 1,
         });
 
@@ -90,19 +94,8 @@ public class UIInventoryBar : MonoBehaviour
             return;
 
         var wordPosition = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
-        var itemGameObject = Instantiate(ItemPrefab, wordPosition, Quaternion.identity, itemsParent.transform);
-        var item = itemGameObject.GetComponent<Item>();
-
-        string[] guids = AssetDatabase.FindAssets("t:ItemInfo");
-        List<ItemInfo> itemInfos = new();
-        foreach(var guid in guids){
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            ItemInfo itemInfo = AssetDatabase.LoadAssetAtPath<ItemInfo>(path);
-            itemInfos.Add(itemInfo);
-        }
-
-        item.itemInfo = itemInfos.Find(i => i.itemDefinition.description == slot.model.itemDefinition.description);
-
+        var itemInfo = itemInfosService.GetValue(i => i.itemDefinition == itemDefinitionToRemove);
+        var item = itemFactory.Create(wordPosition, itemInfo);
         Destroy(draggedItem);
     }
 
