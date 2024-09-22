@@ -13,6 +13,10 @@ public class UIInventoryPopup : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textBody3 = null;
     private ItemDefinition model;
 
+    void Start(){
+        SetModel(null);
+    }
+
     public void Show(ItemDefinition model){
         SetModel(model);
     }
@@ -22,6 +26,7 @@ public class UIInventoryPopup : MonoBehaviour
     }
 
     private void SetModel(ItemDefinition model = null){
+        this.model = model;
         if(model == null){
             gameObject.SetActive(false);
             return;

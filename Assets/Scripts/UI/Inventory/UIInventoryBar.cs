@@ -11,19 +11,20 @@ public class UIInventoryBar : MonoBehaviour
     GameObject draggedItem;
     private RectTransform rectTransform;
     private bool isInventoryBarPositionBottom = true;
-    Camera mainCamera;
     UIInventorySlot[] uiInventorySlots;
-    UIInventoryPopup uiInventoryPopup;
     ScriptableObjectService<ItemInfo> itemInfosService;
     ItemFactory itemFactory;
+    MainCameraService mainCameraService;
+
+    public event EventHandler<PointerEventData> OnPointerEnterEvent;
+    public event EventHandler<PointerEventData> OnPointerExitEvent;
 
 
     void Awake()
     {
-        mainCamera = Camera.main;
         rectTransform = GetComponent<RectTransform>();
         uiInventorySlots = GetComponentsInChildren<UIInventorySlot>();
-        uiInventoryPopup = GetComponentInChildren<UIInventoryPopup>();
+        mainCameraService = ServiceContainer.Instance.GetComponent<MainCameraService>();
     }
 
     void Start()
@@ -109,9 +110,9 @@ public class UIInventoryBar : MonoBehaviour
             if (!canRemove)
                 return;
 
-            var wordPosition = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
+            var wordMousePosition = mainCameraService.GetWordMousePosition();
             var itemInfo = itemInfosService.GetValue(i => i.itemDefinition == slotItemDefinition);
-            var item = itemFactory.Create(wordPosition, itemInfo);
+            var item = itemFactory.Create(wordMousePosition, itemInfo);
         }
 
         Destroy(draggedItem);
@@ -133,13 +134,12 @@ public class UIInventoryBar : MonoBehaviour
 
     private void OnPointerExitEventHandler(object sender, PointerEventData e)
     {
-        uiInventoryPopup.Hide();
+        OnPointerExitEvent?.Invoke(sender, e);
     }
 
     private void OnPointerEnterEventHandler(object sender, PointerEventData e)
     {
-        var uiSlot = sender as UIInventorySlot;
-        uiInventoryPopup.Show(uiSlot.model.content.itemDefinition);
+        OnPointerEnterEvent?.Invoke(sender, e);
     }
 
 
@@ -155,7 +155,7 @@ public class UIInventoryBar : MonoBehaviour
 
     private void SwitchInventoryBarPosition()
     {
-        Vector3 viewportPosition = mainCamera.WorldToViewportPoint(inventory.transform.position);
+        Vector3 viewportPosition = mainCameraService.GetFollowViewport();
 
         if (viewportPosition.y > 0.3f && isInventoryBarPositionBottom == false)
         {

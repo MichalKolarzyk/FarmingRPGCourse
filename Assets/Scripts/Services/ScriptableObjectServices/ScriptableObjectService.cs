@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class ScriptableObjectService<T> : ServiceMonoBehaviour
     where T : ScriptableObject
 {
-    public string assetFilter;
+    protected string assetFilter;
     private List<T> values;
     private void Awake()
     {
