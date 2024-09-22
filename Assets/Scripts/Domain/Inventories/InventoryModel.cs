@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class InventoryModel
 {
-    public InventoryType inventoryType;
-    public List<InventoryItemModel> items = new();
+    public List<InventorySlotModel> slots = new();
     public int Capacity;
 
     public DoaminEvent<InventoryModel> OnInventoryUpdated = new();
@@ -13,54 +13,68 @@ public class InventoryModel
     public InventoryModel(int capacity)
     {
         this.Capacity = capacity;
+        for (int i = 0; i < Capacity; i++)
+        {
+            slots.Add(new InventorySlotModel());
+        }
     }
 
-    public InventoryModel() {}
+    public InventoryModel() { }
 
-    public bool TryAdd(InventoryItemModel newItem){
-        if(!newItem.itemDefinition.canBePickedUp){
+    public bool TryAdd(InventoryItemModel newItem)
+    {
+        if (!newItem.itemDefinition.canBePickedUp)
+        {
             return false;
         }
-        
-        var existingItem = items.Find(i => i.itemDefinition == newItem.itemDefinition);
-        if(existingItem == null && items.Count < Capacity){
-            items.Add(newItem);
+
+        var slot = GetSlot();
+        if (slot != null)
+        {
+            slot.TryAdd(newItem);
             OnInventoryUpdated.Call(this);
             return true;
         }
-        else if(existingItem != null){
-            existingItem.quantity += newItem.quantity;
-            OnInventoryUpdated.Call(this);
-            return true;
-        }
-        else{
+        else
+        {
             OnInventoryFull.Call(this);
             return false;
         }
+
+        InventorySlotModel GetSlot(){
+            var slot = slots.Find(s => s.content.itemDefinition == newItem.itemDefinition);
+            if(slot != null)
+                return slot;
+
+            return slots.Find(s => s.IsEmpty);
+        }
     }
 
-    public bool TryRemoveItem(InventoryItemModel inventoryItemModel){
-        if(!inventoryItemModel.itemDefinition.canBeDropped)
+    public bool TryRemove(InventoryItemModel inventoryItemModel)
+    {
+        if (!inventoryItemModel.itemDefinition.canBeDropped)
             return false;
 
-        var existingItem = items.Find(i => i.itemDefinition == inventoryItemModel.itemDefinition);
-        if(existingItem.quantity < inventoryItemModel.quantity){
-            return false;
-        }
-        else if(existingItem.quantity == inventoryItemModel.quantity){
-            items.Remove(existingItem);
+        var slot = slots.Find(s => s.CanRemove(inventoryItemModel));
+        if (slot != null)
+        {
+            slot.TryRemove(inventoryItemModel);
             OnInventoryUpdated.Call(this);
             return true;
         }
-        else{
-            existingItem.quantity -= inventoryItemModel.quantity;
-            OnInventoryUpdated.Call(this);
-            return true;
-        }
+        return false;
     }
-}
 
-public enum InventoryType{
-    player,
-    chest,
+    public void SwapItems(InventorySlotModel slotA, InventorySlotModel slotB)
+    {
+        var slotAContent = slotA.content;
+        var slotBContent = slotB.content;
+
+        slotA.Clear();
+        slotA.TryAdd(slotBContent);
+
+        slotB.Clear();
+        slotB.TryAdd(slotAContent);
+        OnInventoryUpdated.Call(this);
+    }
 }

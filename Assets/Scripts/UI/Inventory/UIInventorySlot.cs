@@ -10,7 +10,7 @@ public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public Image inventorySlotImage;
     public Sprite transparentSlotSprite;
     public TextMeshProUGUI text;
-    public InventoryItemModel model;
+    public InventorySlotModel model;
 
     public event EventHandler<PointerEventData> OnBeginDragEvent;
     public event EventHandler<PointerEventData> OnDragEven;
@@ -31,19 +31,19 @@ public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         OnEndDragEvent?.Invoke(this, eventData);
     }
 
-    public void SetModel(InventoryItemModel inventoryItemModel)
+    public void SetModel(InventorySlotModel inventorySlotModel)
     {
-        if (inventoryItemModel == null)
+        if (inventorySlotModel.IsEmpty)
         {
-            model = null;
+            model = inventorySlotModel;
             inventorySlotImage.sprite = transparentSlotSprite;
             text.text = "";
         }
         else
         {
-            model = inventoryItemModel;
-            inventorySlotImage.sprite = inventoryItemModel.itemDefinition.sprite;
-            text.text = inventoryItemModel.quantity.ToString();
+            model = inventorySlotModel;
+            inventorySlotImage.sprite = inventorySlotModel.content.itemDefinition.sprite;
+            text.text = inventorySlotModel.content.quantity.ToString();
         }
     }
 }

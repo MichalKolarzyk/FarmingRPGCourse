@@ -6,6 +6,10 @@ public class Item : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     void Awake(){
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
+    void Start(){
+        spriteRenderer.sprite = itemInfo.itemDefinition.sprite;
     }
 }

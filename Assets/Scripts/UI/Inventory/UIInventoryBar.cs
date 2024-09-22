@@ -11,7 +11,7 @@ public class UIInventoryBar : MonoBehaviour
     private RectTransform rectTransform;
     private bool isInventoryBarPositionBottom = true;
     Camera mainCamera;
-    UIInventorySlot[] inventorySlots;
+    UIInventorySlot[] uiInventorySlots;
     ScriptableObjectService<ItemInfo> itemInfosService;
     ItemFactory itemFactory;
 
@@ -20,10 +20,11 @@ public class UIInventoryBar : MonoBehaviour
     {
         mainCamera = Camera.main;
         rectTransform = GetComponent<RectTransform>();
-        inventorySlots = GetComponentsInChildren<UIInventorySlot>();
+        uiInventorySlots = GetComponentsInChildren<UIInventorySlot>();
     }
 
-    void Start(){
+    void Start()
+    {
         itemInfosService = ServiceContainer.Instance.GetComponent<ScriptableObjectService<ItemInfo>>();
         itemFactory = ServiceContainer.Instance.GetComponent<ItemFactory>();
     }
@@ -35,9 +36,9 @@ public class UIInventoryBar : MonoBehaviour
 
     void OnEnable()
     {
-        inventory.inventoryModel.OnInventoryUpdated.Subscribe(OnInventoryUpdated);
+        inventory.model.OnInventoryUpdated.Subscribe(OnInventoryUpdated);
 
-        foreach (var inventorySlot in inventorySlots)
+        foreach (var inventorySlot in uiInventorySlots)
         {
             inventorySlot.OnBeginDragEvent += OnBeginDragEventHandler;
             inventorySlot.OnDragEven += OnDragEvenHandler;
@@ -47,9 +48,9 @@ public class UIInventoryBar : MonoBehaviour
 
     void OnDisable()
     {
-        inventory.inventoryModel.OnInventoryUpdated.Unsubscribe(OnInventoryUpdated);
+        inventory.model.OnInventoryUpdated.Unsubscribe(OnInventoryUpdated);
 
-        foreach (var inventorySlot in inventorySlots)
+        foreach (var inventorySlot in uiInventorySlots)
         {
             inventorySlot.OnBeginDragEvent -= OnBeginDragEventHandler;
             inventorySlot.OnDragEven -= OnDragEvenHandler;
@@ -66,7 +67,7 @@ public class UIInventoryBar : MonoBehaviour
 
         draggedItem = Instantiate(draggedItemPrefab, transform);
         var image = draggedItem.GetComponentInChildren<Image>();
-        image.sprite = slotModel.itemDefinition.sprite;
+        image.sprite = slotModel.content.itemDefinition.sprite;
 
     }
 
@@ -82,30 +83,53 @@ public class UIInventoryBar : MonoBehaviour
     {
         if (draggedItem == null)
             return;
-        var slot = sender as UIInventorySlot;
-        var itemDefinitionToRemove = slot.model.itemDefinition;
 
-        var canRemove = inventory.inventoryModel.TryRemoveItem(new InventoryItemModel{
-            itemDefinition = itemDefinitionToRemove,
-            quantity = 1,
-        });
+        var uiSlot = sender as UIInventorySlot;
+        var slotItemDefinition = uiSlot.model.content.itemDefinition;
+        if (EndDragOnUIInventorySlot(out var uIInventorySlot))
+        {
+            inventory.model.SwapItems(uiSlot.model, uIInventorySlot.model);
+        }
+        else
+        {
+            var canRemove = inventory.model.TryRemove(new InventoryItemModel
+            {
+                itemDefinition = slotItemDefinition,
+                quantity = 1,
+            });
 
-        if(!canRemove)
-            return;
+            if (!canRemove)
+                return;
 
-        var wordPosition = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
-        var itemInfo = itemInfosService.GetValue(i => i.itemDefinition == itemDefinitionToRemove);
-        var item = itemFactory.Create(wordPosition, itemInfo);
+            var wordPosition = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
+            var itemInfo = itemInfosService.GetValue(i => i.itemDefinition == slotItemDefinition);
+            var item = itemFactory.Create(wordPosition, itemInfo);
+        }
+
         Destroy(draggedItem);
+
+        bool EndDragOnUIInventorySlot(out UIInventorySlot uIInventorySlot)
+        {
+            uIInventorySlot = null;
+            var endDragGameObject = e.pointerCurrentRaycast.gameObject;
+            if (endDragGameObject == null)
+                return false;
+
+            uIInventorySlot = e.pointerCurrentRaycast.gameObject.GetComponent<UIInventorySlot>();
+            if (uIInventorySlot == null)
+                return false;
+
+            return true;
+        }
     }
 
     void OnInventoryUpdated(InventoryModel inventoryModel)
     {
-        var slotsLength = inventorySlots.Length;
+        var slotsLength = uiInventorySlots.Length;
         for (int i = 0; i < slotsLength; i++)
         {
-            var item = inventoryModel.items.ElementAtOrDefault(i);
-            inventorySlots[i].SetModel(item);
+            var item = inventoryModel.slots.ElementAtOrDefault(i);
+            uiInventorySlots[i].SetModel(item);
         }
     }
 
