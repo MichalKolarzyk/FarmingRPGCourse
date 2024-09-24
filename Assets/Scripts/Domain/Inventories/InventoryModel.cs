@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class InventoryModel
 {
     public List<InventorySlotModel> slots = new();
     public int Capacity;
-
     public DoaminEvent<InventoryModel> OnInventoryUpdated = new();
     public DoaminEvent<InventoryModel> OnInventoryFull = new();
 
@@ -75,6 +72,16 @@ public class InventoryModel
 
         slotB.Clear();
         slotB.TryAdd(slotAContent);
+        OnInventoryUpdated.Call(this);
+    }
+
+    public void SetSeletedSlot(InventorySlotModel inventorySlotModel){
+        var selectedSlot = slots.Find(s => s.IsSelected);
+        if(inventorySlotModel == selectedSlot)
+            return;
+        
+        selectedSlot?.Unselect();
+        inventorySlotModel?.Select();
         OnInventoryUpdated.Call(this);
     }
 }

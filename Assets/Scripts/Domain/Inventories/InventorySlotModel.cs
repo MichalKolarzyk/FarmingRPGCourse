@@ -1,6 +1,7 @@
 public class InventorySlotModel
 {
     public InventoryItemModel content = new();
+    public bool IsSelected = false;
 
     public bool CanAdd(InventoryItemModel inventoryItemModel) => IsEmpty || content.itemDefinition == inventoryItemModel.itemDefinition;
 
@@ -18,6 +19,7 @@ public class InventorySlotModel
     }
 
     public void Clear(){
+        IsSelected =false;
         content = new();
     }
 
@@ -36,6 +38,17 @@ public class InventorySlotModel
             Clear();
         }
         return true;
+    }
+
+    public void Select(){
+        if(IsEmpty){
+            return;
+        }
+        IsSelected = true;
+    }
+
+    public void Unselect(){
+        IsSelected = false;
     }
 
     public bool IsEmpty => content.itemDefinition == null && content.quantity == 0;

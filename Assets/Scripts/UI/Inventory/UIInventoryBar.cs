@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIInventoryBar : MonoBehaviour
 {
     public Inventory inventory;
+    private InventoryModel model;
     public GameObject draggedItemPrefab;
     GameObject draggedItem;
     private RectTransform rectTransform;
@@ -19,7 +20,36 @@ public class UIInventoryBar : MonoBehaviour
     public event EventHandler<PointerEventData> OnPointerEnterEvent;
     public event EventHandler<PointerEventData> OnPointerExitEvent;
 
+    void OnEnable()
+    {
+        model = inventory.model;
+        model.OnInventoryUpdated.Subscribe(OnInventoryUpdated);
 
+        foreach (var inventorySlot in uiInventorySlots)
+        {
+            inventorySlot.OnBeginDragEvent += OnBeginDragEventHandler;
+            inventorySlot.OnDragEven += OnDragEvenHandler;
+            inventorySlot.OnEndDragEvent += OnEndDragEventHandler;
+            inventorySlot.OnPointerEnterEvent += OnPointerEnterEventHandler;
+            inventorySlot.OnPointerExitEvent += OnPointerExitEventHandler;
+            inventorySlot.OnPointerClickEvent += OnPointerClickEventHandler;
+        }
+    }
+
+    void OnDisable()
+    {
+        model.OnInventoryUpdated.Unsubscribe(OnInventoryUpdated);
+
+        foreach (var inventorySlot in uiInventorySlots)
+        {
+            inventorySlot.OnBeginDragEvent -= OnBeginDragEventHandler;
+            inventorySlot.OnDragEven -= OnDragEvenHandler;
+            inventorySlot.OnEndDragEvent -= OnEndDragEventHandler;
+            inventorySlot.OnPointerEnterEvent -= OnPointerEnterEventHandler;
+            inventorySlot.OnPointerExitEvent -= OnPointerExitEventHandler;
+            inventorySlot.OnPointerClickEvent -= OnPointerClickEventHandler;
+        }
+    }
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -31,7 +61,7 @@ public class UIInventoryBar : MonoBehaviour
     {
         itemInfosService = ServiceContainer.Instance.GetComponent<ScriptableObjectService<ItemInfo>>();
         itemFactory = ServiceContainer.Instance.GetComponent<ItemFactory>();
-        OnInventoryUpdated(inventory.model);
+        OnInventoryUpdated(model);
     }
 
     void Update()
@@ -39,32 +69,10 @@ public class UIInventoryBar : MonoBehaviour
         SwitchInventoryBarPosition();
     }
 
-    void OnEnable()
+    private void OnPointerClickEventHandler(object sender, PointerEventData e)
     {
-        inventory.model.OnInventoryUpdated.Subscribe(OnInventoryUpdated);
-
-        foreach (var inventorySlot in uiInventorySlots)
-        {
-            inventorySlot.OnBeginDragEvent += OnBeginDragEventHandler;
-            inventorySlot.OnDragEven += OnDragEvenHandler;
-            inventorySlot.OnEndDragEvent += OnEndDragEventHandler;
-            inventorySlot.OnPointerEnterEvent += OnPointerEnterEventHandler;
-            inventorySlot.OnPointerExitEvent += OnPointerExitEventHandler;
-        }
-    }
-
-    void OnDisable()
-    {
-        inventory.model.OnInventoryUpdated.Unsubscribe(OnInventoryUpdated);
-
-        foreach (var inventorySlot in uiInventorySlots)
-        {
-            inventorySlot.OnBeginDragEvent -= OnBeginDragEventHandler;
-            inventorySlot.OnDragEven -= OnDragEvenHandler;
-            inventorySlot.OnEndDragEvent -= OnEndDragEventHandler;
-            inventorySlot.OnPointerEnterEvent -= OnPointerEnterEventHandler;
-            inventorySlot.OnPointerExitEvent -= OnPointerExitEventHandler;
-        }
+        var slot = sender as UIInventorySlot;
+        model.SetSeletedSlot(slot.model);
     }
 
     private void OnBeginDragEventHandler(object sender, PointerEventData e)
@@ -97,22 +105,21 @@ public class UIInventoryBar : MonoBehaviour
         var slotItemDefinition = uiSlot.model.content.itemDefinition;
         if (EndDragOnUIInventorySlot(out var uIInventorySlot))
         {
-            inventory.model.SwapItems(uiSlot.model, uIInventorySlot.model);
+            model.SwapItems(uiSlot.model, uIInventorySlot.model);
         }
         else
         {
-            var canRemove = inventory.model.TryRemove(new InventoryItemModel
+            var canRemove = model.TryRemove(new InventoryItemModel
             {
                 itemDefinition = slotItemDefinition,
                 quantity = 1,
             });
 
-            if (!canRemove)
-                return;
-
-            var wordMousePosition = mainCameraService.GetWordMousePosition();
-            var itemInfo = itemInfosService.GetValue(i => i.itemDefinition == slotItemDefinition);
-            var item = itemFactory.Create(wordMousePosition, itemInfo);
+            if (canRemove){
+                var wordMousePosition = mainCameraService.GetWordMousePosition();
+                var itemInfo = itemInfosService.GetValue(i => i.itemDefinition == slotItemDefinition);
+                var item = itemFactory.Create(wordMousePosition, itemInfo);
+            }
         }
 
         Destroy(draggedItem);
