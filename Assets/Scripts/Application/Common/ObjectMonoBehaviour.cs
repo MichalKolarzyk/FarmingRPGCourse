@@ -1,9 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ObjectMonoBehaviour<T> : MonoBehaviour
     where T : class
 {
-    public T model;
+    private T model;
+
+    protected abstract T InitModelValue();
+
+    public T GetModel(){
+        if(model != null)
+            return model;
+
+        model = InitModelValue();
+        return model;
+    }
 }

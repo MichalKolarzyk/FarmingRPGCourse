@@ -22,7 +22,7 @@ public class UIInventoryBar : MonoBehaviour
 
     void OnEnable()
     {
-        model = inventory.model;
+        model = inventory.GetModel();
         model.OnInventoryUpdated.Subscribe(OnInventoryUpdated);
 
         foreach (var inventorySlot in uiInventorySlots)
