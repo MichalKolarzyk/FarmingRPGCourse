@@ -1,45 +1,34 @@
 using UnityEngine;
 
+[RequireComponent(typeof(ObjectMonoBehaviour<MovementModel>))]
+[RequireComponent(typeof(ObjectMonoBehaviour<InventoryModel>))]
 public class Player : MonoBehaviour
 {
   Rigidbody2D rigidBody2D;
-  MovementModel input;
-  MovementPublisher playerMovementPublisher;
-  MovementSpeedDefinition movementSpeedDefinition;
-  private bool inputsEnabled = true;
+  MovementModel movementModel;
+  InventoryModel inventoryModel;
 
   void Awake()
   {
+    movementModel = GetComponent<ObjectMonoBehaviour<MovementModel>>().GetModel();
+    inventoryModel = GetComponent<ObjectMonoBehaviour<InventoryModel>>().GetModel();
     rigidBody2D = GetComponent<Rigidbody2D>();
-    playerMovementPublisher = GetComponent<MovementPublisher>();
-    movementSpeedDefinition = new MovementSpeedDefinition(Settings.playerMovement.walkingSpeed, Settings.playerMovement.runnintSpeed);
   }
 
 
   void Update()
   {
-    if(!inputsEnabled)
-      return;
-
     var inputX = Input.GetAxisRaw("Horizontal");
     var inputY = Input.GetAxisRaw("Vertical");
     var isWalking = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+    var isPickingUp = inventoryModel.GetSelectedSlot() != null;
 
-    input = new(inputX, inputY, isWalking, movementSpeedDefinition);
-    playerMovementPublisher.Publish(input);
+    movementModel.UpdateMovement(inputX, inputY, isWalking, isPickingUp);
   }
 
-  void FixedUpdate(){
-    if(input == null) return;
-    rigidBody2D.MovePosition(rigidBody2D.position + input.GetMovement());
-  }
-
-
-  public void DisableInputs(){
-    inputsEnabled = false;
-  }
-
-  public void EnableInputs(){
-    inputsEnabled = true;
+  void FixedUpdate()
+  {
+    if (movementModel == null) return;
+    rigidBody2D.MovePosition(rigidBody2D.position + movementModel.GetMovement());
   }
 }

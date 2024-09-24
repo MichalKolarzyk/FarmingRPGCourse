@@ -38,9 +38,10 @@ public class InventoryModel
             return false;
         }
 
-        InventorySlotModel GetSlot(){
+        InventorySlotModel GetSlot()
+        {
             var slot = slots.Find(s => s.content.itemDefinition == newItem.itemDefinition);
-            if(slot != null)
+            if (slot != null)
                 return slot;
 
             return slots.Find(s => s.IsEmpty);
@@ -75,13 +76,19 @@ public class InventoryModel
         OnInventoryUpdated.Call(this);
     }
 
-    public void SetSeletedSlot(InventorySlotModel inventorySlotModel){
+    public void SetSeletedSlot(InventorySlotModel inventorySlotModel)
+    {
         var selectedSlot = slots.Find(s => s.IsSelected);
-        if(inventorySlotModel == selectedSlot)
+        if (inventorySlotModel == selectedSlot)
             return;
-        
+
         selectedSlot?.Unselect();
         inventorySlotModel?.Select();
         OnInventoryUpdated.Call(this);
+    }
+
+    public InventorySlotModel GetSelectedSlot()
+    {
+        return slots.Find(s => s.IsSelected);
     }
 }

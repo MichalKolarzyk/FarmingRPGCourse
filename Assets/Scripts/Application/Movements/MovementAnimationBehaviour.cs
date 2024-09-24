@@ -1,28 +1,31 @@
+using System;
 using UnityEngine;
 
 public class MovementAnimationController : MonoBehaviour
 {
     private Animator animator;
-    private MovementPublisher playerMovement;
+    private MovementModel movementModel;
     void Awake()
     {
         animator = GetComponent<Animator>();
-        playerMovement = GetComponentInParent<MovementPublisher>();
     }
 
     void OnEnable()
     {
-        playerMovement.OnMovementEvent += SetAnimationParameters;
+        movementModel = GetComponentInParent<ObjectMonoBehaviour<MovementModel>>().GetModel();
+        movementModel.OnMoveUpdateEvent += SetAnimationParameters;
     }
+
 
     void OnDisable()
     {
-        playerMovement.OnMovementEvent -= SetAnimationParameters;
+        movementModel.OnMoveUpdateEvent -= SetAnimationParameters;
     }
 
-    private void SetAnimationParameters(object sender, MovementModel args)
+    private void SetAnimationParameters(object sender, EventArgs e)
     {
-        if (args == null) return;
+        if (sender is not MovementModel args) return;
+
         animator.SetFloat(AnimatorParamsIds.inputX, args.inputX);
         animator.SetFloat(AnimatorParamsIds.inputY, args.inputY);
         animator.SetBool(AnimatorParamsIds.isWalking, args.isWalking);

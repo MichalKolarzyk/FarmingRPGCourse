@@ -1,9 +1,9 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Inventory))]
-public class PickUpAction : MonoBehaviour
+[RequireComponent(typeof(ObjectMonoBehaviour<InventoryModel>))]
+public class PickUpItemBehaviour : MonoBehaviour
 {
-    private Inventory inventory;
+    private ObjectMonoBehaviour<InventoryModel> inventory;
     private InventoryModel inventoryModel;
 
     void Awake()

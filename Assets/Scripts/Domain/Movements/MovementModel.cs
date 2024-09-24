@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MovementModel
@@ -31,8 +32,35 @@ public class MovementModel
     public bool idleRight;
     public float currentMovementSpeed;
 
-    public MovementModel(float inputX, float inputY, bool isWalking, MovementSpeedDefinition movementSpeedDefinition)
+    public event EventHandler OnMoveUpdateEvent;
+
+    private readonly MovementDefinition movementDefinition;
+
+    public MovementModel(MovementDefinition movementDefinition) 
+    { 
+        this.movementDefinition = movementDefinition;
+    }
+
+
+    private Direction GetDirection()
     {
+        if (inputX < 0) return Direction.left;
+        else if (inputX > 0) return Direction.right;
+        else if (inputY < 0) return Direction.down;
+        else if (inputY > 0) return Direction.up;
+        else
+        {
+            return Direction.none;
+        }
+    }
+
+    public Vector2 GetMovement()
+    {
+        return new Vector2(inputX * currentMovementSpeed * Time.deltaTime, inputY * currentMovementSpeed * Time.deltaTime);
+    }
+
+    public void UpdateMovement(float inputX, float inputY, bool isWalking, bool isPickingUp){
+        Restart();
         this.inputX = inputX;
         this.inputY = inputY;
 
@@ -49,44 +77,47 @@ public class MovementModel
         else if (isWalking)
         {
             this.isWalking = true;
-            this.currentMovementSpeed = movementSpeedDefinition?.walkingSpeed ?? 0;
+            this.currentMovementSpeed = movementDefinition?.walkingSpeed ?? 0;
         }
         else
         {
             isRunning = true;
-            this.currentMovementSpeed = movementSpeedDefinition?.runningSpeed ?? 0;
+            this.currentMovementSpeed = movementDefinition?.runningSpeed ?? 0;
         }
-
+        this.isPickingUp = isPickingUp;
+        OnMoveUpdateEvent?.Invoke(this, EventArgs.Empty);
     }
-    public MovementModel() { }
 
-
-    public Direction GetDirection()
+    private void Restart()
     {
-        if (inputX < 0) return Direction.left;
-        else if (inputX > 0) return Direction.right;
-        else if (inputY < 0) return Direction.down;
-        else if (inputY > 0) return Direction.up;
-        else
-        {
-            return Direction.none;
-        }
-    }
-
-    public Vector2 GetMovement(){
-        return new Vector2(inputX * currentMovementSpeed * Time.deltaTime, inputY * currentMovementSpeed * Time.deltaTime);
-    }
-}
-
-
-public class MovementSpeedDefinition{
-    public float walkingSpeed;
-    public float runningSpeed;
-
-    public MovementSpeedDefinition(float walkingSpeed, float runningSpeed)
-    {
-        this.walkingSpeed = walkingSpeed;
-        this.runningSpeed = runningSpeed;
+        inputX = 0;
+        inputY = 0;
+        isWalking = false;
+        isRunning = false;
+        isIdle = true;
+        isCarrying = false;
+        toolEffect = ToolEffect.none;
+        // bool isUsingToolRight;
+        // bool isUsingToolLeft;
+        // bool isUsingToolUp;
+        // bool isUsingToolDown;
+        // bool isLiftingToolRight;
+        // bool isLiftingToolLeft;
+        // bool isLiftingToolUp;
+        // bool isLiftingToolDown;
+        // bool isPickingRight;
+        // bool isPickingLeft;
+        // bool isPickingUp;
+        // bool isPickingDown;
+        // bool isSwingingToolRight;
+        // bool isSwingingToolLeft;
+        // bool isSwingingToolUp;
+        // bool isSwingingToolDown;
+        // bool idleUp;
+        // bool idleDown;
+        // bool idleLeft;
+        // bool idleRight;
+        currentMovementSpeed = 0;
     }
 }
 
@@ -96,7 +127,8 @@ public enum ToolEffect
     watering,
 }
 
-public enum Direction{
+public enum Direction
+{
     none,
     up,
     down,
