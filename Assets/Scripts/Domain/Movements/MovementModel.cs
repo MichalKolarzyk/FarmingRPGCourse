@@ -59,7 +59,7 @@ public class MovementModel
         return new Vector2(inputX * currentMovementSpeed * Time.deltaTime, inputY * currentMovementSpeed * Time.deltaTime);
     }
 
-    public void UpdateMovement(float inputX, float inputY, bool isWalking, bool isPickingUp){
+    public void UpdateMovement(float inputX, float inputY, bool isWalking, bool isCarrying){
         Restart();
         this.inputX = inputX;
         this.inputY = inputY;
@@ -84,7 +84,7 @@ public class MovementModel
             isRunning = true;
             this.currentMovementSpeed = movementDefinition?.runningSpeed ?? 0;
         }
-        this.isPickingUp = isPickingUp;
+        this.isCarrying = isCarrying;
         OnMoveUpdateEvent?.Invoke(this, EventArgs.Empty);
     }
 

@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MovementAnimationController : MonoBehaviour
 {
     private Animator animator;
     private MovementModel movementModel;
+    public AnimationOverrideInfo animationOverrideCarry;
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -25,6 +28,7 @@ public class MovementAnimationController : MonoBehaviour
     private void SetAnimationParameters(object sender, EventArgs e)
     {
         if (sender is not MovementModel args) return;
+        if (args.isCarrying) ApplyOverrides(animationOverrideCarry); else RemoveOverrides();
 
         animator.SetFloat(AnimatorParamsIds.inputX, args.inputX);
         animator.SetFloat(AnimatorParamsIds.inputY, args.inputY);
@@ -52,6 +56,19 @@ public class MovementAnimationController : MonoBehaviour
         if (args.idleDown) animator.SetTrigger(AnimatorParamsIds.idleDown);
         if (args.idleLeft) animator.SetTrigger(AnimatorParamsIds.idleLeft);
         if (args.idleRight) animator.SetTrigger(AnimatorParamsIds.idleRight);
+    }
+
+    private void ApplyOverrides(AnimationOverrideInfo animationOverrideInfo)
+    {
+        if (animationOverrideInfo == null) return;
+        var overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        overrideController.ApplyOverrides(animationOverrideInfo.GetKeyValuePairs());
+        animator.runtimeAnimatorController = overrideController;
+    }
+
+    private void RemoveOverrides()
+    {
+        animator.runtimeAnimatorController = new AnimatorOverrideController(animator.runtimeAnimatorController);
     }
 
     private void AnimationEventPlayFootstepSound()
