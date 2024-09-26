@@ -33,6 +33,7 @@ public class MovementModel
     public float currentMovementSpeed;
 
     public event EventHandler OnMoveUpdateEvent;
+    public event EventHandler<bool> OnIsCarryingItemChangeEvent;
 
     private readonly MovementDefinition movementDefinition;
 
@@ -84,8 +85,16 @@ public class MovementModel
             isRunning = true;
             this.currentMovementSpeed = movementDefinition?.runningSpeed ?? 0;
         }
-        this.isCarrying = isCarrying;
+        SetIsCarrying(isCarrying);
         OnMoveUpdateEvent?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void SetIsCarrying(bool isCarrying){
+        if(this.isCarrying == isCarrying)
+            return;
+
+        this.isCarrying = isCarrying;
+        OnIsCarryingItemChangeEvent(this, isCarrying);
     }
 
     private void Restart()
@@ -95,7 +104,7 @@ public class MovementModel
         isWalking = false;
         isRunning = false;
         isIdle = true;
-        isCarrying = false;
+        //isCarrying = false;
         toolEffect = ToolEffect.none;
         // bool isUsingToolRight;
         // bool isUsingToolLeft;

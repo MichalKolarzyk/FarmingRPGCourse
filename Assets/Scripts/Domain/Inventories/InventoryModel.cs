@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 public class InventoryModel
@@ -6,6 +7,8 @@ public class InventoryModel
     public int Capacity;
     public DoaminEvent<InventoryModel> OnInventoryUpdated = new();
     public DoaminEvent<InventoryModel> OnInventoryFull = new();
+
+    public event EventHandler<InventorySlotModel> OnSelectedSlotChange;
 
     public InventoryModel(int capacity)
     {
@@ -84,6 +87,7 @@ public class InventoryModel
 
         selectedSlot?.Unselect();
         inventorySlotModel?.Select();
+        OnSelectedSlotChange?.Invoke(this, selectedSlot);
         OnInventoryUpdated.Call(this);
     }
 

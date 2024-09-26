@@ -21,7 +21,8 @@ public class Player : MonoBehaviour
     var inputX = Input.GetAxisRaw("Horizontal");
     var inputY = Input.GetAxisRaw("Vertical");
     var isWalking = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-    var isCarrying = inventoryModel.GetSelectedSlot() != null;
+    var selectedSlot = inventoryModel.GetSelectedSlot();
+    var isCarrying = selectedSlot != null && selectedSlot.content.itemDefinition.canBeCarried;
 
     movementModel.UpdateMovement(inputX, inputY, isWalking, isCarrying);
   }

@@ -17,12 +17,14 @@ public class MovementAnimationController : MonoBehaviour
     {
         movementModel = GetComponentInParent<ObjectMonoBehaviour<MovementModel>>().GetModel();
         movementModel.OnMoveUpdateEvent += SetAnimationParameters;
+        movementModel.OnIsCarryingItemChangeEvent += OverrideIsCarringAnimation;
     }
 
 
     void OnDisable()
     {
         movementModel.OnMoveUpdateEvent -= SetAnimationParameters;
+        movementModel.OnIsCarryingItemChangeEvent -= OverrideIsCarringAnimation;
     }
 
     private void SetAnimationParameters(object sender, EventArgs e)
@@ -58,7 +60,15 @@ public class MovementAnimationController : MonoBehaviour
         if (args.idleRight) animator.SetTrigger(AnimatorParamsIds.idleRight);
     }
 
-    private void ApplyOverrides(AnimationOverrideInfo animationOverrideInfo)
+    private void OverrideIsCarringAnimation(object sender, bool isCarrying)
+    {
+        if (isCarrying)
+            ApplyOverrides(animationOverrideCarry);
+        else
+            RemoveOverrides();
+    }
+
+    private void ApplyOverrides(AnimationOverrideInfo animationOverrideInfo = null)
     {
         if (animationOverrideInfo == null) return;
         var overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
