@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class NudgeTrigger : MonoBehaviour
+public class NudgeBehaviour : MonoBehaviour
 {
     public int maxRotateDegrees = 10;
 

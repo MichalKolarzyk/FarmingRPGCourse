@@ -1,7 +1,7 @@
 using UnityEngine;
 using Cinemachine;
 
-public class SwitchConfineBoundingShape : MonoBehaviour
+public class SwitchConfineBoundingShapeBehaviour : MonoBehaviour
 {
     private PolygonCollider2D polygonCollider2D;
     private CinemachineConfiner2D cinemachineConfiner2d;

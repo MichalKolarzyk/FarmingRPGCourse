@@ -1,12 +1,12 @@
 
 using UnityEngine;
 
-public class ObscuringFaderTrigger : MonoBehaviour
+public class ObscuringFaderBehaviourTrigger : MonoBehaviour
 {
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var obscuriongScenaryFaders = collision.GetComponentsInChildren<ObscuringFaderAction>();
+        var obscuriongScenaryFaders = collision.GetComponentsInChildren<ObscuringFaderBehaviour>();
         foreach (var obscuriongScenaryFader in obscuriongScenaryFaders)
         {
             obscuriongScenaryFader.FadeOut();
@@ -16,7 +16,7 @@ public class ObscuringFaderTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        var obscuriongScenaryFaders = collision.GetComponentsInChildren<ObscuringFaderAction>();
+        var obscuriongScenaryFaders = collision.GetComponentsInChildren<ObscuringFaderBehaviour>();
         foreach (var obscuriongScenaryFader in obscuriongScenaryFaders)
         {
             obscuriongScenaryFader.FadeIn();
