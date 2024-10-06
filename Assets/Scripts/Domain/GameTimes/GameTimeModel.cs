@@ -45,7 +45,7 @@ public class GameTimeModel
 
     public int GetYear()
     {
-        return now.Year - (startYear + 1);
+        return now.Year - startYear + 1;
     }
 
     public Season GetSeason()
