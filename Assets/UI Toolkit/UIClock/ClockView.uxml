@@ -1,8 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/UIClock/ClockStyles.uss?fileID=7433441132597879392&amp;guid=95f633e24e2d7dc448b54be5580ac366&amp;type=3#ClockStyles" />
     <ui:VisualElement name="Container" class="container" style="height: 114px;">
-        <ui:VisualElement style="flex-grow: 1;">
-            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="false" class="info" />
-        </ui:VisualElement>
+        <ui:Label tabindex="-1" text="Season" parse-escape-sequences="true" display-tooltip-when-elided="false" name="SeasonText" class="info info-season" />
+        <ui:Label tabindex="-1" text="Year" parse-escape-sequences="true" display-tooltip-when-elided="false" name="YearText" class="info info-year" />
+        <ui:Label tabindex="-1" text="Mon" parse-escape-sequences="true" display-tooltip-when-elided="false" name="MonthText" class="info info-month" />
+        <ui:Label tabindex="-1" text="Hour" parse-escape-sequences="true" display-tooltip-when-elided="false" name="HourText" class="info info-hour" />
     </ui:VisualElement>
 </ui:UXML>

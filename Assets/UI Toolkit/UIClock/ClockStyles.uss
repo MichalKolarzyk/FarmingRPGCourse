@@ -3,16 +3,38 @@
     -unity-background-scale-mode: stretch-to-fill;
     min-width: 100px;
     min-height: 41px;
+    max-width: 100px;
+    max-height: 41px;
     flex-grow: 1;
 }
 
 .info {
-    left: 14%;
-    top: 10%;
     align-self: flex-start;
     margin: 0;
     padding: 0;
+    font-size: 7px;
     -unity-font: url("project://database/Assets/Fonts/Peepo.ttf?fileID=12800000&guid=771d877a49e443540ae1bfb7ec2795b5&type=3#Peepo");
-    position: relative;
+    position: absolute;
     -unity-font-definition: initial;
+    color: rgb(0, 0, 0);
+}
+
+.info-season {
+    left: 16%;
+    top: 16%;
+}
+
+.info-hour {
+    left: 52%;
+    top: 55%;
+}
+
+.info-month {
+    left: 16%;
+    top: 55%;
+}
+
+.info-year {
+    left: 52%;
+    top: 16%;
 }

@@ -1,16 +1,20 @@
 using System;
-using System.Collections;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UIClock : MonoBehaviour
 {
     public ObjectMonoBehaviour<GameTimeModel> gameTime;
-    public TextMeshProUGUI timeText;
-    public TextMeshProUGUI dateText;
-    public TextMeshProUGUI seasonText;
-    public TextMeshProUGUI yearText;
     private GameTimeModel model;
+    private UIClockView view;
+
+    void Awake()
+    {
+        var uiDocument = GetComponent<UIDocument>();
+        var clockVisualElement = uiDocument.rootVisualElement.Q("ClockView");
+        view = new UIClockView(clockVisualElement);
+    }
+
     void OnEnable()
     {
         model = gameTime.GetModel();
@@ -27,9 +31,9 @@ public class UIClock : MonoBehaviour
     {
         var gameTimeModel = sender as GameTimeModel;
         var viewModel = new GameTime12HoursSystemViewModel(gameTimeModel);
-        timeText.text = viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix;
-        dateText.text = viewModel.day;
-        seasonText.text = viewModel.season;
-        yearText.text = viewModel.year;
+        view.hourLabel.text = viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix;
+        view.dayLabel.text = $"Day: {viewModel.day}";
+        view.seasonLabel.text = viewModel.season;
+        view.yearLabel.text = $"Year: {viewModel.year}";
     }
 }

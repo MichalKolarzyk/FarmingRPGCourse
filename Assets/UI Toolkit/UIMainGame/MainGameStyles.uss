@@ -1,0 +1,8 @@
+.header {
+    flex-direction: row-reverse;
+}
+
+.clockViewContainer {
+    flex-shrink: 1;
+    flex-direction: row-reverse;
+}

@@ -28,15 +28,6 @@ public class GameTime12HoursSystemViewModel
         return AddZeroPrefix(model.GetMinutes());
     }
 
-    private string GetHoursAndMinutesSuffix(GameTimeModel model)
-    {
-        var hours = model.GetHours();
-        if(hours < 12)
-            return "AM";
-
-        else return "PM";
-    }
-
     private string AddZeroPrefix(int value)
     {
         return value >= 10 ? value.ToString() : $"0{value}";
