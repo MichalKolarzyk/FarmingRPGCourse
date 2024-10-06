@@ -29,12 +29,16 @@ public class GameTimeModel
         CallEvents(previousDateTime, now);
     }
 
-    public int GetHour()
+    public int GetDay(){
+        return now.DayOfYear;
+    }
+
+    public int GetHours()
     {
         return now.Hour;
     }
 
-    public int GetMinute()
+    public int GetMinutes()
     {
         return now.Minute;
     }
@@ -51,7 +55,7 @@ public class GameTimeModel
 
     public string ToHourAndMinutes()
     {
-        return $"{GetHour()}:{GetMinute()}";
+        return $"{AddZeroPrefix(GetHours())}:{AddZeroPrefix(GetMinutes())}";
     }
 
     public void Activate()
@@ -85,9 +89,13 @@ public class GameTimeModel
     private void CallEvents(DateTime previous, DateTime current)
     {
         OnMinuteChange?.Invoke(this, EventArgs.Empty);
-        if (GetMinute() % 10 == 0) OnEveryTenMinutesChange?.Invoke(this, EventArgs.Empty);
+        if (GetMinutes() % 10 == 0) OnEveryTenMinutesChange?.Invoke(this, EventArgs.Empty);
         if (GetSeason(previous) != GetSeason(current)) OnSeasonChange?.Invoke(this, EventArgs.Empty);
         if (previous.Year != current.Year) OnYearChange?.Invoke(this, EventArgs.Empty);
+    }
+
+    private string AddZeroPrefix(int value){
+        return value < 10 ? value.ToString() : $"0{value}";
     }
 }
 

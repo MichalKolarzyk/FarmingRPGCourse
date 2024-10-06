@@ -1,0 +1,18 @@
+.container {
+    background-image: url("project://database/Assets/Sprites/Sprite%20Textures/UI/Clock.png?fileID=2800000&guid=aa1fcd9144ccf574985824378256b95c&type=3#Clock");
+    -unity-background-scale-mode: stretch-to-fill;
+    min-width: 100px;
+    min-height: 41px;
+    flex-grow: 1;
+}
+
+.info {
+    left: 14%;
+    top: 10%;
+    align-self: flex-start;
+    margin: 0;
+    padding: 0;
+    -unity-font: url("project://database/Assets/Fonts/Peepo.ttf?fileID=12800000&guid=771d877a49e443540ae1bfb7ec2795b5&type=3#Peepo");
+    position: relative;
+    -unity-font-definition: initial;
+}

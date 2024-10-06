@@ -26,6 +26,10 @@ public class UIClock : MonoBehaviour
     private void OnEveryTenMinutesChangeEventHandler(object sender, EventArgs e)
     {
         var gameTimeModel = sender as GameTimeModel;
-        timeText.text = gameTimeModel.ToHourAndMinutes();
+        var viewModel = new GameTime12HoursSystemViewModel(gameTimeModel);
+        timeText.text = viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix;
+        dateText.text = viewModel.day;
+        seasonText.text = viewModel.season;
+        yearText.text = viewModel.year;
     }
 }
