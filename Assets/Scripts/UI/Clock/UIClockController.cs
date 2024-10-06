@@ -4,7 +4,6 @@ using UnityEngine.UIElements;
 
 public class UIClock : MonoBehaviour
 {
-    public ObjectMonoBehaviour<GameTimeModel> gameTime;
     private GameTimeModel model;
     private UIClockView view;
 
@@ -17,6 +16,7 @@ public class UIClock : MonoBehaviour
 
     void OnEnable()
     {
+        var gameTime = FindAnyObjectByType<ObjectMonoBehaviour<GameTimeModel>>();
         model = gameTime.GetModel();
         model.OnEveryTenMinutesChange += OnEveryTenMinutesChangeEventHandler;
     }
