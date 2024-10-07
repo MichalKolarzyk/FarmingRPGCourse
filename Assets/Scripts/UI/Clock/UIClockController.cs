@@ -1,27 +1,22 @@
 using System;
-using UnityEngine;
-using UnityEngine.UIElements;
 
-public class UIClock : MonoBehaviour
+public class UIClockController
 {
-    private GameTimeModel model;
-    private UIClockView view;
+    private readonly GameTimeModel model;
+    private readonly UIClockView view;
 
-    void Awake()
+    public UIClockController(GameTimeModel model, UIClockView view)
     {
-        var uiDocument = GetComponent<UIDocument>();
-        var clockVisualElement = uiDocument.rootVisualElement.Q("ClockView");
-        view = new UIClockView(clockVisualElement);
+        this.model = model;
+        this.view = view;
     }
 
-    void OnEnable()
+    public void Enable()
     {
-        var gameTime = FindAnyObjectByType<ObjectMonoBehaviour<GameTimeModel>>();
-        model = gameTime.GetModel();
         model.OnEveryTenMinutesChange += OnEveryTenMinutesChangeEventHandler;
     }
 
-    void OnDisable()
+    public void Disable()
     {
         model.OnEveryTenMinutesChange -= OnEveryTenMinutesChangeEventHandler;
     }
@@ -31,9 +26,9 @@ public class UIClock : MonoBehaviour
     {
         var gameTimeModel = sender as GameTimeModel;
         var viewModel = new GameTime12HoursSystemViewModel(gameTimeModel);
-        view.hourLabel.text = viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix;
-        view.dayLabel.text = $"Day: {viewModel.day}";
-        view.seasonLabel.text = viewModel.season;
-        view.yearLabel.text = $"Year: {viewModel.year}";
+        view.SetHourText(viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix);
+        view.SetDayText($"Day: {viewModel.day}");
+        view.SetSeasonText(viewModel.season);
+        view.SetYearText($"Year: {viewModel.year}");
     }
 }
