@@ -3,8 +3,7 @@ using System;
 public class SceneModel
 {
     private SceneInstance currentScene;
-    public event EventHandler<SceneInstance> OnBeforeSceneChange;
-    public event EventHandler<SceneInstance> OnAftereSceneChange;
+    public event EventHandler<SceneInstance> OnChange;
 
     public SceneModel(SceneInstance initialScene)
     {
@@ -15,9 +14,8 @@ public class SceneModel
         if(currentScene == newScene)
             return;
 
-        OnBeforeSceneChange?.Invoke(this, newScene);
         currentScene = newScene;
-        OnAftereSceneChange?.Invoke(this, newScene);
+        OnChange?.Invoke(this, newScene);
     }
 
     public SceneInstance GetCurrentScene(){
