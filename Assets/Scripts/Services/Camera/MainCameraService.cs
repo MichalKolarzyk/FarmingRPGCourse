@@ -1,7 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 
-public class MainCameraService : MonoBehaviour
+public class MainCameraService : ServiceMonoBehaviour
 {
     CinemachineVirtualCamera cinemachineVirtualCamera;
     Camera mainCamera;

@@ -7,6 +7,7 @@ public class UIFadeImageView{
   public UIFadeImageView(VisualElement visualElement)
   {
     this.visualElement = visualElement;
+    visualElement.pickingMode = PickingMode.Ignore;
   }
 
   public void SetColor(Color color){

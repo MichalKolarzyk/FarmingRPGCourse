@@ -5,9 +5,8 @@ public class InventoryModel
 {
     public List<InventorySlotModel> slots = new();
     public int Capacity;
-    public DoaminEvent<InventoryModel> OnInventoryUpdated = new();
-    public DoaminEvent<InventoryModel> OnInventoryFull = new();
-
+    public event Action<InventoryModel> OnInventoryUpdated;
+    public event Action<InventoryModel> OnInventoryFull;
     public event EventHandler<InventorySlotModel> OnSelectedSlotChange;
 
     public InventoryModel(int capacity)
@@ -32,12 +31,12 @@ public class InventoryModel
         if (slot != null)
         {
             slot.TryAdd(newItem);
-            OnInventoryUpdated.Call(this);
+            OnInventoryUpdated?.Invoke(this);
             return true;
         }
         else
         {
-            OnInventoryFull.Call(this);
+            OnInventoryFull?.Invoke(this);
             return false;
         }
 
@@ -60,7 +59,7 @@ public class InventoryModel
         if (slot != null)
         {
             slot.TryRemove(inventoryItemModel);
-            OnInventoryUpdated.Call(this);
+            OnInventoryUpdated?.Invoke(this);
             return true;
         }
         return false;
@@ -76,7 +75,7 @@ public class InventoryModel
 
         slotB.Clear();
         slotB.TryAdd(slotAContent);
-        OnInventoryUpdated.Call(this);
+        OnInventoryUpdated?.Invoke(this);
     }
 
     public void SetSeletedSlot(InventorySlotModel inventorySlotModel)
@@ -88,7 +87,7 @@ public class InventoryModel
         selectedSlot?.Unselect();
         inventorySlotModel?.Select();
         OnSelectedSlotChange?.Invoke(this, selectedSlot);
-        OnInventoryUpdated.Call(this);
+        OnInventoryUpdated?.Invoke(this);
     }
 
     public InventorySlotModel GetSelectedSlot()

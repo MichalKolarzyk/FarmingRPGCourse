@@ -14,7 +14,6 @@ public class UIInventoryBar : MonoBehaviour
     private bool isInventoryBarPositionBottom = true;
     UIInventorySlot[] uiInventorySlots;
     ScriptableObjectService<ItemInfo> itemInfosService;
-    ItemFactory itemFactory;
     MainCameraService mainCameraService;
 
     public event EventHandler<PointerEventData> OnPointerEnterEvent;
@@ -23,7 +22,7 @@ public class UIInventoryBar : MonoBehaviour
     void OnEnable()
     {
         model = inventory.GetModel();
-        model.OnInventoryUpdated.Subscribe(OnInventoryUpdated);
+        model.OnInventoryUpdated += OnInventoryUpdated;
 
         foreach (var inventorySlot in uiInventorySlots)
         {
@@ -38,7 +37,7 @@ public class UIInventoryBar : MonoBehaviour
 
     void OnDisable()
     {
-        model.OnInventoryUpdated.Unsubscribe(OnInventoryUpdated);
+        model.OnInventoryUpdated -= OnInventoryUpdated;
 
         foreach (var inventorySlot in uiInventorySlots)
         {
@@ -54,13 +53,12 @@ public class UIInventoryBar : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         uiInventorySlots = GetComponentsInChildren<UIInventorySlot>();
-        mainCameraService = ServiceContainer.Instance.GetComponent<MainCameraService>();
+        mainCameraService = ServiceContainer.Instance.Get<MainCameraService>();
     }
 
     void Start()
     {
-        itemInfosService = ServiceContainer.Instance.GetComponent<ScriptableObjectService<ItemInfo>>();
-        itemFactory = ServiceContainer.Instance.GetComponent<ItemFactory>();
+        itemInfosService = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
         OnInventoryUpdated(model);
     }
 
@@ -116,6 +114,7 @@ public class UIInventoryBar : MonoBehaviour
             });
 
             if (canRemove){
+                var itemFactory = ServiceContainer.Instance.Get<ItemFactory>();
                 var wordMousePosition = mainCameraService.GetWordMousePosition();
                 var itemInfo = itemInfosService.GetValue(i => i.itemDefinition == slotItemDefinition);
                 var item = itemFactory.Create(wordMousePosition, itemInfo);

@@ -26,7 +26,7 @@ public class UIFadeImageController
 
   private IEnumerator OnAftereSceneChangeHandler(SceneModel instance)
   {
-    yield return new WaitUntil(() => true);
+    yield return null;
     view.SetColor(new Color(0, 0, 0, 0));
   }
 
