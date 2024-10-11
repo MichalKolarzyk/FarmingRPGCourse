@@ -1515,14 +1515,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1476837868}
-  - component: {fileID: 1476837869}
-  - component: {fileID: 1476837871}
   - component: {fileID: 1476837872}
   - component: {fileID: 1476837873}
   - component: {fileID: 1476837874}
-  - component: {fileID: 1476837875}
   m_Layer: 0
-  m_Name: Services
+  m_Name: Application
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1543,30 +1540,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1476837869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476837865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 260696c971b07fd44b331f2b05f10aeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1476837871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476837865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3238818735b98c4faa720901812b23a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1476837872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1604,19 +1577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 638d430b9307c4d418081f7911b6107f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1476837875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476837865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaf673cc77b3e5147950ab78aedf8004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 541253250901223107, guid: 4a0b3f069b844744081311d4bc0dd30f, type: 3}
 --- !u!224 &1501848438 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1424037883880947250, guid: 0175c0213e0c2ea46a33ef8182f0022c, type: 3}

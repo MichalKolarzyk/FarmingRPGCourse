@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public abstract class ScriptableObjectService<T> : ServiceMonoBehaviour
+public class ScriptableObjectService<T> : IService
     where T : ScriptableObject
 {
     protected string assetFilter;
-    private List<T> values;
-    private void Awake()
+    private readonly List<T> values;
+    public ScriptableObjectService()
     {
         if(string.IsNullOrEmpty(assetFilter))
             assetFilter = $"t:{typeof(T).Name}";
 
         values = LoadScriptableObjects();
-    }
-
-    public List<T> GetValues()
-    {
-        return values;
     }
 
     public T GetValue(Predicate<T> predicate)

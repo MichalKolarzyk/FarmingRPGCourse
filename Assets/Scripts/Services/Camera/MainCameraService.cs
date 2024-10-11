@@ -1,22 +1,18 @@
 using Cinemachine;
 using UnityEngine;
 
-public class MainCameraService : ServiceMonoBehaviour
+public class MainCameraService : IService
 {
     CinemachineVirtualCamera cinemachineVirtualCamera;
     Camera mainCamera;
-    Transform follow;
-    void Awake(){
-        cinemachineVirtualCamera = FindAnyObjectByType<CinemachineVirtualCamera>();
+    public MainCameraService(){
+        cinemachineVirtualCamera = GameObject.FindAnyObjectByType<CinemachineVirtualCamera>();
         mainCamera = Camera.main;
     }
 
-    void Start(){
-        follow = cinemachineVirtualCamera.Follow;
-    }
 
     public Vector3 GetFollowViewport(){
-        return mainCamera.WorldToViewportPoint(follow.position);
+        return mainCamera.WorldToViewportPoint(cinemachineVirtualCamera.Follow.position);
     }
 
     public Vector3 GetWordMousePosition(){

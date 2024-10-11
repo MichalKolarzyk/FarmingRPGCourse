@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameObjectContainer
+public class GameObjectContainer : IService
 {
   private readonly Dictionary<string, GameObject> keyService = new();
 

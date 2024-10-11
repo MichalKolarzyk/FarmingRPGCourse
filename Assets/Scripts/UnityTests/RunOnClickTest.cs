@@ -13,10 +13,7 @@ public class RunOnClickTest : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(1)){
-            sceneModel.ChangeScene(SceneInstance.Field);
-        }
-        if(Input.GetMouseButtonDown(0)){
+        if(Input.GetKeyDown(KeyCode.L)){
             sceneModel.ChangeScene(SceneInstance.Farm);
         }
     }

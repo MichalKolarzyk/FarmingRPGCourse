@@ -6,9 +6,6 @@ public class SceneModel
     public event EventHandler<ChangeSceneEventArg> OnSceneChange;
 
     public void ChangeScene(SceneInstance newScene){
-        if(currentScene == newScene)
-            return;
-        
         var eventArgs = new ChangeSceneEventArg(){
             newScene = newScene,
             oldScene = currentScene,
