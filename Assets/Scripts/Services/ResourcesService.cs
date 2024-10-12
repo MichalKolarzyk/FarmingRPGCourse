@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrefabContainer : IService
+public class ResourcesService : IService
 {
   private readonly Dictionary<string, GameObject> keyService = new();
 
-  public static PrefabContainer Instance = new();
+  public static ResourcesService Instance = new();
 
   public GameObject Get(GameObjectPrefab gameObjectPrefab)
   {

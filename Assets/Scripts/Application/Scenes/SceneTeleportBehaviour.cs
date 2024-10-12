@@ -1,24 +1,21 @@
-using System;
-using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class SceneTeleportBehaviour : MonoBehaviour
 {
-    public Vector2 spawnPoint;
-    public SceneInstance toScene;
+    public SceneSpawnPointInfo toSpawnPoint;
     SceneObjectMonoBehaviour sceneObjectMonoBehaviour;
     void Awake(){
-        sceneObjectMonoBehaviour = MonoBehaviourContainer.Instance.Get<SceneObjectMonoBehaviour>();
+        sceneObjectMonoBehaviour = FindObjectOfType<SceneObjectMonoBehaviour>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider2D)
     {
-        var isPlayer = collider2D.TryGetComponent<Player>(out Player player);
-        if(!isPlayer)
+        var isTrigger = collider2D.TryGetComponent(out SceneTeleportBehaviourTrigger trigger);
+        if(!isTrigger)
             return;
 
         var model = sceneObjectMonoBehaviour.GetModel();
-        model.ChangeScene(toScene);
+        model.ChangeScene(toSpawnPoint.definition);
     }
 }

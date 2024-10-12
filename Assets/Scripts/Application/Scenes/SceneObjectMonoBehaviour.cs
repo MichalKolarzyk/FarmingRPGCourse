@@ -6,9 +6,10 @@ using UnityEngine.SceneManagement;
 public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
 {
 
-    public SceneInstance startScene = SceneInstance.Farm;
-    public event Func<SceneModel, IEnumerator> OnBeforeSceneChange;
-    public event Func<SceneModel, IEnumerator> OnAfterSceneChange;
+    public SceneSpawnPointInfo startScene;
+    public event Func<ChangeSceneEventArg, IEnumerator> OnBeforeSceneChange;
+    public event Func<ChangeSceneEventArg, IEnumerator> OnBeforeLoadNewScene;
+    public event Func<ChangeSceneEventArg, IEnumerator> OnAfterSceneChange;
 
     private SceneModel model;
 
@@ -17,16 +18,19 @@ public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
         return new SceneModel();
     }
 
-    void Start(){
-        model.ChangeScene(startScene);
+    void Start()
+    {
+        model.ChangeScene(startScene.definition);
     }
 
-    void OnEnable(){
+    void OnEnable()
+    {
         model = GetModel();
         model.OnSceneChange += OnChangeHandler;
     }
 
-    void OnDisable(){
+    void OnDisable()
+    {
         model.OnSceneChange -= OnChangeHandler;
     }
 
@@ -36,17 +40,22 @@ public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
         StartCoroutine(OnChangeHandlerCoroutine(model, e));
     }
 
-    IEnumerator OnChangeHandlerCoroutine(SceneModel model, ChangeSceneEventArg eventArgs){
-        yield return OnBeforeSceneChange?.Invoke(model);
+    IEnumerator OnChangeHandlerCoroutine(SceneModel model, ChangeSceneEventArg eventArgs)
+    {
+        yield return OnBeforeSceneChange?.Invoke(eventArgs);
 
-        if(eventArgs.oldScene != null){
-            yield return SceneManager.UnloadSceneAsync((int)eventArgs.oldScene);
+        if (eventArgs.currentScene != null)
+        {
+            yield return SceneManager.UnloadSceneAsync((int)eventArgs.currentScene);
         }
 
-        yield return SceneManager.LoadSceneAsync((int)eventArgs.newScene, LoadSceneMode.Additive);
+        yield return OnBeforeLoadNewScene?.Invoke(eventArgs);
+        yield return SceneManager.LoadSceneAsync((int)eventArgs.newSceneSpawnPoint.sceneInstance, LoadSceneMode.Additive);
         var newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
         SceneManager.SetActiveScene(newScene);
 
-        yield return OnAfterSceneChange?.Invoke(model);
+
+
+        yield return OnAfterSceneChange?.Invoke(eventArgs);
     }
 }

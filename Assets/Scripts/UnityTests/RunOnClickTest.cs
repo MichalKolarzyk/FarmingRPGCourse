@@ -12,16 +12,16 @@ public class RunOnClickTest : MonoBehaviour
     }
 
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            sceneModel.ChangeScene(SceneInstance.Farm);
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            sceneModel.ChangeScene(SceneInstance.Field);
-        }
-    }
+    // void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.L))
+    //     {
+    //         sceneModel.ChangeScene(SceneInstance.Farm);
+    //     }
+    //     if (Input.GetKeyDown(KeyCode.N))
+    //     {
+    //         sceneModel.ChangeScene(SceneInstance.Field);
+    //     }
+    // }
 
 }

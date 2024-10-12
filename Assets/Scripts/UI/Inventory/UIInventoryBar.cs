@@ -6,21 +6,25 @@ using UnityEngine.UI;
 
 public class UIInventoryBar : MonoBehaviour
 {
-    public Inventory inventory;
-    private InventoryModel model;
     public GameObject draggedItemPrefab;
-    GameObject draggedItem;
+    private Inventory inventory;
+    private InventoryModel model;
+    private GameObject draggedItem;
     private RectTransform rectTransform;
     private bool isInventoryBarPositionBottom = true;
-    UIInventorySlot[] uiInventorySlots;
-    ScriptableObjectService<ItemInfo> itemInfosService;
-    MainCameraService mainCameraService;
+    private UIInventorySlot[] uiInventorySlots;
+    private ScriptableObjectService<ItemInfo> itemInfosService;
+    private MainCameraService mainCameraService;
+    private ItemFactory itemFactory;
 
     public event EventHandler<PointerEventData> OnPointerEnterEvent;
     public event EventHandler<PointerEventData> OnPointerExitEvent;
 
     void OnEnable()
     {
+        var player = FindObjectOfType<Player>();
+        itemFactory = FindObjectOfType<ItemFactory>();
+        inventory = player.GetComponent<Inventory>();
         model = inventory.GetModel();
         model.OnInventoryUpdated += OnInventoryUpdated;
 
@@ -114,7 +118,6 @@ public class UIInventoryBar : MonoBehaviour
             });
 
             if (canRemove){
-                var itemFactory = ServiceContainer.Instance.Get<ItemFactory>();
                 var wordMousePosition = mainCameraService.GetWordMousePosition();
                 var itemInfo = itemInfosService.GetValue(i => i.itemDefinition == slotItemDefinition);
                 var item = itemFactory.Create(wordMousePosition, itemInfo);

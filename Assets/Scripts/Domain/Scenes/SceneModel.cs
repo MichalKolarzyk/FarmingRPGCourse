@@ -5,24 +5,21 @@ public class SceneModel
     private SceneInstance? currentScene;
     public event EventHandler<ChangeSceneEventArg> OnSceneChange;
 
-    public void ChangeScene(SceneInstance newScene){
-        var eventArgs = new ChangeSceneEventArg(){
-            newScene = newScene,
-            oldScene = currentScene,
+    public void ChangeScene(SceneSpawnPointDefinition newSceneSpawnPoint)
+    {
+        var eventArgs = new ChangeSceneEventArg()
+        {
+            newSceneSpawnPoint = newSceneSpawnPoint,
+            currentScene = currentScene,
         };
 
-        currentScene = newScene;
+        currentScene = newSceneSpawnPoint.sceneInstance;
         OnSceneChange?.Invoke(this, eventArgs);
     }
 }
 
-public class ChangeSceneEventArg{
-    public SceneInstance newScene;
-    public SceneInstance? oldScene;
-}
-
-public enum SceneInstance{
-    Farm = 1,
-    Field = 2,
-    Cabin = 3,
+public class ChangeSceneEventArg
+{
+    public SceneSpawnPointDefinition newSceneSpawnPoint;
+    public SceneInstance? currentScene;
 }
