@@ -9,6 +9,7 @@ public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
     public SceneSpawnPointInfo startScene;
     public event Func<ChangeSceneEventArg, IEnumerator> OnBeforeSceneChange;
     public event Func<ChangeSceneEventArg, IEnumerator> OnBeforeLoadNewScene;
+    public event Func<ChangeSceneEventArg, IEnumerator> OnAfterLoadNewScene;
     public event Func<ChangeSceneEventArg, IEnumerator> OnAfterSceneChange;
 
     private SceneModel model;
@@ -53,7 +54,7 @@ public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
         yield return SceneManager.LoadSceneAsync((int)eventArgs.newSceneSpawnPoint.sceneInstance, LoadSceneMode.Additive);
         var newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
         SceneManager.SetActiveScene(newScene);
-
+        yield return OnAfterLoadNewScene?.Invoke(eventArgs);
 
 
         yield return OnAfterSceneChange?.Invoke(eventArgs);

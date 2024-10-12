@@ -1,23 +1,24 @@
 using System.Collections;
 using UnityEngine;
 
+
 public class SceneTeleportBehaviourTrigger : MonoBehaviour
 {
   SceneObjectMonoBehaviour sceneObjectMonoBehaviour;
   void OnEnable()
   {
     sceneObjectMonoBehaviour = FindObjectOfType<SceneObjectMonoBehaviour>();
-    sceneObjectMonoBehaviour.OnBeforeLoadNewScene += OnBeforeUnloadOldSceneHandler;
+    sceneObjectMonoBehaviour.OnAfterLoadNewScene += OnAfterLoadNewSceneHandler;
   }
 
   void OnDisable()
   {
-    sceneObjectMonoBehaviour.OnBeforeLoadNewScene -= OnBeforeUnloadOldSceneHandler;
+    sceneObjectMonoBehaviour.OnAfterLoadNewScene -= OnAfterLoadNewSceneHandler;
   }
 
-  private IEnumerator OnBeforeUnloadOldSceneHandler(ChangeSceneEventArg eventArgs)
+  private IEnumerator OnAfterLoadNewSceneHandler(ChangeSceneEventArg eventArgs)
   {
-    gameObject.transform.position = new Vector3(eventArgs.newSceneSpawnPoint.positionX, eventArgs.newSceneSpawnPoint.positionY, 0);
-    yield return null;
+    gameObject.transform.position = new Vector3(eventArgs.newSceneSpawnPoint.positionX, eventArgs.newSceneSpawnPoint.positionY, gameObject.transform.position.z);
+    yield return new WaitForSeconds(0.5f);
   }
 }

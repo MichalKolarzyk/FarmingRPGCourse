@@ -81,7 +81,7 @@ public class UIInventoryBar : MonoBehaviour
     {
         var slot = sender as UIInventorySlot;
         var slotModel = slot.model;
-        if (slotModel == null)
+        if (slotModel == null || slotModel.IsEmpty)
             return;
 
         draggedItem = Instantiate(draggedItemPrefab, transform);
