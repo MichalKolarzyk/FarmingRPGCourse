@@ -6,6 +6,7 @@ using UnityEngine;
 public class ObscuringFaderBehaviour : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
+    private Coroutine currentCoroutine;
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -15,8 +16,10 @@ public class ObscuringFaderBehaviour : MonoBehaviour
     {
         if (gameObject.activeInHierarchy == false)
             return;
+        if(currentCoroutine != null)
+            StopCoroutine(currentCoroutine);
 
-        StartCoroutine(FadeOutRoutine());
+        currentCoroutine = StartCoroutine(FadeOutRoutine());
     }
 
     private IEnumerator FadeOutRoutine()
@@ -41,7 +44,10 @@ public class ObscuringFaderBehaviour : MonoBehaviour
         if (gameObject.activeInHierarchy == false)
             return;
 
-        StartCoroutine(FadeInRoutine());
+        if(currentCoroutine != null)
+            StopCoroutine(currentCoroutine);
+            
+        currentCoroutine = StartCoroutine(FadeInRoutine());
     }
 
     private IEnumerator FadeInRoutine()

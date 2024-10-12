@@ -7897,6 +7897,83 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3414517050713614544, guid: 3fee81b0c3e68db4884e0b400ebfe47f, type: 3}
   m_PrefabInstance: {fileID: 107840170}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1433646166
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1270316660214378982, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_Name
+      value: SceneTeleportToCabin
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432570004851414242, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: toSpawnPoint
+      value: 
+      objectReference: {fileID: 11400000, guid: caa728e1a86016e478010f9ec20f1d71, type: 2}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451349753487128349, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034642555464686872, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_Size.x
+      value: 1.7992992
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034642555464686872, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_Size.y
+      value: 0.49622393
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034642555464686872, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.016627789
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034642555464686872, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.09145236
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
 --- !u!1001 &1435433220
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13725,7 +13802,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1270316660214378982, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
       propertyPath: m_Name
-      value: SceneTeleport
+      value: SceneTeleportToField
       objectReference: {fileID: 0}
     - target: {fileID: 2432570004851414242, guid: 63b5b19e06314db48862a8f09d2c7697, type: 3}
       propertyPath: toSpawnPoint
@@ -69506,3 +69583,4 @@ SceneRoots:
   - {fileID: 3195324894377360134}
   - {fileID: 1388207684}
   - {fileID: 3194456804676984734}
+  - {fileID: 1433646166}

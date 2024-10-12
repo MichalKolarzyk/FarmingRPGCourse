@@ -4,8 +4,8 @@ using UnityEngine.UIElements;
 
 [Serializable]
 public class SceneSpawnPointDefinition{
-  public int positionX;
-  public int positionY;
+  public float positionX;
+  public float positionY;
   public SceneInstance sceneInstance;
 }
 

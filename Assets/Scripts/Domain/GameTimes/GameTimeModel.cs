@@ -6,13 +6,18 @@ public class GameTimeModel
     public event EventHandler OnYearChange;
     public event EventHandler OnMinuteChange;
     public event EventHandler OnEveryTenMinutesChange;
-
     private DateTime now;
     private bool isActivated = false;
     private bool isPaused = false;
     private static readonly int startYear = 2000;
+
+
+    private long ticks = 0;
+    private const int hourTicks = 60;
+    private const int dayTicks = 60*24;
     public GameTimeModel(int hour, int minute)
     {
+        ticks = hour * hourTicks + minute;
         this.now = new DateTime(startYear, 1, 1, hour, minute, 0);
     }
 
