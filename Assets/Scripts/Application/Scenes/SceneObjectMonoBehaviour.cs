@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.ComponentModel;
 using UnityEngine.SceneManagement;
 
 public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>

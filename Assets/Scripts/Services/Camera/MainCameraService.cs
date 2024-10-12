@@ -6,7 +6,7 @@ public class MainCameraService : IService
     CinemachineVirtualCamera cinemachineVirtualCamera;
     Camera mainCamera;
     public MainCameraService(){
-        cinemachineVirtualCamera = GameObject.FindAnyObjectByType<CinemachineVirtualCamera>();
+        cinemachineVirtualCamera = MonoBehaviourContainer.Instance.Get<CinemachineVirtualCamera>();
         mainCamera = Camera.main;
     }
 

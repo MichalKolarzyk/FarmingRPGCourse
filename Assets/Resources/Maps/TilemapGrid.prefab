@@ -1005,7 +1005,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6560288677439854939}
-  - component: {fileID: 261018606312621647}
+  - component: {fileID: -1748255570820515728}
   m_Layer: 0
   m_Name: TilemapGrid
   m_TagString: Untagged
@@ -1038,7 +1038,7 @@ Transform:
   - {fileID: 9132902051114953392}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!156049354 &261018606312621647
+--- !u!156049354 &-1748255570820515728
 Grid:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1046,7 +1046,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5252111497125858538}
   m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 0}
+  m_CellSize: {x: 1, y: 1, z: 1}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
