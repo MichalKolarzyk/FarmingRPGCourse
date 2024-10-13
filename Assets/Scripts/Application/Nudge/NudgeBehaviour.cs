@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class NudgeBehaviour : MonoBehaviour
 {
     public int maxRotateDegrees = 10;
-
     private WaitForSeconds pause;
     private bool isAnimating = false;
     private float frameRotation;
@@ -21,7 +19,7 @@ public class NudgeBehaviour : MonoBehaviour
     {
         if (maxRotateDegrees == 0 || isAnimating)
             return;
-
+        
         isAnimating = true;
         var isColliderOnTheLeftSide = gameObject.transform.position.x < collider2D.gameObject.transform.position.x;
 
@@ -33,7 +31,6 @@ public class NudgeBehaviour : MonoBehaviour
         {
             StartCoroutine(RotateClock());
         }
-
         isAnimating = false;
     }
 

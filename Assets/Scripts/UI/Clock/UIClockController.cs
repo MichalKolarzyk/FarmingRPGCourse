@@ -22,9 +22,8 @@ public class UIClockController
     }
 
 
-    private void OnEveryTenMinutesChangeEventHandler(object sender, EventArgs e)
+    private void OnEveryTenMinutesChangeEventHandler(GameTimeModel gameTimeModel)
     {
-        var gameTimeModel = sender as GameTimeModel;
         var viewModel = new GameTime12HoursSystemViewModel(gameTimeModel);
         view.SetHourText(viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix);
         view.SetDayText($"Day: {viewModel.day}");

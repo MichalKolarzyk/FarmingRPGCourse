@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,7 +7,7 @@ public class GameTime : ObjectMonoBehaviour<GameTimeModel>
 
     protected override GameTimeModel InitModelValue()
     {
-        return new GameTimeModel(6, 30);
+        return new GameTimeModel(1, 31, 6, 30);
     }
 
     void Start(){

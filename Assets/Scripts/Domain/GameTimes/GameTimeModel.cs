@@ -2,23 +2,20 @@ using System;
 
 public class GameTimeModel
 {
-    public event EventHandler OnSeasonChange;
-    public event EventHandler OnYearChange;
-    public event EventHandler OnMinuteChange;
-    public event EventHandler OnEveryTenMinutesChange;
-    private DateTime now;
+    public event Action<GameTimeModel> OnSeasonChange;
+    public event Action<GameTimeModel> OnYearChange;
+    public event Action<GameTimeModel> OnMinuteChange;
+    public event Action<GameTimeModel> OnEveryTenMinutesChange;
     private bool isActivated = false;
     private bool isPaused = false;
-    private static readonly int startYear = 2000;
-
-
     private long ticks = 0;
     private const int hourTicks = 60;
-    private const int dayTicks = 60*24;
-    public GameTimeModel(int hour, int minute)
+    private const int dayTicks = hourTicks * 24;
+    private const int seasonTicks = dayTicks * 30;
+    private const int yearTicks = dayTicks * 120;
+    public GameTimeModel(int year, int day, int hour, int minute)
     {
-        ticks = hour * hourTicks + minute;
-        this.now = new DateTime(startYear, 1, 1, hour, minute, 0);
+        ticks = year * yearTicks + day * dayTicks + hour * hourTicks + minute;
     }
 
     public void NextMinute()
@@ -29,33 +26,33 @@ public class GameTimeModel
         if (isPaused)
             return;
 
-        var previousDateTime = now;
-        now = now.AddMinutes(1);
-        CallEvents(previousDateTime, now);
+        ticks += 1;
+        CallEvents();
     }
 
-    public int GetDay(){
-        return now.DayOfYear;
+    public int GetDay()
+    {
+        return (int)ticks % yearTicks / dayTicks;
     }
 
     public int GetHours()
     {
-        return now.Hour;
+        return (int)ticks % dayTicks / hourTicks;
     }
 
     public int GetMinutes()
     {
-        return now.Minute;
+        return (int)ticks % dayTicks % hourTicks;
     }
 
     public int GetYear()
     {
-        return now.Year - startYear + 1;
+        return (int)ticks / yearTicks;
     }
 
     public Season GetSeason()
     {
-        return GetSeason(now);
+        return (Season)(int)(ticks % yearTicks / seasonTicks);
     }
 
     public string ToHourAndMinutes()
@@ -69,7 +66,7 @@ public class GameTimeModel
             throw new Exception("Game time is already active");
 
         isActivated = true;
-        CallEvents(now.AddMinutes(-1), now);
+        CallEvents();
     }
 
     public void Pause()
@@ -82,24 +79,17 @@ public class GameTimeModel
         isPaused = false;
     }
 
-    private Season GetSeason(DateTime dateTime)
+
+    private void CallEvents()
     {
-        var currentMonth = dateTime.Month;
-        if (currentMonth >= 2 && currentMonth < 5) return Season.Spring;
-        if (currentMonth >= 5 && currentMonth < 8) return Season.Summer;
-        if (currentMonth >= 8 && currentMonth < 11) return Season.Autumn;
-        return Season.Winter;
+        OnMinuteChange?.Invoke(this);
+        if (ticks % 10 == 0) OnEveryTenMinutesChange?.Invoke(this);
+        if (ticks % seasonTicks == 0) OnSeasonChange?.Invoke(this);
+        if (ticks % yearTicks == 0) OnYearChange?.Invoke(this);
     }
 
-    private void CallEvents(DateTime previous, DateTime current)
+    private string AddZeroPrefix(int value)
     {
-        OnMinuteChange?.Invoke(this, EventArgs.Empty);
-        if (GetMinutes() % 10 == 0) OnEveryTenMinutesChange?.Invoke(this, EventArgs.Empty);
-        if (GetSeason(previous) != GetSeason(current)) OnSeasonChange?.Invoke(this, EventArgs.Empty);
-        if (previous.Year != current.Year) OnYearChange?.Invoke(this, EventArgs.Empty);
-    }
-
-    private string AddZeroPrefix(int value){
         return value < 10 ? value.ToString() : $"0{value}";
     }
 }
