@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class ObjectMonoBehaviour<T> : MonoBehaviour
@@ -5,13 +6,19 @@ public abstract class ObjectMonoBehaviour<T> : MonoBehaviour
 {
     private T model;
 
-    protected abstract T InitModelValue();
+    protected abstract T InitDefaultModel();
 
-    public T GetModel(){
-        if(model != null)
+    protected void SetModel(T model)
+    {
+        this.model = model;
+    }
+
+    public T GetModel()
+    {
+        if (model != null)
             return model;
 
-        model = InitModelValue();
+        model = InitDefaultModel();
         return model;
     }
 }

@@ -1,14 +1,15 @@
 using System;
 
+[Serializable]
 public class GameTimeModel
 {
+    public event Action<GameTimeModel> OnStart;
     public event Action<GameTimeModel> OnSeasonChange;
     public event Action<GameTimeModel> OnYearChange;
     public event Action<GameTimeModel> OnMinuteChange;
     public event Action<GameTimeModel> OnEveryTenMinutesChange;
-    private bool isActivated = false;
-    private bool isPaused = false;
-    private long ticks = 0;
+    public bool isPaused = false;
+    public long ticks = 0;
     private const int hourTicks = 60;
     private const int dayTicks = hourTicks * 24;
     private const int seasonTicks = dayTicks * 30;
@@ -18,11 +19,10 @@ public class GameTimeModel
         ticks = year * yearTicks + day * dayTicks + hour * hourTicks + minute;
     }
 
+    public GameTimeModel() {}
+
     public void NextMinute()
     {
-        if (isActivated == false)
-            throw new Exception("Game time is inactive you need to activate it first");
-
         if (isPaused)
             return;
 
@@ -60,23 +60,15 @@ public class GameTimeModel
         return $"{AddZeroPrefix(GetHours())}:{AddZeroPrefix(GetMinutes())}";
     }
 
-    public void Activate()
-    {
-        if (isActivated == true)
-            throw new Exception("Game time is already active");
-
-        isActivated = true;
-        CallEvents();
-    }
-
     public void Pause()
     {
         isPaused = true;
     }
 
-    public void Unpause()
+    public void Start()
     {
         isPaused = false;
+        OnStart?.Invoke(this);
     }
 
 

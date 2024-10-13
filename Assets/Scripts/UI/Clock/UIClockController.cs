@@ -14,11 +14,13 @@ public class UIClockController
     public void Enable()
     {
         model.OnEveryTenMinutesChange += OnEveryTenMinutesChangeEventHandler;
+        model.OnStart += OnEveryTenMinutesChangeEventHandler;
     }
 
     public void Disable()
     {
         model.OnEveryTenMinutesChange -= OnEveryTenMinutesChangeEventHandler;
+        model.OnStart -= OnEveryTenMinutesChangeEventHandler;
     }
 
 

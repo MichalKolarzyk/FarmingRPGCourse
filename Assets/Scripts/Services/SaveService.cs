@@ -17,10 +17,16 @@ public class SaveService : IService
     File.WriteAllText(fullFilename, json);
   }
 
+  public bool SaveExists(string saveName){
+    string fullFilename = Path.Combine(savePath, saveName);
+    return File.Exists(fullFilename);
+  }
+
   public T LoadGame<T>(string saveName)
   {
     string fullFilename = Path.Combine(savePath, saveName);
 
+    Debug.Log(fullFilename);
     if(!File.Exists(fullFilename))
       throw new System.Exception($"File does not exists {fullFilename}");
 

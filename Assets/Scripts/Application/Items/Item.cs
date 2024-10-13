@@ -5,7 +5,7 @@ public class Item : ObjectMonoBehaviour<ItemModel>
     public ItemInfo itemInfo;
     private SpriteRenderer spriteRenderer;
 
-    protected override ItemModel InitModelValue()
+    protected override ItemModel InitDefaultModel()
     {
         return new ItemModel(itemInfo.itemDefinition);
     }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.ComponentModel;
 using UnityEngine.SceneManagement;
 
 public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
@@ -14,7 +13,7 @@ public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
 
     private SceneModel model;
 
-    protected override SceneModel InitModelValue()
+    protected override SceneModel InitDefaultModel()
     {
         return new SceneModel();
     }

@@ -4,14 +4,17 @@ using UnityEngine;
 public class GameTime : ObjectMonoBehaviour<GameTimeModel>
 {
     private bool isWaiting = false;
-
-    protected override GameTimeModel InitModelValue()
+    protected override GameTimeModel InitDefaultModel()
     {
-        return new GameTimeModel(1, 31, 6, 30);
+        var saveModel = FindAnyObjectByType<SaveObjectMonoBehaviour>().GetModel();
+        saveModel.gameTimeModel ??= new GameTimeModel(1, 31, 6, 30);
+        return saveModel.gameTimeModel;
     }
 
-    void Start(){
-        GetModel().Activate();
+
+    void Start()
+    {
+        GetModel().Start();
     }
 
     void Update()
