@@ -1,25 +1,14 @@
 using System;
 
-public class SceneModel
-{
-    private SceneInstance? currentScene;
-    public event EventHandler<ChangeSceneEventArg> OnSceneChange;
+[Serializable]
+public class SaveSceneModel{
 
-    public void ChangeScene(SceneSpawnPointDefinition newSceneSpawnPoint)
-    {
-        var eventArgs = new ChangeSceneEventArg()
-        {
-            newSceneSpawnPoint = newSceneSpawnPoint,
-            currentScene = currentScene,
-        };
+  public SaveSceneModel(SceneInstance sceneInstance)
+  {
+    this.sceneInstance = sceneInstance;
+  }
 
-        currentScene = newSceneSpawnPoint.sceneInstance;
-        OnSceneChange?.Invoke(this, eventArgs);
-    }
-}
-
-public class ChangeSceneEventArg
-{
-    public SceneSpawnPointDefinition newSceneSpawnPoint;
-    public SceneInstance? currentScene;
+  public SaveSceneModel(){}
+  public SceneInstance sceneInstance;
+  public ItemModelParent itemModelParent;
 }

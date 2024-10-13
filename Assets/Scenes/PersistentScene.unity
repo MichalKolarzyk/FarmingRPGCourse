@@ -640,7 +640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df2911153bfad894d8cb0d6accbbcdcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startScene: {fileID: 11400000, guid: 4337c451bbb3a354ab98159713d9d336, type: 2}
+  startScene: {fileID: 11400000, guid: 3e67d080e5504c24e8fa6b3f8d18d9fb, type: 2}
 --- !u!114 &1476837874
 MonoBehaviour:
   m_ObjectHideFlags: 0

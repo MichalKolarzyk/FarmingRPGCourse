@@ -4,9 +4,9 @@ using UnityEngine;
 public class SceneTeleportBehaviour : MonoBehaviour
 {
     public SceneSpawnPointInfo toSpawnPoint;
-    SceneObjectMonoBehaviour sceneObjectMonoBehaviour;
+    Scene sceneObjectMonoBehaviour;
     void Awake(){
-        sceneObjectMonoBehaviour = FindObjectOfType<SceneObjectMonoBehaviour>();
+        sceneObjectMonoBehaviour = FindObjectOfType<Scene>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider2D)

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dffa194c3f48c3469a1897d44ff831a, type: 3}
   m_Name: Weed
   m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 25925800440b0e84f9533a314ddca6b5, type: 3}
   itemDefinition:
-    sprite: {fileID: 21300000, guid: 25925800440b0e84f9533a314ddca6b5, type: 3}
     itemType: 1
-    description: 
+    description: Weed
     longDescription: 
     useGridRadius: 0
     useRadius: 0

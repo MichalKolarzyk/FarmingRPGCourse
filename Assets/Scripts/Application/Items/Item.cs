@@ -17,7 +17,7 @@ public class Item : ObjectMonoBehaviour<ItemModel>
 
     void Start()
     {
-        spriteRenderer.sprite = itemInfo.itemDefinition.sprite;
+        spriteRenderer.sprite = itemInfo.sprite;
     }
 
     public InventoryItemModel ToInventoryItemModel(){

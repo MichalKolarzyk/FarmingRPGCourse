@@ -8,7 +8,7 @@ public abstract class ObjectMonoBehaviour<T> : MonoBehaviour
 
     protected abstract T InitDefaultModel();
 
-    protected void SetModel(T model)
+    public void SetModel(T model)
     {
         this.model = model;
     }

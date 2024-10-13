@@ -47,6 +47,7 @@ public class EquipedItemBehaviour : MonoBehaviour
     if (isCarrying == false || selectedSlot == null || selectedSlot.IsEmpty)
       spriteRenderer.sprite = defaultSprite;
     else
-      spriteRenderer.sprite = selectedSlot.content.itemDefinition.sprite;
+      spriteRenderer.sprite = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>()
+        .GetValue(i => i.itemDefinition.description == selectedSlot.content.itemDefinition.description).sprite;
   }
 }

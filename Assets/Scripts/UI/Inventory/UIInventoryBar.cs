@@ -13,9 +13,9 @@ public class UIInventoryBar : MonoBehaviour
     private RectTransform rectTransform;
     private bool isInventoryBarPositionBottom = true;
     private UIInventorySlot[] uiInventorySlots;
-    private ScriptableObjectService<ItemInfo> itemInfosService;
     private MainCameraService mainCameraService;
-    private ItemFactory itemFactory;
+    private ScriptableObjectService<ItemInfo> itemInfoScriptableObjectService;
+    private ItemModelParent itemModelParent;
 
     public event EventHandler<PointerEventData> OnPointerEnterEvent;
     public event EventHandler<PointerEventData> OnPointerExitEvent;
@@ -23,8 +23,9 @@ public class UIInventoryBar : MonoBehaviour
     void OnEnable()
     {
         var player = FindObjectOfType<Player>();
-        itemFactory = FindObjectOfType<ItemFactory>();
         inventory = player.GetComponent<Inventory>();
+        itemModelParent = FindObjectOfType<ItemParent>().GetModel();
+        itemInfoScriptableObjectService = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
         model = inventory.GetModel();
         model.OnInventoryUpdated += OnInventoryUpdated;
 
@@ -62,7 +63,6 @@ public class UIInventoryBar : MonoBehaviour
 
     void Start()
     {
-        itemInfosService = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
         OnInventoryUpdated(model);
     }
 
@@ -86,8 +86,7 @@ public class UIInventoryBar : MonoBehaviour
 
         draggedItem = Instantiate(draggedItemPrefab, transform);
         var image = draggedItem.GetComponentInChildren<Image>();
-        image.sprite = slotModel.content.itemDefinition.sprite;
-
+        image.sprite = itemInfoScriptableObjectService.GetValue(d => d.itemDefinition.description == slotModel.content.itemDefinition.description).sprite;
     }
 
     private void OnDragEvenHandler(object sender, PointerEventData e)
@@ -119,8 +118,11 @@ public class UIInventoryBar : MonoBehaviour
 
             if (canRemove){
                 var wordMousePosition = mainCameraService.GetWordMousePosition();
-                var itemInfo = itemInfosService.GetValue(i => i.itemDefinition == slotItemDefinition);
-                var item = itemFactory.Create(wordMousePosition, itemInfo);
+                var model = new ItemModel(slotItemDefinition)
+                {
+                    position = Position.FromVector(wordMousePosition)
+                };
+                itemModelParent.AddItem(model);
             }
         }
 

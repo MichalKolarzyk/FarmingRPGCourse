@@ -4,7 +4,6 @@ using UnityEngine;
 [Serializable]
 public class ItemDefinition
 {
-    public Sprite sprite;
     public ItemType itemType;
     public string description;
     public string longDescription;

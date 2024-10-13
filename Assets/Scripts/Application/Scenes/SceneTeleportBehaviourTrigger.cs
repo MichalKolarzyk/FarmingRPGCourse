@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SceneTeleportBehaviourTrigger : MonoBehaviour
 {
-  SceneObjectMonoBehaviour sceneObjectMonoBehaviour;
+  Scene sceneObjectMonoBehaviour;
   void OnEnable()
   {
-    sceneObjectMonoBehaviour = FindObjectOfType<SceneObjectMonoBehaviour>();
+    sceneObjectMonoBehaviour = FindObjectOfType<Scene>();
     sceneObjectMonoBehaviour.OnAfterLoadNewScene += OnAfterLoadNewSceneHandler;
   }
 

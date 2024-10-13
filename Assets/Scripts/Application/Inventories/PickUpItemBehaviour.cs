@@ -5,11 +5,13 @@ public class PickUpItemBehaviour : MonoBehaviour
 {
     private ObjectMonoBehaviour<InventoryModel> inventory;
     private InventoryModel inventoryModel;
+    private ItemModelParent itemModelParent;
 
     void Awake()
     {
         inventory = GetComponent<Inventory>();
         inventoryModel = inventory.GetModel();
+        itemModelParent = FindObjectOfType<ItemParent>().GetModel();
     }
 
 
@@ -21,7 +23,7 @@ public class PickUpItemBehaviour : MonoBehaviour
             if(!canAddToInventory)
                 return;
             
-            item.gameObject.SetActive(false);
+            Destroy(item.gameObject);
         }
     }
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dffa194c3f48c3469a1897d44ff831a, type: 3}
   m_Name: BasicScythe
   m_EditorClassIdentifier: 
+  sprite: {fileID: 21300506, guid: 853ac38383c680342ac7e688bf29b197, type: 3}
   itemDefinition:
     sprite: {fileID: 21300506, guid: 853ac38383c680342ac7e688bf29b197, type: 3}
     itemType: 6

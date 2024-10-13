@@ -70,7 +70,9 @@ public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         model = inventorySlotModel;
-        inventorySlotImage.sprite = inventorySlotModel.content.itemDefinition.sprite;
+        inventorySlotImage.sprite = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>()
+            .GetValue(i => i.itemDefinition.description == inventorySlotModel.content.itemDefinition.description).sprite;
+        
         text.text = inventorySlotModel.content.quantity.ToString();
         inventorySlotHighlight.color = model.IsSelected ? selectColor : unselectColor;
     }

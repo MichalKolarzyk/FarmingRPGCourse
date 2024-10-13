@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
+public class Scene : ObjectMonoBehaviour<CurrentSceneModel>
 {
 
     public SceneSpawnPointInfo startScene;
@@ -11,11 +11,11 @@ public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
     public event Func<ChangeSceneEventArg, IEnumerator> OnAfterLoadNewScene;
     public event Func<ChangeSceneEventArg, IEnumerator> OnAfterSceneChange;
 
-    private SceneModel model;
+    private CurrentSceneModel model;
 
-    protected override SceneModel InitDefaultModel()
+    protected override CurrentSceneModel InitDefaultModel()
     {
-        return new SceneModel();
+        return new CurrentSceneModel();
     }
 
     void Start()
@@ -36,11 +36,11 @@ public class SceneObjectMonoBehaviour : ObjectMonoBehaviour<SceneModel>
 
     private void OnChangeHandler(object sender, ChangeSceneEventArg e)
     {
-        var model = sender as SceneModel;
+        var model = sender as CurrentSceneModel;
         StartCoroutine(OnChangeHandlerCoroutine(model, e));
     }
 
-    IEnumerator OnChangeHandlerCoroutine(SceneModel model, ChangeSceneEventArg eventArgs)
+    IEnumerator OnChangeHandlerCoroutine(CurrentSceneModel model, ChangeSceneEventArg eventArgs)
     {
         yield return OnBeforeSceneChange?.Invoke(eventArgs);
 
