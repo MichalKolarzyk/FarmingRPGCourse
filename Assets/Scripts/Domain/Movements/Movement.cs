@@ -43,6 +43,11 @@ public class Movement
         this.movementDefinition = movementDefinition;
     }
 
+    public void Start(){
+        OnIsCarryingItemChangeEvent?.Invoke(this);
+        OnMoveUpdate?.Invoke(this);
+    }
+
 
     private Direction GetDirection()
     {

@@ -1,11 +1,12 @@
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class SaveService : IService
+public class JsonSaveService : IService
 {
   private readonly string savePath;
 
-  public SaveService()
+  public JsonSaveService()
   {
     savePath = Application.persistentDataPath;
   }

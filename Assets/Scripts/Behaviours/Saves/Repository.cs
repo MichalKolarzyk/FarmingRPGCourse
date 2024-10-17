@@ -4,12 +4,12 @@ using UnityEngine;
 public class Repository : MonoBehaviour
 {
   public GameData Data;
-  private string filename = "TestSaveFile.json";
-  private SaveService saveService;
+  private string filename = "TestSaveFile";
+  private JsonSaveService saveService;
 
   void Awake()
   {
-    saveService = ServiceContainer.Instance.Get<SaveService>();
+    saveService = ServiceContainer.Instance.Get<JsonSaveService>();
     if (!saveService.SaveExists(filename))
     {
       Data = new GameData();

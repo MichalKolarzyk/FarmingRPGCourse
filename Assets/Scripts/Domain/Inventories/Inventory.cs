@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 [Serializable]
 public class Inventory
@@ -21,6 +22,11 @@ public class Inventory
     }
 
     public Inventory() { }
+
+    public void Start(){
+        OnInventoryUpdated?.Invoke(this);
+        OnSelectedSlotChange?.Invoke(this, null);
+    }
 
     public bool TryAdd(InventoryItem newItem)
     {

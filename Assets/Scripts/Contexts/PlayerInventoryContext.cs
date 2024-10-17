@@ -5,4 +5,8 @@ public class PlayerInventoryContext : Context<Inventory>
         var repository = FindObjectOfType<Repository>();
         model = repository.Data.playerInventory;
     }
+
+    void Start(){
+        model.Start();
+    }
 }

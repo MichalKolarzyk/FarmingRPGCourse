@@ -38,12 +38,13 @@ public class EquipedItemBehaviour : MonoBehaviour
   }
   private void OnIsCarryingItemChangeEventHandler(Movement movement)
   {
+    isCarrying = movement.isCarrying;
     UpdateSprite();
   }
 
   private void UpdateSprite()
   {
-    if (selectedSlot == null || selectedSlot.IsEmpty)
+    if (isCarrying == false || selectedSlot == null || selectedSlot.IsEmpty)
       spriteRenderer.sprite = defaultSprite;
     else
       spriteRenderer.sprite = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>()
