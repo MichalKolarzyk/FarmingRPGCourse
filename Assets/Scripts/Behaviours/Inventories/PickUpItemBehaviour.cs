@@ -5,19 +5,17 @@ using UnityEngine;
 public class PickUpItemBehaviour : MonoBehaviour
 {
     private Context<Inventory> inventoryContext;
-    private Lazy<CollectionContext<Item>> collectionItemContextLazy;
 
     void Awake()
     {
         inventoryContext = GetComponent<Context<Inventory>>();
-        collectionItemContextLazy = new Lazy<CollectionContext<Item>>(() => FindObjectOfType<CollectionContext<Item>>());
     }
 
 
     void OnTriggerEnter2D(Collider2D collider2D)
     {
         var inventory = inventoryContext.Get();
-        var collectionItemContext = collectionItemContextLazy.Value;
+        var collectionItemContext = FindObjectOfType<CollectionContext<Item>>();
 
         if (collider2D.TryGetComponent(out ItemContext itemContext))
         {
@@ -26,7 +24,6 @@ public class PickUpItemBehaviour : MonoBehaviour
                 return;
             
             collectionItemContext.Remove(itemContext);
-            Destroy(itemContext.gameObject);
         }
     }
 }

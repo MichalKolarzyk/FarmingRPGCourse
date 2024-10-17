@@ -18,7 +18,7 @@ public class ItemCollectionContext : CollectionContext<Item>
 
     public override void Remove(Context<Item> itemContext)
     {
-        collection.Add(itemContext.Get());
+        collection.Remove(itemContext.Get());
         Destroy(itemContext.gameObject);
     }
 

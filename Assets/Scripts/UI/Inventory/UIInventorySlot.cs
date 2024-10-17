@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
-using Unity.VisualScripting;
 
 public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {

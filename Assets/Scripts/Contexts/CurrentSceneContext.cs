@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class CurrentSceneContext : Context<CurrentScene>
 {
-
-    public SceneSpawnPointInfo startScene;
     public event Func<ChangeSceneEventArg, IEnumerator> OnBeforeSceneChange;
     public event Func<ChangeSceneEventArg, IEnumerator> OnBeforeLoadNewScene;
     public event Func<ChangeSceneEventArg, IEnumerator> OnAfterLoadNewScene;

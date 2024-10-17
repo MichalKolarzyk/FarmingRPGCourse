@@ -4,7 +4,7 @@ using UnityEngine;
 public class Repository : MonoBehaviour
 {
   public GameData Data;
-  private string filename = "TestSaveFile";
+  private string filename = "TestSaveFile.json";
   private SaveService saveService;
 
   void Awake()

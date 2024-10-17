@@ -80,15 +80,15 @@ public class Inventory
         OnInventoryUpdated?.Invoke(this);
     }
 
-    public void SetSeletedSlot(InventorySlot inventorySlotModel)
+    public void SetSeletedSlot(InventorySlot newSlot)
     {
-        var selectedSlot = slots.Find(s => s.IsSelected);
-        if (inventorySlotModel == selectedSlot)
+        var currentSlot = slots.Find(s => s.IsSelected);
+        if (newSlot == currentSlot)
             return;
 
-        selectedSlot?.Unselect();
-        inventorySlotModel?.Select();
-        OnSelectedSlotChange?.Invoke(this, selectedSlot);
+        currentSlot?.Unselect();
+        newSlot?.Select();
+        OnSelectedSlotChange?.Invoke(this, currentSlot);
         OnInventoryUpdated?.Invoke(this);
     }
 

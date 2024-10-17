@@ -74,6 +74,7 @@ public class UIInventoryBar : MonoBehaviour
 
     private void OnPointerClickEventHandler(object sender, PointerEventData e)
     {
+        if(e.dragging) return;
         var slot = sender as UIInventorySlot;
         model.SetSeletedSlot(slot.model);
     }

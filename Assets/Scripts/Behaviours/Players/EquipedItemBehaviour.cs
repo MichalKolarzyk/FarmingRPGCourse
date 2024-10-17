@@ -25,9 +25,9 @@ public class EquipedItemBehaviour : MonoBehaviour
     inventoryContext.Get().OnSelectedSlotChange += OnSelectedSlotChangeEventHandler;
   }
 
-  private void OnSelectedSlotChangeEventHandler(Inventory inventory, InventorySlot inventorySlot)
+  private void OnSelectedSlotChangeEventHandler(Inventory inventory, InventorySlot prevSlot)
   {
-    selectedSlot = inventorySlot;
+    selectedSlot = inventory.GetSelectedSlot();
     UpdateSprite();
   }
 
@@ -38,13 +38,12 @@ public class EquipedItemBehaviour : MonoBehaviour
   }
   private void OnIsCarryingItemChangeEventHandler(Movement movement)
   {
-    isCarrying = movement.isCarrying;
     UpdateSprite();
   }
 
   private void UpdateSprite()
   {
-    if (isCarrying == false || selectedSlot == null || selectedSlot.IsEmpty)
+    if (selectedSlot == null || selectedSlot.IsEmpty)
       spriteRenderer.sprite = defaultSprite;
     else
       spriteRenderer.sprite = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>()
