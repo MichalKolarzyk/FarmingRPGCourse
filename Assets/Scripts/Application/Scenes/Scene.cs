@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class Scene : ObjectMonoBehaviour<CurrentSceneModel>
+public class CurrentSceneContext : Context<CurrentScene>
 {
 
     public SceneSpawnPointInfo startScene;
@@ -11,21 +11,18 @@ public class Scene : ObjectMonoBehaviour<CurrentSceneModel>
     public event Func<ChangeSceneEventArg, IEnumerator> OnAfterLoadNewScene;
     public event Func<ChangeSceneEventArg, IEnumerator> OnAfterSceneChange;
 
-    private CurrentSceneModel model;
-
-    protected override CurrentSceneModel InitDefaultModel()
-    {
-        return new CurrentSceneModel();
-    }
-
     void Start()
     {
-        model.ChangeScene(startScene.definition);
+        if(model.instance == 0)
+            model.instance = SceneInstance.Farm;
+            
+        StartCoroutine(SetScene(model.instance));
     }
 
     void OnEnable()
     {
-        model = GetModel();
+        var repository = FindObjectOfType<Repository>();
+        model = repository.Data.currentScene;
         model.OnSceneChange += OnChangeHandler;
     }
 
@@ -36,11 +33,17 @@ public class Scene : ObjectMonoBehaviour<CurrentSceneModel>
 
     private void OnChangeHandler(object sender, ChangeSceneEventArg e)
     {
-        var model = sender as CurrentSceneModel;
+        var model = sender as CurrentScene;
         StartCoroutine(OnChangeHandlerCoroutine(model, e));
     }
 
-    IEnumerator OnChangeHandlerCoroutine(CurrentSceneModel model, ChangeSceneEventArg eventArgs)
+    IEnumerator SetScene(SceneInstance instance){
+        yield return SceneManager.LoadSceneAsync((int)instance, LoadSceneMode.Additive);
+        var newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
+        SceneManager.SetActiveScene(newScene);
+    }
+
+    IEnumerator OnChangeHandlerCoroutine(CurrentScene model, ChangeSceneEventArg eventArgs)
     {
         yield return OnBeforeSceneChange?.Invoke(eventArgs);
 

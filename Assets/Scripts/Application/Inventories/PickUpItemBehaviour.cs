@@ -1,29 +1,29 @@
 using UnityEngine;
 
-[RequireComponent(typeof(ObjectMonoBehaviour<InventoryModel>))]
+[RequireComponent(typeof(Context<Inventory>))]
 public class PickUpItemBehaviour : MonoBehaviour
 {
-    private ObjectMonoBehaviour<InventoryModel> inventory;
-    private InventoryModel inventoryModel;
-    private ItemModelParent itemModelParent;
+    private Context<Inventory> inventoryContext;
+    private CollectionContext<Item> collectionItemContext;
 
     void Awake()
     {
-        inventory = GetComponent<Inventory>();
-        inventoryModel = inventory.GetModel();
-        itemModelParent = FindObjectOfType<ItemParent>().GetModel();
+        inventoryContext = GetComponent<Context<Inventory>>();
     }
 
 
     void OnTriggerEnter2D(Collider2D collider2D)
     {
-        if (collider2D.TryGetComponent(out Item item))
+        var inventory = inventoryContext.Get();
+        collectionItemContext = FindObjectOfType<CollectionContext<Item>>();
+        if (collider2D.TryGetComponent(out ItemContext itemContext))
         {
-            var canAddToInventory = inventoryModel.TryAdd(item.ToInventoryItemModel());
+            var canAddToInventory = inventory.TryAdd(itemContext.ToInventoryItemModel());
             if(!canAddToInventory)
                 return;
             
-            Destroy(item.gameObject);
+            collectionItemContext.Remove(itemContext);
+            Destroy(itemContext.gameObject);
         }
     }
 }

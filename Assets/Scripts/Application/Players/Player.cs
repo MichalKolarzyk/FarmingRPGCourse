@@ -1,18 +1,22 @@
 using UnityEngine;
 
-[RequireComponent(typeof(ObjectMonoBehaviour<MovementModel>))]
-[RequireComponent(typeof(ObjectMonoBehaviour<InventoryModel>))]
+[RequireComponent(typeof(Context<Movement>))]
+[RequireComponent(typeof(Context<Inventory>))]
 public class Player : MonoBehaviour
 {
   Rigidbody2D rigidBody2D;
-  MovementModel movementModel;
-  InventoryModel inventoryModel;
+  Movement movementModel;
+  Inventory inventoryModel;
 
   void Awake()
   {
-    movementModel = GetComponent<ObjectMonoBehaviour<MovementModel>>().GetModel();
-    inventoryModel = GetComponent<ObjectMonoBehaviour<InventoryModel>>().GetModel();
     rigidBody2D = GetComponent<Rigidbody2D>();
+  }
+
+  void Start()
+  {
+    movementModel = GetComponent<Context<Movement>>().Get();
+    inventoryModel = GetComponent<Context<Inventory>>().Get();
   }
 
 

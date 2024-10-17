@@ -1,13 +1,14 @@
 using System;
 
 [Serializable]
-public class ItemModel
+public class Item : Aggregate
 {
     public ItemDefinition itemDefinition;
     public Position position;
 
-    public ItemModel(ItemDefinition itemDefinition)
+    public Item(ItemDefinition itemDefinition, Position position)
     {
         this.itemDefinition = itemDefinition;
+        this.position = position;
     }
 }

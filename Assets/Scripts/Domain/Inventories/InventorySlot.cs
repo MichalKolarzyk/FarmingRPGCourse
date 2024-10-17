@@ -1,11 +1,14 @@
-public class InventorySlotModel
+using System;
+
+[Serializable]
+public class InventorySlot
 {
-    public InventoryItemModel content = new();
+    public InventoryItem content = new();
     public bool IsSelected = false;
 
-    public bool CanAdd(InventoryItemModel inventoryItemModel) => IsEmpty || content.itemDefinition == inventoryItemModel.itemDefinition;
+    public bool CanAdd(InventoryItem inventoryItemModel) => IsEmpty || content.itemDefinition == inventoryItemModel.itemDefinition;
 
-    public bool TryAdd(InventoryItemModel inventoryItemModel)
+    public bool TryAdd(InventoryItem inventoryItemModel)
     {
         if (!CanAdd(inventoryItemModel))
             return false;
@@ -23,11 +26,11 @@ public class InventorySlotModel
         content = new();
     }
 
-    public bool CanRemove(InventoryItemModel inventoryItemModel) => !IsEmpty
+    public bool CanRemove(InventoryItem inventoryItemModel) => !IsEmpty
         && content.itemDefinition == inventoryItemModel.itemDefinition
         && content.quantity >= inventoryItemModel.quantity;
 
-    public bool TryRemove(InventoryItemModel inventoryItemModel)
+    public bool TryRemove(InventoryItem inventoryItemModel)
     {
         if (!CanRemove(inventoryItemModel))
             return false;
@@ -51,5 +54,5 @@ public class InventorySlotModel
         IsSelected = false;
     }
 
-    public bool IsEmpty => content.itemDefinition == null && content.quantity == 0;
+    public bool IsEmpty => content.itemDefinition == null || content.quantity == 0;
 }

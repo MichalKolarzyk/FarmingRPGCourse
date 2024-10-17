@@ -1,68 +1,66 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class MovementAnimationController : MonoBehaviour
 {
     private Animator animator;
-    private MovementModel movementModel;
+    private Context<Movement> movementContext;
     public AnimationOverrideInfo animationOverrideCarry;
     void Awake()
     {
         animator = GetComponent<Animator>();
+        movementContext = GetComponentInParent<Context<Movement>>();
     }
 
     void OnEnable()
     {
-        movementModel = GetComponentInParent<ObjectMonoBehaviour<MovementModel>>().GetModel();
-        movementModel.OnMoveUpdateEvent += SetAnimationParameters;
-        movementModel.OnIsCarryingItemChangeEvent += OverrideIsCarringAnimation;
+        movementContext.Subscribe<Movement.OnUpdate>(SetAnimationParameters);
+        movementContext.Subscribe<Movement.OnIsCarryingItemChangeEvent>(OverrideIsCarringAnimation);
     }
 
 
     void OnDisable()
     {
-        movementModel.OnMoveUpdateEvent -= SetAnimationParameters;
-        movementModel.OnIsCarryingItemChangeEvent -= OverrideIsCarringAnimation;
+        movementContext.Unsubscribe<Movement.OnUpdate>(SetAnimationParameters);
+        movementContext.Unsubscribe<Movement.OnIsCarryingItemChangeEvent>(OverrideIsCarringAnimation);
     }
 
-    private void SetAnimationParameters(object sender, EventArgs e)
+    private void SetAnimationParameters(Movement.OnUpdate domainEvent)
     {
-        if (sender is not MovementModel args) return;
-        if (args.isCarrying) ApplyOverrides(animationOverrideCarry); else RemoveOverrides();
+        var movement = domainEvent.movement;
+        if (movement.isCarrying) ApplyOverrides(animationOverrideCarry); else RemoveOverrides();
 
-        animator.SetFloat(AnimatorParamsIds.inputX, args.inputX);
-        animator.SetFloat(AnimatorParamsIds.inputY, args.inputY);
-        animator.SetBool(AnimatorParamsIds.isWalking, args.isWalking);
-        animator.SetBool(AnimatorParamsIds.isRunning, args.isRunning);
-        animator.SetInteger(AnimatorParamsIds.toolEffect, (int)args.toolEffect);
+        animator.SetFloat(AnimatorParamsIds.inputX, movement.inputX);
+        animator.SetFloat(AnimatorParamsIds.inputY, movement.inputY);
+        animator.SetBool(AnimatorParamsIds.isWalking, movement.isWalking);
+        animator.SetBool(AnimatorParamsIds.isRunning, movement.isRunning);
+        animator.SetInteger(AnimatorParamsIds.toolEffect, (int)movement.toolEffect);
 
-        if (args.isUsingToolRight) animator.SetTrigger(AnimatorParamsIds.isUsingToolRight);
-        if (args.isUsingToolLeft) animator.SetTrigger(AnimatorParamsIds.isUsingToolLeft);
-        if (args.isUsingToolUp) animator.SetTrigger(AnimatorParamsIds.isUsingToolUp);
-        if (args.isUsingToolDown) animator.SetTrigger(AnimatorParamsIds.isUsingToolDown);
-        if (args.isLiftingToolRight) animator.SetTrigger(AnimatorParamsIds.isLiftingToolRight);
-        if (args.isLiftingToolLeft) animator.SetTrigger(AnimatorParamsIds.isLiftingToolLeft);
-        if (args.isLiftingToolUp) animator.SetTrigger(AnimatorParamsIds.isLiftingToolUp);
-        if (args.isLiftingToolDown) animator.SetTrigger(AnimatorParamsIds.isLiftingToolDown);
-        if (args.isPickingRight) animator.SetTrigger(AnimatorParamsIds.isPickingRight);
-        if (args.isPickingLeft) animator.SetTrigger(AnimatorParamsIds.isPickingLeft);
-        if (args.isPickingUp) animator.SetTrigger(AnimatorParamsIds.isPickingUp);
-        if (args.isPickingDown) animator.SetTrigger(AnimatorParamsIds.isPickingDown);
-        if (args.isSwingingToolRight) animator.SetTrigger(AnimatorParamsIds.isSwingingToolRight);
-        if (args.isSwingingToolLeft) animator.SetTrigger(AnimatorParamsIds.isSwingingToolLeft);
-        if (args.isSwingingToolUp) animator.SetTrigger(AnimatorParamsIds.isSwingingToolUp);
-        if (args.isSwingingToolDown) animator.SetTrigger(AnimatorParamsIds.isSwingingToolDown);
-        if (args.idleUp) animator.SetTrigger(AnimatorParamsIds.idleUp);
-        if (args.idleDown) animator.SetTrigger(AnimatorParamsIds.idleDown);
-        if (args.idleLeft) animator.SetTrigger(AnimatorParamsIds.idleLeft);
-        if (args.idleRight) animator.SetTrigger(AnimatorParamsIds.idleRight);
+        if (movement.isUsingToolRight) animator.SetTrigger(AnimatorParamsIds.isUsingToolRight);
+        if (movement.isUsingToolLeft) animator.SetTrigger(AnimatorParamsIds.isUsingToolLeft);
+        if (movement.isUsingToolUp) animator.SetTrigger(AnimatorParamsIds.isUsingToolUp);
+        if (movement.isUsingToolDown) animator.SetTrigger(AnimatorParamsIds.isUsingToolDown);
+        if (movement.isLiftingToolRight) animator.SetTrigger(AnimatorParamsIds.isLiftingToolRight);
+        if (movement.isLiftingToolLeft) animator.SetTrigger(AnimatorParamsIds.isLiftingToolLeft);
+        if (movement.isLiftingToolUp) animator.SetTrigger(AnimatorParamsIds.isLiftingToolUp);
+        if (movement.isLiftingToolDown) animator.SetTrigger(AnimatorParamsIds.isLiftingToolDown);
+        if (movement.isPickingRight) animator.SetTrigger(AnimatorParamsIds.isPickingRight);
+        if (movement.isPickingLeft) animator.SetTrigger(AnimatorParamsIds.isPickingLeft);
+        if (movement.isPickingUp) animator.SetTrigger(AnimatorParamsIds.isPickingUp);
+        if (movement.isPickingDown) animator.SetTrigger(AnimatorParamsIds.isPickingDown);
+        if (movement.isSwingingToolRight) animator.SetTrigger(AnimatorParamsIds.isSwingingToolRight);
+        if (movement.isSwingingToolLeft) animator.SetTrigger(AnimatorParamsIds.isSwingingToolLeft);
+        if (movement.isSwingingToolUp) animator.SetTrigger(AnimatorParamsIds.isSwingingToolUp);
+        if (movement.isSwingingToolDown) animator.SetTrigger(AnimatorParamsIds.isSwingingToolDown);
+        if (movement.idleUp) animator.SetTrigger(AnimatorParamsIds.idleUp);
+        if (movement.idleDown) animator.SetTrigger(AnimatorParamsIds.idleDown);
+        if (movement.idleLeft) animator.SetTrigger(AnimatorParamsIds.idleLeft);
+        if (movement.idleRight) animator.SetTrigger(AnimatorParamsIds.idleRight);
     }
 
-    private void OverrideIsCarringAnimation(object sender, bool isCarrying)
+    private void OverrideIsCarringAnimation(Movement.OnIsCarryingItemChangeEvent domainEvent)
     {
-        if (isCarrying)
+        if (domainEvent.isCarrying)
             ApplyOverrides(animationOverrideCarry);
         else
             RemoveOverrides();

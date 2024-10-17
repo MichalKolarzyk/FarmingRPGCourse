@@ -4,9 +4,9 @@ using UnityEngine;
 public class SceneTeleportBehaviour : MonoBehaviour
 {
     public SceneSpawnPointInfo toSpawnPoint;
-    Scene sceneObjectMonoBehaviour;
+    CurrentSceneContext sceneObjectMonoBehaviour;
     void Awake(){
-        sceneObjectMonoBehaviour = FindObjectOfType<Scene>();
+        sceneObjectMonoBehaviour = FindObjectOfType<CurrentSceneContext>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider2D)
@@ -15,7 +15,7 @@ public class SceneTeleportBehaviour : MonoBehaviour
         if(!isTrigger)
             return;
 
-        var model = sceneObjectMonoBehaviour.GetModel();
+        var model = sceneObjectMonoBehaviour.Get();
         model.ChangeScene(toSpawnPoint.definition);
     }
 }

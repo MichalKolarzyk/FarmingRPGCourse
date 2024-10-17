@@ -7,15 +7,15 @@ using UnityEngine.UI;
 public class UIInventoryBar : MonoBehaviour
 {
     public GameObject draggedItemPrefab;
-    private Inventory inventory;
-    private InventoryModel model;
+    private PlayerInventoryContext inventoryContext;
+    private Inventory model;
     private GameObject draggedItem;
     private RectTransform rectTransform;
     private bool isInventoryBarPositionBottom = true;
     private UIInventorySlot[] uiInventorySlots;
     private MainCameraService mainCameraService;
     private ScriptableObjectService<ItemInfo> itemInfoScriptableObjectService;
-    private ItemModelParent itemModelParent;
+    private CollectionContext<Item> itemCollectionContext;
 
     public event EventHandler<PointerEventData> OnPointerEnterEvent;
     public event EventHandler<PointerEventData> OnPointerExitEvent;
@@ -23,11 +23,11 @@ public class UIInventoryBar : MonoBehaviour
     void OnEnable()
     {
         var player = FindObjectOfType<Player>();
-        inventory = player.GetComponent<Inventory>();
-        itemModelParent = FindObjectOfType<ItemParent>().GetModel();
+        inventoryContext = player.GetComponent<PlayerInventoryContext>();
+        itemCollectionContext = FindObjectOfType<CollectionContext<Item>>();
         itemInfoScriptableObjectService = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
-        model = inventory.GetModel();
-        model.OnInventoryUpdated += OnInventoryUpdated;
+        inventoryContext.Subscribe<Inventory.OnUpdate>(OnInventoryUpdated);
+        model = inventoryContext.Get();
 
         foreach (var inventorySlot in uiInventorySlots)
         {
@@ -40,9 +40,10 @@ public class UIInventoryBar : MonoBehaviour
         }
     }
 
+
     void OnDisable()
     {
-        model.OnInventoryUpdated -= OnInventoryUpdated;
+        inventoryContext.Unsubscribe<Inventory.OnUpdate>(OnInventoryUpdated);
 
         foreach (var inventorySlot in uiInventorySlots)
         {
@@ -63,7 +64,7 @@ public class UIInventoryBar : MonoBehaviour
 
     void Start()
     {
-        OnInventoryUpdated(model);
+        OnInventoryUpdated(new Inventory.OnUpdate(model));
     }
 
     void Update()
@@ -110,7 +111,7 @@ public class UIInventoryBar : MonoBehaviour
         }
         else
         {
-            var canRemove = model.TryRemove(new InventoryItemModel
+            var canRemove = model.TryRemove(new InventoryItem
             {
                 itemDefinition = slotItemDefinition,
                 quantity = 1,
@@ -118,11 +119,8 @@ public class UIInventoryBar : MonoBehaviour
 
             if (canRemove){
                 var wordMousePosition = mainCameraService.GetWordMousePosition();
-                var model = new ItemModel(slotItemDefinition)
-                {
-                    position = Position.FromVector(wordMousePosition)
-                };
-                itemModelParent.AddItem(model);
+                var model = new Item(slotItemDefinition, Position.FromVector(wordMousePosition));
+                itemCollectionContext.Add(model);
             }
         }
 
@@ -154,12 +152,12 @@ public class UIInventoryBar : MonoBehaviour
     }
 
 
-    void OnInventoryUpdated(InventoryModel inventoryModel)
+    void OnInventoryUpdated(Inventory.OnUpdate domainEvent)
     {
         var slotsLength = uiInventorySlots.Length;
         for (int i = 0; i < slotsLength; i++)
         {
-            var item = inventoryModel.slots.ElementAtOrDefault(i);
+            var item = domainEvent.inventory.slots.ElementAtOrDefault(i);
             uiInventorySlots[i].SetModel(item);
         }
     }

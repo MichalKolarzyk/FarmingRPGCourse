@@ -11,7 +11,7 @@ public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public Image inventorySlotImage;
     public Sprite transparentSlotSprite;
     public TextMeshProUGUI text;
-    public InventorySlotModel model;
+    public InventorySlot model;
 
     private Color unselectColor;
     private Color selectColor;
@@ -58,7 +58,7 @@ public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         OnPointerExitEvent?.Invoke(this, eventData);
     }
 
-    public void SetModel(InventorySlotModel inventorySlotModel)
+    public void SetModel(InventorySlot inventorySlotModel)
     {
         if (inventorySlotModel.IsEmpty)
         {
@@ -70,8 +70,8 @@ public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         model = inventorySlotModel;
-        inventorySlotImage.sprite = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>()
-            .GetValue(i => i.itemDefinition.description == inventorySlotModel.content.itemDefinition.description).sprite;
+        var service = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
+        inventorySlotImage.sprite = service.GetValue(i => i.itemDefinition.description == inventorySlotModel.content.itemDefinition.description).sprite;
         
         text.text = inventorySlotModel.content.quantity.ToString();
         inventorySlotHighlight.color = model.IsSelected ? selectColor : unselectColor;

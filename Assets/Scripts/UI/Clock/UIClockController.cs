@@ -2,31 +2,42 @@ using System;
 
 public class UIClockController
 {
-    private readonly GameTimeModel model;
+    private readonly Context<GameTime> context;
     private readonly UIClockView view;
 
-    public UIClockController(GameTimeModel model, UIClockView view)
+    public UIClockController(Context<GameTime> context, UIClockView view)
     {
-        this.model = model;
+        this.context = context;
         this.view = view;
     }
 
     public void Enable()
     {
-        model.OnEveryTenMinutesChange += OnEveryTenMinutesChangeEventHandler;
-        model.OnStart += OnEveryTenMinutesChangeEventHandler;
+        context.Subscribe<GameTime.OnEveryTenMinutesChange>(OnEveryTenMinutesChangeEventHandler);
+        context.Subscribe<GameTime.OnStart>(OnStartEventHandler);
     }
 
     public void Disable()
     {
-        model.OnEveryTenMinutesChange -= OnEveryTenMinutesChangeEventHandler;
-        model.OnStart -= OnEveryTenMinutesChangeEventHandler;
+        context.Unsubscribe<GameTime.OnEveryTenMinutesChange>(OnEveryTenMinutesChangeEventHandler);
+        context.Unsubscribe<GameTime.OnStart>(OnStartEventHandler);
     }
 
 
-    private void OnEveryTenMinutesChangeEventHandler(GameTimeModel gameTimeModel)
+    private void OnEveryTenMinutesChangeEventHandler(GameTime.OnEveryTenMinutesChange domainEvent)
     {
-        var viewModel = new GameTime12HoursSystemViewModel(gameTimeModel);
+        var gameTime = domainEvent.gameTime;
+        var viewModel = new GameTime12HoursSystemViewModel(gameTime);
+        view.SetHourText(viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix);
+        view.SetDayText($"Day: {viewModel.day}");
+        view.SetSeasonText(viewModel.season);
+        view.SetYearText($"Year: {viewModel.year}");
+    }
+
+    private void OnStartEventHandler(GameTime.OnStart domainEvent)
+    {
+        var gameTime = domainEvent.gameTime;
+        var viewModel = new GameTime12HoursSystemViewModel(gameTime);
         view.SetHourText(viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix);
         view.SetDayText($"Day: {viewModel.day}");
         view.SetSeasonText(viewModel.season);

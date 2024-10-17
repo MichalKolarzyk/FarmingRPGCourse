@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class UIFadeImageController
 {
-  readonly Scene model;
+  readonly CurrentSceneContext model;
   readonly UIFadeImageView view;
-  public UIFadeImageController(UIFadeImageView view, Scene model)
+  public UIFadeImageController(UIFadeImageView view, CurrentSceneContext model)
   {
     this.view = view;
     this.model = model;

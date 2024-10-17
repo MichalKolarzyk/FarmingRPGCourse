@@ -1,13 +1,13 @@
-using System;
 using UnityEngine;
 
 public class EquipedItemBehaviour : MonoBehaviour
 {
 
-  private MovementModel movementModel;
-  private InventoryModel inventoryModel;
+  private Context<Movement> movementContext;
+  private Context<Inventory> inventoryContext;
   private SpriteRenderer spriteRenderer;
   public Sprite defaultSprite;
+  private InventorySlot selectedSlot;
   private bool isCarrying;
 
   void Awake()
@@ -18,32 +18,32 @@ public class EquipedItemBehaviour : MonoBehaviour
 
   void OnEnable()
   {
-    movementModel = GetComponentInParent<ObjectMonoBehaviour<MovementModel>>().GetModel();
-    movementModel.OnIsCarryingItemChangeEvent += OnIsCarryingItemChangeEventHandler;
-    isCarrying = movementModel.isCarrying;
+    movementContext = GetComponentInParent<Context<Movement>>();
+    movementContext.Subscribe<Movement.OnIsCarryingItemChangeEvent>(OnIsCarryingItemChangeEventHandler);
 
-    inventoryModel = GetComponentInParent<ObjectMonoBehaviour<InventoryModel>>().GetModel();
-    inventoryModel.OnSelectedSlotChange += OnSelectedSlotChangeEventHandler;
+    inventoryContext = GetComponentInParent<Context<Inventory>>();
+    inventoryContext.Subscribe<Inventory.OnSelectedSlotChange>(OnSelectedSlotChangeEventHandler);
   }
 
-  private void OnSelectedSlotChangeEventHandler(object sender, InventorySlotModel e)
+  private void OnSelectedSlotChangeEventHandler(Inventory.OnSelectedSlotChange domainEvent)
   {
+    selectedSlot = domainEvent.inventorySlot;
     UpdateSprite();
   }
 
   void OnDisable()
   {
-    movementModel.OnIsCarryingItemChangeEvent -= OnIsCarryingItemChangeEventHandler;
+    movementContext.Unsubscribe<Movement.OnIsCarryingItemChangeEvent>(OnIsCarryingItemChangeEventHandler);
+    inventoryContext.Unsubscribe<Inventory.OnSelectedSlotChange>(OnSelectedSlotChangeEventHandler);
   }
-  private void OnIsCarryingItemChangeEventHandler(object sender, bool e)
+  private void OnIsCarryingItemChangeEventHandler(Movement.OnIsCarryingItemChangeEvent domainEvent)
   {
-    isCarrying = e;
+    isCarrying = domainEvent.isCarrying;
     UpdateSprite();
   }
 
   private void UpdateSprite()
   {
-    var selectedSlot = inventoryModel.GetSelectedSlot();
     if (isCarrying == false || selectedSlot == null || selectedSlot.IsEmpty)
       spriteRenderer.sprite = defaultSprite;
     else

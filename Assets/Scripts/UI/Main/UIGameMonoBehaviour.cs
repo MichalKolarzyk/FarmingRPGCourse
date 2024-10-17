@@ -5,14 +5,18 @@ using UnityEngine.UIElements;
 public class UIGameMonoBehaviour : MonoBehaviour
 {
     private UIClockController clockController;
+    private Context<GameTime> gameTimeContext;
+    private UIDocument uiDocument;
+    void Awake(){
+        uiDocument = GetComponent<UIDocument>();
+        gameTimeContext = FindAnyObjectByType<Context<GameTime>>();
+    }
+
     void OnEnable()
     {
-        var uiDocument = GetComponent<UIDocument>();
-        
-        var clockVisualElement = uiDocument.rootVisualElement.Q("ClockView");
-        var gameTimeModel = FindAnyObjectByType<ObjectMonoBehaviour<GameTimeModel>>();
-        var clockView = new UIClockView(clockVisualElement);
-        clockController = new UIClockController(gameTimeModel.GetModel(), clockView);
+        var view = uiDocument.rootVisualElement.Q("ClockView");
+        var clockView = new UIClockView(view);
+        clockController = new UIClockController(gameTimeContext, clockView);
         clockController.Enable();
     }
 

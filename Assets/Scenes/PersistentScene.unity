@@ -582,6 +582,84 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1380448189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1380448190}
+  - component: {fileID: 1380448191}
+  m_Layer: 0
+  m_Name: Repository
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1380448190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380448189}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.53, y: -1.85, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1380448191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380448189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b426069b6424b14dbd5c52ab62a5e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data:
+    gameTime:
+      isPaused: 0
+      ticks: 218010
+    sceneDataList: []
+    playerMovement:
+      inputX: 0
+      inputY: 0
+      isWalking: 0
+      isRunning: 0
+      isIdle: 0
+      isCarrying: 0
+      toolEffect: 0
+      isUsingToolRight: 0
+      isUsingToolLeft: 0
+      isUsingToolUp: 0
+      isUsingToolDown: 0
+      isLiftingToolRight: 0
+      isLiftingToolLeft: 0
+      isLiftingToolUp: 0
+      isLiftingToolDown: 0
+      isPickingRight: 0
+      isPickingLeft: 0
+      isPickingUp: 0
+      isPickingDown: 0
+      isSwingingToolRight: 0
+      isSwingingToolLeft: 0
+      isSwingingToolUp: 0
+      isSwingingToolDown: 0
+      idleUp: 0
+      idleDown: 0
+      idleLeft: 0
+      idleRight: 0
+      currentMovementSpeed: 0
 --- !u!1 &1476837865
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,7 +671,6 @@ GameObject:
   - component: {fileID: 1476837868}
   - component: {fileID: 1476837872}
   - component: {fileID: 1476837873}
-  - component: {fileID: 1476837874}
   m_Layer: 0
   m_Name: Application
   m_TagString: Untagged
@@ -640,19 +717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df2911153bfad894d8cb0d6accbbcdcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startScene: {fileID: 11400000, guid: 3e67d080e5504c24e8fa6b3f8d18d9fb, type: 2}
---- !u!114 &1476837874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476837865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b426069b6424b14dbd5c52ab62a5e5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  startScene: {fileID: 11400000, guid: 4337c451bbb3a354ab98159713d9d336, type: 2}
 --- !u!1 &2067042449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1855,8 +1920,9 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+  - {fileID: 1380448190}
+  - {fileID: 1476837868}
   - {fileID: 2067042451}
   - {fileID: 7644947036966362710}
   - {fileID: 1156460882}
   - {fileID: 391510189}
-  - {fileID: 1476837868}

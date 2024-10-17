@@ -1,24 +1,30 @@
 using System;
-
-public class CurrentSceneModel
+[Serializable]
+public class CurrentScene : Aggregate
 {
-    private SceneInstance? currentScene;
+    public SceneInstance instance;
     public event EventHandler<ChangeSceneEventArg> OnSceneChange;
+
+    public CurrentScene() {}
+
+    public CurrentScene(SceneInstance sceneInstance) {
+        this.instance = sceneInstance;
+    }
 
     public void ChangeScene(SceneSpawnPointDefinition newSceneSpawnPoint)
     {
         var eventArgs = new ChangeSceneEventArg()
         {
             newSceneSpawnPoint = newSceneSpawnPoint,
-            currentScene = currentScene,
+            currentScene = instance,
         };
 
-        currentScene = newSceneSpawnPoint.sceneInstance;
+        instance = newSceneSpawnPoint.sceneInstance;
         OnSceneChange?.Invoke(this, eventArgs);
     }
 
     public SceneInstance? GetCurrentScene(){
-        return currentScene;
+        return instance;
     }
 }
 

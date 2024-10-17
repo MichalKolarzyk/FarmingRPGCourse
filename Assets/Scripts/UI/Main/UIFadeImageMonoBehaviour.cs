@@ -8,7 +8,7 @@ public class UIFadeImageMonoBehaviour : MonoBehaviour
     {
         var uiDocument = GetComponent<UIDocument>();
         
-        var sceneModel = FindAnyObjectByType<Scene>();
+        var sceneModel = FindAnyObjectByType<CurrentSceneContext>();
         var fadeImageVisualElement = uiDocument.rootVisualElement.Q("Background");
         var view = new UIFadeImageView(fadeImageVisualElement);
         uIFadeImageController = new UIFadeImageController(view, sceneModel);

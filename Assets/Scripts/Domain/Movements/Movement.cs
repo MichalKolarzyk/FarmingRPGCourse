@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class MovementModel
+public class Movement : Aggregate
 {
     public float inputX;
     public float inputY;
@@ -33,12 +33,14 @@ public class MovementModel
     public bool idleRight;
     public float currentMovementSpeed;
 
-    public event EventHandler OnMoveUpdateEvent;
-    public event EventHandler<bool> OnIsCarryingItemChangeEvent;
+    //public event EventHandler OnMoveUpdateEvent;
+
+    
+    //public event EventHandler<bool> OnIsCarryingItemChangeEvent;
 
     private readonly MovementDefinition movementDefinition;
 
-    public MovementModel(MovementDefinition movementDefinition) 
+    public Movement(MovementDefinition movementDefinition) 
     { 
         this.movementDefinition = movementDefinition;
     }
@@ -62,6 +64,9 @@ public class MovementModel
     }
 
     public void UpdateMovement(float inputX, float inputY, bool isWalking, bool isCarrying){
+        if(this.inputX == inputX && this.inputY == inputY && this.isWalking == isWalking && this.isCarrying == isCarrying)
+            return;
+
         Restart();
         this.inputX = inputX;
         this.inputY = inputY;
@@ -87,7 +92,7 @@ public class MovementModel
             this.currentMovementSpeed = movementDefinition?.runningSpeed ?? 0;
         }
         SetIsCarrying(isCarrying);
-        OnMoveUpdateEvent?.Invoke(this, EventArgs.Empty);
+        AddEvent(new OnUpdate(this)); //OnMoveUpdateEvent?.Invoke(this, EventArgs.Empty);
     }
 
     private void SetIsCarrying(bool isCarrying){
@@ -95,7 +100,7 @@ public class MovementModel
             return;
 
         this.isCarrying = isCarrying;
-        OnIsCarryingItemChangeEvent(this, isCarrying);
+        AddEvent(new OnIsCarryingItemChangeEvent(this));
     }
 
     private void Restart()
@@ -128,6 +133,26 @@ public class MovementModel
         // bool idleLeft;
         // bool idleRight;
         currentMovementSpeed = 0;
+    }
+
+    public class OnUpdate : DomainEvent{
+        public Movement movement;
+
+        public OnUpdate(Movement movement)
+        {
+            this.movement = movement;
+        }
+    }
+
+    public class OnIsCarryingItemChangeEvent : DomainEvent {
+        public Movement movement;
+        public bool isCarrying;
+
+        public OnIsCarryingItemChangeEvent(Movement movement)
+        {
+            this.movement = movement;
+            this.isCarrying = movement.isCarrying;
+        }
     }
 }
 

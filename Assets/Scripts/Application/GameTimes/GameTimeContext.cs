@@ -1,20 +1,19 @@
 using System.Collections;
 using UnityEngine;
 
-public class GameTime : ObjectMonoBehaviour<GameTimeModel>
+public class GameTimeContext : Context<GameTime>
 {
     private bool isWaiting = false;
-    protected override GameTimeModel InitDefaultModel()
-    {
-        var saveModel = FindAnyObjectByType<SaveObjectMonoBehaviour>().GetModel();
-        saveModel.gameTimeModel ??= new GameTimeModel(1, 31, 6, 30);
-        return saveModel.gameTimeModel;
-    }
 
+    void Awake(){
+        var repository = FindAnyObjectByType<Repository>();
+        model = repository.Data.gameTime;
+        model.OnDomainEvent += Publish;
+    }
 
     void Start()
     {
-        GetModel().Start();
+        model.Start();
     }
 
     void Update()
@@ -31,6 +30,6 @@ public class GameTime : ObjectMonoBehaviour<GameTimeModel>
         yield return new WaitForSeconds(1);
         isWaiting = false;
 
-        GetModel().NextMinute();
+        Get().NextMinute();
     }
 }

@@ -1,18 +1,14 @@
 using UnityEngine;
 
-public class Item : ObjectMonoBehaviour<ItemModel>
+public class ItemContext : Context<Item>
 {
     public ItemInfo itemInfo;
     private SpriteRenderer spriteRenderer;
 
-    protected override ItemModel InitDefaultModel()
-    {
-        return new ItemModel(itemInfo.itemDefinition);
-    }
-
     void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        Set(new Item(itemInfo.itemDefinition, Position.FromVector(transform.position)));
     }
 
     void Start()
@@ -20,8 +16,8 @@ public class Item : ObjectMonoBehaviour<ItemModel>
         spriteRenderer.sprite = itemInfo.sprite;
     }
 
-    public InventoryItemModel ToInventoryItemModel(){
-        return new InventoryItemModel{
+    public InventoryItem ToInventoryItemModel(){
+        return new InventoryItem{
             itemDefinition = itemInfo.itemDefinition,
             quantity = 1,
         };
