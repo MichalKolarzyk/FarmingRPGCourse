@@ -1,5 +1,3 @@
-using System;
-
 public class UIClockController
 {
     private readonly Context<GameTime> context;
@@ -13,30 +11,19 @@ public class UIClockController
 
     public void Enable()
     {
-        context.Subscribe<GameTime.OnEveryTenMinutesChange>(OnEveryTenMinutesChangeEventHandler);
-        context.Subscribe<GameTime.OnStart>(OnStartEventHandler);
+        context.Get().OnEveryTenMinutesChange += OnEveryTenMinutesChangeEventHandler;
+        context.Get().OnStart += OnEveryTenMinutesChangeEventHandler;
     }
 
     public void Disable()
     {
-        context.Unsubscribe<GameTime.OnEveryTenMinutesChange>(OnEveryTenMinutesChangeEventHandler);
-        context.Unsubscribe<GameTime.OnStart>(OnStartEventHandler);
+        context.Get().OnEveryTenMinutesChange -= OnEveryTenMinutesChangeEventHandler;
+        context.Get().OnStart -= OnEveryTenMinutesChangeEventHandler;
     }
 
 
-    private void OnEveryTenMinutesChangeEventHandler(GameTime.OnEveryTenMinutesChange domainEvent)
+    private void OnEveryTenMinutesChangeEventHandler(GameTime gameTime)
     {
-        var gameTime = domainEvent.gameTime;
-        var viewModel = new GameTime12HoursSystemViewModel(gameTime);
-        view.SetHourText(viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix);
-        view.SetDayText($"Day: {viewModel.day}");
-        view.SetSeasonText(viewModel.season);
-        view.SetYearText($"Year: {viewModel.year}");
-    }
-
-    private void OnStartEventHandler(GameTime.OnStart domainEvent)
-    {
-        var gameTime = domainEvent.gameTime;
         var viewModel = new GameTime12HoursSystemViewModel(gameTime);
         view.SetHourText(viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix);
         view.SetDayText($"Day: {viewModel.day}");

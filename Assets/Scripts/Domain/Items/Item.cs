@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class Item : Aggregate
+public class Item 
 {
     public ItemDefinition itemDefinition;
     public Position position;

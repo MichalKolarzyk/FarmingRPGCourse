@@ -1,6 +1,6 @@
 using System;
 [Serializable]
-public class CurrentScene : Aggregate
+public class CurrentScene
 {
     public SceneInstance instance;
     public event EventHandler<ChangeSceneEventArg> OnSceneChange;

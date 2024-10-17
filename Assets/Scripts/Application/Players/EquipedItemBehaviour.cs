@@ -19,26 +19,26 @@ public class EquipedItemBehaviour : MonoBehaviour
   void OnEnable()
   {
     movementContext = GetComponentInParent<Context<Movement>>();
-    movementContext.Subscribe<Movement.OnIsCarryingItemChangeEvent>(OnIsCarryingItemChangeEventHandler);
+    movementContext.Get().OnIsCarryingItemChangeEvent += OnIsCarryingItemChangeEventHandler;
 
     inventoryContext = GetComponentInParent<Context<Inventory>>();
-    inventoryContext.Subscribe<Inventory.OnSelectedSlotChange>(OnSelectedSlotChangeEventHandler);
+    inventoryContext.Get().OnSelectedSlotChange += OnSelectedSlotChangeEventHandler;
   }
 
-  private void OnSelectedSlotChangeEventHandler(Inventory.OnSelectedSlotChange domainEvent)
+  private void OnSelectedSlotChangeEventHandler(Inventory inventory, InventorySlot inventorySlot)
   {
-    selectedSlot = domainEvent.inventorySlot;
+    selectedSlot = inventorySlot;
     UpdateSprite();
   }
 
   void OnDisable()
   {
-    movementContext.Unsubscribe<Movement.OnIsCarryingItemChangeEvent>(OnIsCarryingItemChangeEventHandler);
-    inventoryContext.Unsubscribe<Inventory.OnSelectedSlotChange>(OnSelectedSlotChangeEventHandler);
+    movementContext.Get().OnIsCarryingItemChangeEvent -= OnIsCarryingItemChangeEventHandler;
+    inventoryContext.Get().OnSelectedSlotChange -= OnSelectedSlotChangeEventHandler;
   }
-  private void OnIsCarryingItemChangeEventHandler(Movement.OnIsCarryingItemChangeEvent domainEvent)
+  private void OnIsCarryingItemChangeEventHandler(Movement movement)
   {
-    isCarrying = domainEvent.isCarrying;
+    isCarrying = movement.isCarrying;
     UpdateSprite();
   }
 

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class Movement : Aggregate
+public class Movement
 {
     public float inputX;
     public float inputY;
@@ -33,10 +33,8 @@ public class Movement : Aggregate
     public bool idleRight;
     public float currentMovementSpeed;
 
-    //public event EventHandler OnMoveUpdateEvent;
-
-    
-    //public event EventHandler<bool> OnIsCarryingItemChangeEvent;
+    public event Action<Movement> OnMoveUpdate;
+    public event Action<Movement> OnIsCarryingItemChangeEvent;
 
     private readonly MovementDefinition movementDefinition;
 
@@ -92,7 +90,7 @@ public class Movement : Aggregate
             this.currentMovementSpeed = movementDefinition?.runningSpeed ?? 0;
         }
         SetIsCarrying(isCarrying);
-        AddEvent(new OnUpdate(this)); //OnMoveUpdateEvent?.Invoke(this, EventArgs.Empty);
+        OnMoveUpdate?.Invoke(this);
     }
 
     private void SetIsCarrying(bool isCarrying){
@@ -100,7 +98,7 @@ public class Movement : Aggregate
             return;
 
         this.isCarrying = isCarrying;
-        AddEvent(new OnIsCarryingItemChangeEvent(this));
+        OnIsCarryingItemChangeEvent?.Invoke(this);
     }
 
     private void Restart()
@@ -133,26 +131,6 @@ public class Movement : Aggregate
         // bool idleLeft;
         // bool idleRight;
         currentMovementSpeed = 0;
-    }
-
-    public class OnUpdate : DomainEvent{
-        public Movement movement;
-
-        public OnUpdate(Movement movement)
-        {
-            this.movement = movement;
-        }
-    }
-
-    public class OnIsCarryingItemChangeEvent : DomainEvent {
-        public Movement movement;
-        public bool isCarrying;
-
-        public OnIsCarryingItemChangeEvent(Movement movement)
-        {
-            this.movement = movement;
-            this.isCarrying = movement.isCarrying;
-        }
     }
 }
 

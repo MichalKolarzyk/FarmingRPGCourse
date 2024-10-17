@@ -1,8 +1,9 @@
-public abstract class Context<T> : EventBus
-    where T : Aggregate
+using UnityEngine;
+
+[DefaultExecutionOrder(-100)]
+public abstract class Context<T> : MonoBehaviour
 {
     protected T model;
-
 
     public void Set(T model)
     {

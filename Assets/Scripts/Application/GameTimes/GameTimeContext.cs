@@ -8,7 +8,6 @@ public class GameTimeContext : Context<GameTime>
     void Awake(){
         var repository = FindAnyObjectByType<Repository>();
         model = repository.Data.gameTime;
-        model.OnDomainEvent += Publish;
     }
 
     void Start()

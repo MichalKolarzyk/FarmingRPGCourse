@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[DefaultExecutionOrder(-110)]
 public class Repository : MonoBehaviour
 {
   public GameData Data;
