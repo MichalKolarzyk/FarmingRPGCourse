@@ -51,7 +51,7 @@ public class CurrentSceneContext : Context<CurrentScene>
         }
 
         yield return OnBeforeLoadNewScene?.Invoke(eventArgs);
-        yield return SceneManager.LoadSceneAsync((int)eventArgs.newSceneSpawnPoint.sceneInstance, LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync((int)eventArgs.newSpawnPoint.sceneInstance, LoadSceneMode.Additive);
         var newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
         SceneManager.SetActiveScene(newScene);
         yield return OnAfterLoadNewScene?.Invoke(eventArgs);

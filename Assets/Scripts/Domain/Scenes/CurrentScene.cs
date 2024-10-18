@@ -4,22 +4,21 @@ public class CurrentScene
 {
     public SceneInstance instance;
     public event EventHandler<ChangeSceneEventArg> OnSceneChange;
-
     public CurrentScene() {}
 
     public CurrentScene(SceneInstance sceneInstance) {
         this.instance = sceneInstance;
     }
 
-    public void ChangeScene(SceneSpawnPointDefinition newSceneSpawnPoint)
+    public void ChangeScene(SceneSpawnPointDefinition newSpawnPoint)
     {
         var eventArgs = new ChangeSceneEventArg()
         {
-            newSceneSpawnPoint = newSceneSpawnPoint,
+            newSpawnPoint = newSpawnPoint,
             currentScene = instance,
         };
-
-        instance = newSceneSpawnPoint.sceneInstance;
+        
+        instance = newSpawnPoint.sceneInstance;
         OnSceneChange?.Invoke(this, eventArgs);
     }
 
@@ -30,6 +29,6 @@ public class CurrentScene
 
 public class ChangeSceneEventArg
 {
-    public SceneSpawnPointDefinition newSceneSpawnPoint;
+    public SceneSpawnPointDefinition newSpawnPoint;
     public SceneInstance? currentScene;
 }

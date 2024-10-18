@@ -32,6 +32,7 @@ public class Movement
     public bool idleLeft;
     public bool idleRight;
     public float currentMovementSpeed;
+    public Position position;
 
     public event Action<Movement> OnMoveUpdate;
     public event Action<Movement> OnIsCarryingItemChangeEvent;
@@ -94,6 +95,7 @@ public class Movement
             isRunning = true;
             this.currentMovementSpeed = movementDefinition?.runningSpeed ?? 0;
         }
+
         SetIsCarrying(isCarrying);
         OnMoveUpdate?.Invoke(this);
     }
