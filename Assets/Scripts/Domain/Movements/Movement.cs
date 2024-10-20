@@ -37,7 +37,7 @@ public class Movement
     public event Action<Movement> OnMoveUpdate;
     public event Action<Movement> OnIsCarryingItemChangeEvent;
 
-    private readonly MovementDefinition movementDefinition;
+    public MovementDefinition movementDefinition;
 
     public Movement(MovementDefinition movementDefinition) 
     { 

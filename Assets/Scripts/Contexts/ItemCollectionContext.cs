@@ -6,33 +6,13 @@ public class ItemCollectionContext : CollectionContext<Item>
 
     public void Awake()
     {
-        var itemFactory = ServiceContainer.Instance.Get<ItemFactory>();
+        var collectionElementContexts = GetComponentsInChildren<ItemContext>();
+        itemFactory = ServiceContainer.Instance.Get<ItemFactory>();
         var repository = FindObjectOfType<Repository>();
         var sceneData = repository.GetCurrentSceneData();
-        // if (sceneData.items == null)
-        // {
-        //     var itemChildren = GetComponentsInChildren<ItemContext>();
-        //     sceneData.items = itemChildren.Select(i => i.Get()).ToList();
-        // }
-        // collection = sceneData.items;
-        // itemFactory = ServiceContainer.Instance.Get<ItemFactory>();
 
-        var collectionElementContexts = GetComponentsInChildren<ItemContext>();
-        if (sceneData.items == null)
-        {
-            sceneData.items = collectionElementContexts.Select(i => i.Get()).ToList();
-            collection = sceneData.items;
-        }
-        else{
-            collection = sceneData.items;
-            for(int i = 0; i < collection.Count; i++){
-                var item = collection[i];
-                var itemContext = collectionElementContexts[i] ?? itemFactory.Create(item, transform);
-                itemContext.Set(item);
-            }
-        }
-
-
+        sceneData.items ??= collectionElementContexts.Select(i => i.Get()).ToList();
+        collection = sceneData.items;
     }
 
     public override void Add(Item item)
@@ -49,9 +29,13 @@ public class ItemCollectionContext : CollectionContext<Item>
 
     void Start()
     {
-        var itemChildren = GetComponentsInChildren<ItemContext>();
+        UpdateContext();
+    }
 
-        foreach (var child in itemChildren)
+    protected override void UpdateContext()
+    {
+        var children = GetComponentsInChildren<ItemContext>();
+        foreach (var child in children)
         {
             Destroy(child.gameObject);
         }
@@ -59,15 +43,5 @@ public class ItemCollectionContext : CollectionContext<Item>
         {
             itemFactory.Create(item, transform);
         }
-    }
-
-    protected override CollectionElementContext<Item>[] Get()
-    {
-        return GetComponentsInChildren<ItemContext>();
-    }
-
-    protected override CollectionElementContext<Item> Create(Item model)
-    {
-        return ServiceContainer.Instance.Get<ItemFactory>().Create(model, transform);
     }
 }

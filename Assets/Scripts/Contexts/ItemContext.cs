@@ -15,7 +15,15 @@ public class ItemContext : CollectionElementContext<Item>
 
     void Start()
     {
-        Set(model);
+        UpdateContext();
+    }
+
+    protected override void UpdateContext()
+    {
+        var newItemInfo = itemInfoService.GetValue(d => d.itemDefinition.description == model.itemDefinition.description) ?? itemInfo;
+        itemInfo = newItemInfo;
+        spriteRenderer.sprite = itemInfo.sprite;
+        transform.position = model.position.ToVector3();
     }
 
     public InventoryItem ToInventoryItemModel()
@@ -25,17 +33,5 @@ public class ItemContext : CollectionElementContext<Item>
             itemDefinition = itemInfo.itemDefinition,
             quantity = 1,
         };
-    }
-
-    public override void Set(Item model)
-    {
-        this.model = model;
-        var itemInfoFromModel = itemInfoService.GetValue(d => d.itemDefinition.description == model.itemDefinition.description);
-        if (itemInfoFromModel != null)
-        {
-            itemInfo = itemInfoFromModel;
-        }
-        spriteRenderer.sprite = itemInfo.sprite;
-        transform.position = model.position.ToVector3();
     }
 }

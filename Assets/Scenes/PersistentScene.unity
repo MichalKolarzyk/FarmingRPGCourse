@@ -632,7 +632,6 @@ MonoBehaviour:
       ticks: 218010
     currentScene:
       instance: 0
-    sceneDataList: []
     playerInventory:
       slots:
       - content:
@@ -836,9 +835,13 @@ MonoBehaviour:
       position:
         x: 0
         y: 0
+      movementDefinition:
+        walkingSpeed: 0
+        runningSpeed: 0
     playerPosition:
       x: -3
       y: 7
+    sceneDataList: []
 --- !u!1 &1476837865
 GameObject:
   m_ObjectHideFlags: 0
