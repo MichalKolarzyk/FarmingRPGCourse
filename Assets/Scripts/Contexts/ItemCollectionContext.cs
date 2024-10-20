@@ -1,13 +1,38 @@
+using System.Linq;
+
 public class ItemCollectionContext : CollectionContext<Item>
 {
     private ItemFactory itemFactory;
 
     public void Awake()
     {
+        var itemFactory = ServiceContainer.Instance.Get<ItemFactory>();
         var repository = FindObjectOfType<Repository>();
         var sceneData = repository.GetCurrentSceneData();
-        collection = sceneData.items;
-        itemFactory = ServiceContainer.Instance.Get<ItemFactory>();
+        // if (sceneData.items == null)
+        // {
+        //     var itemChildren = GetComponentsInChildren<ItemContext>();
+        //     sceneData.items = itemChildren.Select(i => i.Get()).ToList();
+        // }
+        // collection = sceneData.items;
+        // itemFactory = ServiceContainer.Instance.Get<ItemFactory>();
+
+        var collectionElementContexts = GetComponentsInChildren<ItemContext>();
+        if (sceneData.items == null)
+        {
+            sceneData.items = collectionElementContexts.Select(i => i.Get()).ToList();
+            collection = sceneData.items;
+        }
+        else{
+            collection = sceneData.items;
+            for(int i = 0; i < collection.Count; i++){
+                var item = collection[i];
+                var itemContext = collectionElementContexts[i] ?? itemFactory.Create(item, transform);
+                itemContext.Set(item);
+            }
+        }
+
+
     }
 
     public override void Add(Item item)
@@ -25,24 +50,24 @@ public class ItemCollectionContext : CollectionContext<Item>
     void Start()
     {
         var itemChildren = GetComponentsInChildren<ItemContext>();
-        if (collection.Count == 0)
+
+        foreach (var child in itemChildren)
         {
-            foreach (var item in itemChildren)
-            {
-                var itemModel = item.Get();
-                collection.Add(itemModel);
-            }
+            Destroy(child.gameObject);
         }
-        else
+        foreach (var item in collection)
         {
-            foreach (var child in itemChildren)
-            {
-                Destroy(child.gameObject);
-            }
-            foreach (var item in collection)
-            {
-                itemFactory.Create(item, transform);
-            }
+            itemFactory.Create(item, transform);
         }
+    }
+
+    protected override CollectionElementContext<Item>[] Get()
+    {
+        return GetComponentsInChildren<ItemContext>();
+    }
+
+    protected override CollectionElementContext<Item> Create(Item model)
+    {
+        return ServiceContainer.Instance.Get<ItemFactory>().Create(model, transform);
     }
 }

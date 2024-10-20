@@ -2,7 +2,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public class BinarySaveService : IService
+public class BinarySaveService : ISaveService
 {
   private readonly string savePath;
 
@@ -11,7 +11,8 @@ public class BinarySaveService : IService
     savePath = Application.persistentDataPath;
   }
 
-  public void SaveGame<T>(string saveName, T gameState)
+  public void Save<T>(string saveName, T gameState)
+    where T : class
   {
     string path = savePath + "/" + saveName;
     FileStream fileStream = new(path, FileMode.Create);
@@ -20,13 +21,13 @@ public class BinarySaveService : IService
     fileStream.Close();
   }
 
-  public bool SaveExists(string saveName)
+  public bool Exists(string saveName)
   {
     string fullFilename = Path.Combine(savePath, saveName);
     return File.Exists(fullFilename);
   }
 
-  public T LoadGame<T>(string fileName)
+  public T Load<T>(string fileName)
     where T : class
   {
     string path = savePath + "/" + fileName;

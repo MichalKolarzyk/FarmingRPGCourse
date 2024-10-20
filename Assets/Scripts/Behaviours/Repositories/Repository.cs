@@ -5,18 +5,18 @@ public class Repository : MonoBehaviour
 {
   public GameData Data;
   private string filename = "TestSaveFile";
-  private JsonSaveService saveService;
+  private ISaveService saveService;
 
   void Awake()
   {
-    saveService = ServiceContainer.Instance.Get<JsonSaveService>();
-    if (!saveService.SaveExists(filename))
+    saveService = ServiceContainer.Instance.Get<ISaveService>();
+    if (!saveService.Exists(filename))
     {
       Data = new GameData();
     }
     else
     {
-      Data = saveService.LoadGame<GameData>(filename);
+      Data = saveService.Load<GameData>(filename);
     }
 
   }
@@ -24,7 +24,7 @@ public class Repository : MonoBehaviour
 
   void OnDisable()
   {
-    saveService.SaveGame(filename, Data);
+    saveService.Save(filename, Data);
   }
 
   public SceneData GetCurrentSceneData()

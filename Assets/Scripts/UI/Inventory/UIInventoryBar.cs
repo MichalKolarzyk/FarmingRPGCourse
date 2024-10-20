@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,12 +17,14 @@ public class UIInventoryBar : MonoBehaviour
     private MainCameraService mainCameraService;
     private ScriptableObjectService<ItemInfo> itemInfoScriptableObjectService;
     private CollectionContext<Item> itemCollectionContext;
+    private CinemachineVirtualCamera cinemachineVirtualCamera;
 
     public event EventHandler<PointerEventData> OnPointerEnterEvent;
     public event EventHandler<PointerEventData> OnPointerExitEvent;
 
     void OnEnable()
     {
+        cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         var player = FindObjectOfType<Player>();
         inventoryContext = player.GetComponent<PlayerInventoryContext>();
         itemCollectionContext = FindObjectOfType<CollectionContext<Item>>();
@@ -165,7 +168,7 @@ public class UIInventoryBar : MonoBehaviour
 
     private void SwitchInventoryBarPosition()
     {
-        Vector3 viewportPosition = mainCameraService.GetFollowViewport();
+        Vector3 viewportPosition = mainCameraService.GetFollowViewport(cinemachineVirtualCamera);
 
         if (viewportPosition.y > 0.3f && isInventoryBarPositionBottom == false)
         {

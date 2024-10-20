@@ -1,8 +1,7 @@
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class JsonSaveService : IService
+public class JsonSaveService : ISaveService
 {
   private readonly string savePath;
 
@@ -11,20 +10,25 @@ public class JsonSaveService : IService
     savePath = Application.persistentDataPath;
   }
 
-  public void SaveGame<T>(string saveName, T gameState)
+  public void Save<T>(string saveName, T gameState) 
+    where T : class
   {
+    saveName = Path.ChangeExtension(saveName, "json");
     string json = JsonUtility.ToJson(gameState);
     string fullFilename = Path.Combine(savePath, saveName);
     File.WriteAllText(fullFilename, json);
   }
 
-  public bool SaveExists(string saveName){
+  public bool Exists(string saveName){
+    saveName = Path.ChangeExtension(saveName, "json");
     string fullFilename = Path.Combine(savePath, saveName);
     return File.Exists(fullFilename);
   }
 
-  public T LoadGame<T>(string saveName)
+  public T Load<T>(string saveName) 
+    where T : class
   {
+    saveName = Path.ChangeExtension(saveName, "json");
     string fullFilename = Path.Combine(savePath, saveName);
 
     Debug.Log(fullFilename);

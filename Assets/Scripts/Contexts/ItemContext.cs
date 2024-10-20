@@ -1,25 +1,41 @@
 using UnityEngine;
 
-public class ItemContext : Context<Item>
+public class ItemContext : CollectionElementContext<Item>
 {
     public ItemInfo itemInfo;
     private SpriteRenderer spriteRenderer;
+    private ScriptableObjectService<ItemInfo> itemInfoService;
 
     void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        Set(new Item(itemInfo.itemDefinition, Position.FromVector(transform.position)));
+        itemInfoService = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
+        model ??= new Item(itemInfo.itemDefinition, Position.FromVector(transform.position));
     }
 
     void Start()
     {
-        spriteRenderer.sprite = itemInfo.sprite;
+        Set(model);
     }
 
-    public InventoryItem ToInventoryItemModel(){
-        return new InventoryItem{
+    public InventoryItem ToInventoryItemModel()
+    {
+        return new InventoryItem
+        {
             itemDefinition = itemInfo.itemDefinition,
             quantity = 1,
         };
+    }
+
+    public override void Set(Item model)
+    {
+        this.model = model;
+        var itemInfoFromModel = itemInfoService.GetValue(d => d.itemDefinition.description == model.itemDefinition.description);
+        if (itemInfoFromModel != null)
+        {
+            itemInfo = itemInfoFromModel;
+        }
+        spriteRenderer.sprite = itemInfo.sprite;
+        transform.position = model.position.ToVector3();
     }
 }

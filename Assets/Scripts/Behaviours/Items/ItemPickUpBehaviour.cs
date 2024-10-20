@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Context<Inventory>))]
-public class PickUpItemBehaviour : MonoBehaviour
+public class ItemPickUpBehaviour : MonoBehaviour
 {
     private Context<Inventory> inventoryContext;
 

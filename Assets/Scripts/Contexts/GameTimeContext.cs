@@ -5,8 +5,10 @@ public class GameTimeContext : Context<GameTime>
 {
     private bool isWaiting = false;
 
-    void Awake(){
+    void Awake()
+    {
         var repository = FindAnyObjectByType<Repository>();
+        repository.Data.gameTime ??= new GameTime(1, 1, 9, 30);
         model = repository.Data.gameTime;
     }
 

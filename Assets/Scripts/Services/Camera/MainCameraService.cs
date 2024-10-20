@@ -3,16 +3,14 @@ using UnityEngine;
 
 public class MainCameraService : IService
 {
-    CinemachineVirtualCamera cinemachineVirtualCamera;
-    Camera mainCamera;
+    readonly Camera mainCamera;
     public MainCameraService(){
-        cinemachineVirtualCamera = MonoBehaviourContainer.Instance.Get<CinemachineVirtualCamera>();
         mainCamera = Camera.main;
     }
 
 
-    public Vector3 GetFollowViewport(){
-        return mainCamera.WorldToViewportPoint(cinemachineVirtualCamera.Follow.position);
+    public Vector3 GetFollowViewport(ICinemachineCamera cinemachineCamera){
+        return mainCamera.WorldToViewportPoint(cinemachineCamera.Follow.position);
     }
 
     public Vector3 GetWordMousePosition(){

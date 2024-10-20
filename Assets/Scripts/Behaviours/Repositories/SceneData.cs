@@ -11,5 +11,5 @@ public class SceneData{
 
   public SceneData(){}
   public SceneInstance sceneInstance;
-  public List<Item> items = new();
+  public List<Item> items;
 }
