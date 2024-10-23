@@ -19,25 +19,26 @@ public class EquipedItemBehaviour : MonoBehaviour
   void OnEnable()
   {
     movementContext = GetComponentInParent<Context<Movement>>();
-    movementContext.Get().OnIsCarryingItemChangeEvent += OnIsCarryingItemChangeEventHandler;
+    movementContext.Subscribe<OnIsCarryingItemChangeEvent>(OnIsCarryingItemChangeEventHandler);
 
     inventoryContext = GetComponentInParent<Context<Inventory>>();
-    inventoryContext.Get().OnSelectedSlotChange += OnSelectedSlotChangeEventHandler;
+    inventoryContext.Subscribe<OnSelectedSlotChange>(OnSelectedSlotChangeEventHandler);
   }
 
-  private void OnSelectedSlotChangeEventHandler(Inventory inventory, InventorySlot prevSlot)
+  private void OnSelectedSlotChangeEventHandler(OnSelectedSlotChange args)
   {
-    selectedSlot = inventory.GetSelectedSlot();
+    selectedSlot = args.Value.GetSelectedSlot();
     UpdateSprite();
   }
 
   void OnDisable()
   {
-    movementContext.Get().OnIsCarryingItemChangeEvent -= OnIsCarryingItemChangeEventHandler;
-    inventoryContext.Get().OnSelectedSlotChange -= OnSelectedSlotChangeEventHandler;
+    movementContext.Unsubscribe<OnIsCarryingItemChangeEvent>(OnIsCarryingItemChangeEventHandler);
+    inventoryContext.Unsubscribe<OnSelectedSlotChange>(OnSelectedSlotChangeEventHandler);
   }
-  private void OnIsCarryingItemChangeEventHandler(Movement movement)
+  private void OnIsCarryingItemChangeEventHandler(OnIsCarryingItemChangeEvent args)
   {
+    var movement = args.Value;
     isCarrying = movement.isCarrying;
     UpdateSprite();
   }

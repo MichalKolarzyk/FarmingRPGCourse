@@ -18,13 +18,13 @@ public class UIFadeImageController
     model.OnAfterSceneChange += OnAftereSceneChangeHandler;
   }
 
-  private IEnumerator OnBeforeSceneChangeHandler(ChangeSceneEventArg eventArg)
+  private IEnumerator OnBeforeSceneChangeHandler(OnSceneChange eventArg)
   {
     view.SetColor(Color.black);
     yield return new WaitForSeconds(1);
   }
 
-  private IEnumerator OnAftereSceneChangeHandler(ChangeSceneEventArg eventArg)
+  private IEnumerator OnAftereSceneChangeHandler(OnSceneChange eventArg)
   {
     yield return null;
     view.SetColor(new Color(0, 0, 0, 0));

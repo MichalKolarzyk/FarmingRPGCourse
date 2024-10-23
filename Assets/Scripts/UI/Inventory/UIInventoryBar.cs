@@ -29,7 +29,7 @@ public class UIInventoryBar : MonoBehaviour
         inventoryContext = player.GetComponent<PlayerInventoryContext>();
         itemCollectionContext = FindObjectOfType<CollectionContext<Item>>();
         itemInfoScriptableObjectService = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
-        inventoryContext.Get().OnInventoryUpdated += OnInventoryUpdated;
+        inventoryContext.Subscribe<OnInventoryUpdated>(OnInventoryUpdated);
         model = inventoryContext.Get();
 
         foreach (var inventorySlot in uiInventorySlots)
@@ -46,7 +46,7 @@ public class UIInventoryBar : MonoBehaviour
 
     void OnDisable()
     {
-        inventoryContext.Get().OnInventoryUpdated -= OnInventoryUpdated;
+        inventoryContext.Unsubscribe<OnInventoryUpdated>(OnInventoryUpdated);
 
         foreach (var inventorySlot in uiInventorySlots)
         {
@@ -67,7 +67,7 @@ public class UIInventoryBar : MonoBehaviour
 
     void Start()
     {
-        OnInventoryUpdated(model);
+        OnInventoryUpdated(new OnInventoryUpdated(model));
     }
 
     void Update()
@@ -156,8 +156,9 @@ public class UIInventoryBar : MonoBehaviour
     }
 
 
-    void OnInventoryUpdated(Inventory inventory)
+    void OnInventoryUpdated(OnInventoryUpdated args)
     {
+        var inventory = args.Value;
         var slotsLength = uiInventorySlots.Length;
         for (int i = 0; i < slotsLength; i++)
         {

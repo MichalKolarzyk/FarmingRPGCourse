@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ItemContext : CollectionElementContext<Item>
+public class ItemContext : Context<Item>
 {
     public ItemInfo itemInfo;
     private SpriteRenderer spriteRenderer;
@@ -11,6 +11,19 @@ public class ItemContext : CollectionElementContext<Item>
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         itemInfoService = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
         model ??= new Item(itemInfo.itemDefinition, Position.FromVector(transform.position));
+    }
+
+    public override void Set(ref Item model)
+    {
+        model ??= new Item(itemInfo.itemDefinition, Position.FromVector(transform.position));
+        this.model = model;
+        this.model.OnDomainEvent += eventBus.Publish;
+        UpdateContext();
+    }
+
+    void OnDisable()
+    {
+        model.OnDomainEvent -= eventBus.Publish;
     }
 
     void Start()

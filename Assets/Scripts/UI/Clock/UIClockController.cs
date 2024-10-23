@@ -11,19 +11,30 @@ public class UIClockController
 
     public void Enable()
     {
-        context.Get().OnEveryTenMinutesChange += OnEveryTenMinutesChangeEventHandler;
-        context.Get().OnStart += OnEveryTenMinutesChangeEventHandler;
+        context.Subscribe<OnEveryTenMinutesChange>(OnEveryTenMinutesChangeEventHandler);
+        context.Subscribe<OnStart>(OnEveryTenMinutesChangeEventHandler);
     }
 
     public void Disable()
     {
-        context.Get().OnEveryTenMinutesChange -= OnEveryTenMinutesChangeEventHandler;
-        context.Get().OnStart -= OnEveryTenMinutesChangeEventHandler;
+        context.Unsubscribe<OnEveryTenMinutesChange>(OnEveryTenMinutesChangeEventHandler);
+        context.Unsubscribe<OnStart>(OnEveryTenMinutesChangeEventHandler);
     }
 
 
-    private void OnEveryTenMinutesChangeEventHandler(GameTime gameTime)
+    private void OnEveryTenMinutesChangeEventHandler(OnEveryTenMinutesChange eventArgs)
     {
+        var gameTime = eventArgs.Value;
+        var viewModel = new GameTime12HoursSystemViewModel(gameTime);
+        view.SetHourText(viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix);
+        view.SetDayText($"Day: {viewModel.day}");
+        view.SetSeasonText(viewModel.season);
+        view.SetYearText($"Year: {viewModel.year}");
+    }
+
+    private void OnEveryTenMinutesChangeEventHandler(OnStart eventArgs)
+    {
+        var gameTime = eventArgs.Value;
         var viewModel = new GameTime12HoursSystemViewModel(gameTime);
         view.SetHourText(viewModel.hoursAndMinutes + " " + viewModel.hoursAndMinutesPrefix);
         view.SetDayText($"Day: {viewModel.day}");

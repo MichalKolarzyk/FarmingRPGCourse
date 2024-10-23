@@ -1,65 +1,60 @@
 using System;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CurrentSceneContext : Context<CurrentScene>
 {
-    public event Func<ChangeSceneEventArg, IEnumerator> OnBeforeSceneChange;
-    public event Func<ChangeSceneEventArg, IEnumerator> OnBeforeLoadNewScene;
-    public event Func<ChangeSceneEventArg, IEnumerator> OnAfterLoadNewScene;
-    public event Func<ChangeSceneEventArg, IEnumerator> OnAfterSceneChange;
+    public SceneSpawnPointInfo defaultSceneSpawnPointInfo;
+    public event Func<OnSceneChange, IEnumerator> OnBeforeSceneChange;
+    public event Func<OnSceneChange, IEnumerator> OnBeforeLoadNewScene;
+    public event Func<OnSceneChange, IEnumerator> OnAfterLoadNewScene;
+    public event Func<OnSceneChange, IEnumerator> OnAfterSceneChange;
 
-    void OnEnable()
+    public override void Set(ref CurrentScene model)
     {
-        var repository = FindObjectOfType<Repository>();
-        repository.Data.currentScene ??= new(SceneInstance.Farm);
-        model = repository.Data.currentScene;
-        model.OnSceneChange += OnChangeHandler;
-    }
-
-    void Start()
-    {
-        if (model.instance == 0)
-            model.instance = SceneInstance.Farm;
-
-        StartCoroutine(SetScene(model.instance));
+        model ??= new(defaultSceneSpawnPointInfo.definition);
+        this.model = model;
+        this.model.OnDomainEvent += eventBus.Publish;
+        Subscribe<OnSceneChange>(OnChangeHandler);
+        this.model.Start();
     }
 
 
     void OnDisable()
     {
-        model.OnSceneChange -= OnChangeHandler;
+        Unsubscribe<OnSceneChange>(OnChangeHandler);
     }
 
-    private void OnChangeHandler(object sender, ChangeSceneEventArg e)
+    private void OnChangeHandler(OnSceneChange args)
     {
-        var model = sender as CurrentScene;
-        StartCoroutine(OnChangeHandlerCoroutine(model, e));
+        StartCoroutine(OnChangeHandlerCoroutine(args));
     }
 
-    IEnumerator SetScene(SceneInstance instance)
+    IEnumerator OnChangeHandlerCoroutine(OnSceneChange args)
     {
-        yield return SceneManager.LoadSceneAsync((int)instance, LoadSceneMode.Additive);
-        var newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
-        SceneManager.SetActiveScene(newScene);
-    }
+        yield return OnBeforeSceneChange?.Invoke(args);
 
-    IEnumerator OnChangeHandlerCoroutine(CurrentScene model, ChangeSceneEventArg eventArgs)
-    {
-        yield return OnBeforeSceneChange?.Invoke(eventArgs);
-
-        if (eventArgs.currentScene != null)
+        if (args.previousScene != SceneInstance.None)
         {
-            yield return SceneManager.UnloadSceneAsync((int)eventArgs.currentScene);
+            yield return SceneManager.UnloadSceneAsync((int)args.previousScene);
         }
 
-        yield return OnBeforeLoadNewScene?.Invoke(eventArgs);
-        yield return SceneManager.LoadSceneAsync((int)eventArgs.newSpawnPoint.sceneInstance, LoadSceneMode.Additive);
+        yield return OnBeforeLoadNewScene?.Invoke(args);
+        yield return SceneManager.LoadSceneAsync((int)args.newSpawnPoint.sceneInstance, LoadSceneMode.Additive);
         var newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
         SceneManager.SetActiveScene(newScene);
-        yield return OnAfterLoadNewScene?.Invoke(eventArgs);
+        CreateGameData();
+        yield return OnAfterLoadNewScene?.Invoke(args);
 
 
-        yield return OnAfterSceneChange?.Invoke(eventArgs);
+        yield return OnAfterSceneChange?.Invoke(args);
+    }
+
+    private void CreateGameData(){
+        var sceneDataGameObject = new GameObject();
+        var sceneDataContext = sceneDataGameObject.AddComponent<SceneDataContext>();
+        var sceneData = Get().GetSceneData();
+        sceneDataContext.Set(ref sceneData);
     }
 }

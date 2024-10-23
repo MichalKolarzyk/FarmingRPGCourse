@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class Movement
+public class Movement : Entity
 {
     public float inputX;
     public float inputY;
@@ -34,9 +34,6 @@ public class Movement
     public float currentMovementSpeed;
     public Position position;
 
-    public event Action<Movement> OnMoveUpdate;
-    public event Action<Movement> OnIsCarryingItemChangeEvent;
-
     public MovementDefinition movementDefinition;
 
     public Movement(MovementDefinition movementDefinition) 
@@ -45,8 +42,8 @@ public class Movement
     }
 
     public void Start(){
-        OnIsCarryingItemChangeEvent?.Invoke(this);
-        OnMoveUpdate?.Invoke(this);
+        AddEvent(new OnIsCarryingItemChangeEvent(this));
+        AddEvent(new OnMoveUpdate(this));
     }
 
 
@@ -97,7 +94,7 @@ public class Movement
         }
 
         SetIsCarrying(isCarrying);
-        OnMoveUpdate?.Invoke(this);
+        AddEvent(new OnMoveUpdate(this));
     }
 
     private void SetIsCarrying(bool isCarrying){
@@ -105,7 +102,7 @@ public class Movement
             return;
 
         this.isCarrying = isCarrying;
-        OnIsCarryingItemChangeEvent?.Invoke(this);
+        AddEvent(new OnIsCarryingItemChangeEvent(this));
     }
 
     private void Restart()

@@ -9,11 +9,9 @@ public class ItemFactory : IService
     prefab = ResourcesService.Instance.Get(GameObjectPrefab.Item);
   }
 
-  public ItemContext Create(Item item, Transform parent)
+  public ItemContext Create(Transform parent)
   {
     var itemGameObject = Object.Instantiate(prefab, parent);
-    var itemContext = itemGameObject.GetComponent<ItemContext>();
-    itemContext.Set(item);
-    return itemContext;
+    return itemGameObject.GetComponent<ItemContext>();
   }
 }

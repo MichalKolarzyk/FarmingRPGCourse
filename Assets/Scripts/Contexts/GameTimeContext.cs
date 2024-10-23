@@ -5,16 +5,16 @@ public class GameTimeContext : Context<GameTime>
 {
     private bool isWaiting = false;
 
-    void Awake()
+    public override void Set(ref GameTime model)
     {
-        var repository = FindAnyObjectByType<Repository>();
-        repository.Data.gameTime ??= new GameTime(1, 1, 9, 30);
-        model = repository.Data.gameTime;
+        model ??= new GameTime(1, 1, 9, 30);
+        this.model = model;
+        this.model.OnDomainEvent += eventBus.Publish;
+        this.model.Start();
     }
 
-    void Start()
-    {
-        model.Start();
+    void OnDisable(){
+        model.OnDomainEvent -= eventBus.Publish;
     }
 
     void Update()

@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class GameTime
+public class GameTime : Entity
 {
     public bool isPaused = false;
     public long ticks = 0;
@@ -10,11 +10,6 @@ public class GameTime
     private const int seasonTicks = dayTicks * 30;
     private const int yearTicks = dayTicks * 120;
 
-    public event Action<GameTime> OnMinuteChange;
-    public event Action<GameTime> OnEveryTenMinutesChange;
-    public event Action<GameTime> OnStart;
-    public event Action<GameTime> OnSeasonChange;
-    public event Action<GameTime> OnYearChange;
     public GameTime(int year, int day, int hour, int minute)
     {
         ticks = year * yearTicks + day * dayTicks + hour * hourTicks + minute;
@@ -69,16 +64,16 @@ public class GameTime
     public void Start()
     {
         isPaused = false;
-        OnStart?.Invoke(this);
+        AddEvent(new OnStart(this));
     }
 
 
     private void CallEvents()
     {
-        OnMinuteChange?.Invoke(this);
-        if (ticks % 10 == 0) OnEveryTenMinutesChange?.Invoke(this);
-        if (ticks % seasonTicks == 0) OnSeasonChange?.Invoke(this);
-        if (ticks % yearTicks == 0) OnYearChange?.Invoke(this);
+        AddEvent(new OnMinuteChange(this));
+        if (ticks % 10 == 0) AddEvent(new OnEveryTenMinutesChange(this));
+        if (ticks % seasonTicks == 0) AddEvent(new OnSeasonChange(this));
+        if (ticks % yearTicks == 0) AddEvent(new OnYearChange(this));
     }
 
     private string AddZeroPrefix(int value)

@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 
 [Serializable]
-public class Inventory
+public class Inventory : Entity
 {
     public List<InventorySlot> slots = new();
     public int Capacity;
-
-    public event Action<Inventory> OnInventoryFull;
-    public event Action<Inventory> OnInventoryUpdated;
-    public event Action<Inventory, InventorySlot> OnSelectedSlotChange;
 
     public Inventory(int capacity)
     {
@@ -24,8 +20,8 @@ public class Inventory
     public Inventory() { }
 
     public void Start(){
-        OnInventoryUpdated?.Invoke(this);
-        OnSelectedSlotChange?.Invoke(this, null);
+        AddEvent(new OnInventoryUpdated(this));
+        AddEvent(new OnSelectedSlotChange(this, null));
     }
 
     public bool TryAdd(InventoryItem newItem)
@@ -39,12 +35,12 @@ public class Inventory
         if (slot != null)
         {
             slot.TryAdd(newItem);
-            OnInventoryUpdated?.Invoke(this);
+            AddEvent(new OnInventoryUpdated(this));
             return true;
         }
         else
         {
-            OnInventoryFull?.Invoke(this);
+            AddEvent(new OnInventoryFull(this));
             return false;
         }
 
@@ -67,7 +63,7 @@ public class Inventory
         if (slot != null)
         {
             slot.TryRemove(inventoryItemModel);
-            OnInventoryUpdated?.Invoke(this);
+            AddEvent(new OnInventoryUpdated(this));
             return true;
         }
         return false;
@@ -83,7 +79,7 @@ public class Inventory
 
         slotB.Clear();
         slotB.TryAdd(slotAContent);
-        OnInventoryUpdated?.Invoke(this);
+        AddEvent(new OnInventoryUpdated(this));
     }
 
     public void SetSeletedSlot(InventorySlot newSlot)
@@ -94,8 +90,8 @@ public class Inventory
 
         currentSlot?.Unselect();
         newSlot?.Select();
-        OnSelectedSlotChange?.Invoke(this, currentSlot);
-        OnInventoryUpdated?.Invoke(this);
+        AddEvent(new OnSelectedSlotChange(this, currentSlot));
+        AddEvent(new OnInventoryUpdated(this));
     }
 
     public InventorySlot GetSelectedSlot()

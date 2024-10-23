@@ -1,12 +1,10 @@
 public class PlayerMovementContext : Context<Movement>
 {
-    void Awake(){
-        var repository = FindObjectOfType<Repository>();
-        repository.Data.playerMovement ??= new Movement(new MovementDefinition(Settings.playerMovement.walkingSpeed, Settings.playerMovement.runnintSpeed));
-        model = repository.Data.playerMovement;
-    }
-
-    void Start(){
-        model.Start();
+    public override void Set(ref Movement model)
+    {
+        model ??= new Movement(new MovementDefinition(Settings.playerMovement.walkingSpeed, Settings.playerMovement.runnintSpeed));
+        this.model = model;
+        this.model.OnDomainEvent += eventBus.Publish;
+        this.model.Start();
     }
 }

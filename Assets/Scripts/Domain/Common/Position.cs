@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class Position
+public class Position : Entity
 {
   public float x;
   public float y;

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class GameData{
+public class GameData : Entity{
   public GameTime gameTime;
   public CurrentScene currentScene;
   public Inventory playerInventory;

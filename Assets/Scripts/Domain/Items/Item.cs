@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class Item 
+public class Item : Entity
 {
     public ItemDefinition itemDefinition;
     public Position position;

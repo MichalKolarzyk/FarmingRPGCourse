@@ -1,16 +1,20 @@
-public class PlayerPositionContext : Context<Position>{
-  void Awake(){
-    var repository = FindObjectOfType<Repository>();
-    repository.Data.playerPosition ??= Position.FromVector(transform.position);
-    model = repository.Data.playerPosition;
+public class PlayerPositionContext : Context<Position>
+{
+  public override void Set(ref Position model)
+  {
+    var currentSceneContext = FindObjectOfType<CurrentSceneContext>();
+    model ??= currentSceneContext.defaultSceneSpawnPointInfo.definition.GetPositoin();
+    this.model = model;
+    transform.position = this.model.ToVector3();
   }
 
-  void Start(){
-    transform.position = model.ToVector3();
-  }
 
 
-  void Update(){
+  void Update()
+  {
+    if(model == null)
+      return;
+      
     model.x = transform.position.x;
     model.y = transform.position.y;
   }

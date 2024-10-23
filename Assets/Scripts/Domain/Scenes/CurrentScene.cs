@@ -1,34 +1,30 @@
 using System;
+using System.Collections.Generic;
 [Serializable]
-public class CurrentScene
+public class CurrentScene: Entity
 {
-    public SceneInstance instance;
-    public event EventHandler<ChangeSceneEventArg> OnSceneChange;
-    public CurrentScene() {}
-
-    public CurrentScene(SceneInstance sceneInstance) {
-        this.instance = sceneInstance;
+    public SceneSpawnPointDefinition spawnPoint = new();
+    public List<SceneData> sceneDatas = new();
+    public CurrentScene(SceneSpawnPointDefinition sceneSpawnPointDefinition) {
+        spawnPoint = sceneSpawnPointDefinition;
     }
 
     public void ChangeScene(SceneSpawnPointDefinition newSpawnPoint)
     {
-        var eventArgs = new ChangeSceneEventArg()
-        {
-            newSpawnPoint = newSpawnPoint,
-            currentScene = instance,
-        };
-        
-        instance = newSpawnPoint.sceneInstance;
-        OnSceneChange?.Invoke(this, eventArgs);
+        AddEvent(new OnSceneChange(newSpawnPoint, spawnPoint.sceneInstance));
+        spawnPoint = newSpawnPoint;
     }
 
-    public SceneInstance? GetCurrentScene(){
-        return instance;
+    public void Start(){
+        AddEvent(new OnSceneChange(spawnPoint, SceneInstance.None));
     }
-}
 
-public class ChangeSceneEventArg
-{
-    public SceneSpawnPointDefinition newSpawnPoint;
-    public SceneInstance? currentScene;
+    public SceneData GetSceneData(){
+        var sceneData =  sceneDatas.Find(s => s.sceneInstance == spawnPoint.sceneInstance);
+        if(sceneData == null){
+            sceneData = new SceneData(spawnPoint.sceneInstance);
+            sceneDatas.Add(sceneData);
+        }
+        return sceneData;
+    }
 }

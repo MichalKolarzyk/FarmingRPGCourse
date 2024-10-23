@@ -1,47 +1,41 @@
+using System.Collections.Generic;
 using System.Linq;
 
 public class ItemCollectionContext : CollectionContext<Item>
 {
     private ItemFactory itemFactory;
-
     public void Awake()
     {
-        var collectionElementContexts = GetComponentsInChildren<ItemContext>();
         itemFactory = ServiceContainer.Instance.Get<ItemFactory>();
-        var repository = FindObjectOfType<Repository>();
-        var sceneData = repository.GetCurrentSceneData();
+    }
 
-        sceneData.items ??= collectionElementContexts.Select(i => i.Get()).ToList();
-        collection = sceneData.items;
+    public override void Set(ref List<Item> collection)
+    {
+        var children = GetComponentsInChildren<ItemContext>();
+        collection ??= children.Select(c => c.Get()).ToList();
+        this.collection = collection;
+        foreach (var child in children)
+        {
+            Destroy(child.gameObject);
+        }
+        for (int i = 0; i < collection.Count; i++)
+        {
+            var itemContext = itemFactory.Create(transform);
+            var item = collection[i];
+            itemContext.Set(ref item);
+        }
     }
 
     public override void Add(Item item)
     {
         collection.Add(item);
-        itemFactory.Create(item, transform);
+        var itemContext = itemFactory.Create(transform);
+        itemContext.Set(ref item);
     }
 
     public override void Remove(Context<Item> itemContext)
     {
         collection.Remove(itemContext.Get());
         Destroy(itemContext.gameObject);
-    }
-
-    void Start()
-    {
-        UpdateContext();
-    }
-
-    protected override void UpdateContext()
-    {
-        var children = GetComponentsInChildren<ItemContext>();
-        foreach (var child in children)
-        {
-            Destroy(child.gameObject);
-        }
-        foreach (var item in collection)
-        {
-            itemFactory.Create(item, transform);
-        }
     }
 }

@@ -1,13 +1,11 @@
 
 public class PlayerInventoryContext : Context<Inventory>
 {
-    void Awake(){
-        var repository = FindObjectOfType<Repository>();
-        repository.Data.playerInventory ??= new Inventory(Settings.inventory.playerInitialInventoryCapacity);
-        model = repository.Data.playerInventory;
-    }
-
-    void Start(){
+    public override void Set(ref Inventory model)
+    {
+        model ??= new Inventory(Settings.inventory.playerInitialInventoryCapacity);
+        this.model = model;
+        this.model.OnDomainEvent += eventBus.Publish;
         model.Start();
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class SceneData{
+public class SceneData : Entity{
 
   public SceneData(SceneInstance sceneInstance)
   {
