@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-[DefaultExecutionOrder(-100)]
 public abstract class Context<T> : MonoBehaviour
     where T : Entity
 {
@@ -13,14 +12,6 @@ public abstract class Context<T> : MonoBehaviour
     }
 
     public abstract void Set(ref T model);
-    // {
-    //     var previousModel = model;
-    //     if (previousModel != null) previousModel.OnDomainEvent -= eventBus.Publish;
-    //     this.model = model;
-    //     model.OnDomainEvent += eventBus.Publish;
-
-    //     UpdateContext();
-    // }
 
     void OnDisable()
     {

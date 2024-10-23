@@ -6,14 +6,14 @@ public class InventorySlot
     public InventoryItem content = new();
     public bool IsSelected = false;
 
-    public bool CanAdd(InventoryItem inventoryItemModel) => IsEmpty || content.itemDefinition == inventoryItemModel.itemDefinition;
+    public bool CanAdd(InventoryItem inventoryItemModel) => IsEmpty || content.itemDefinition?.GetId() == inventoryItemModel.itemDefinition.GetId();
 
     public bool TryAdd(InventoryItem inventoryItemModel)
     {
         if (!CanAdd(inventoryItemModel))
             return false;
 
-        if (content.itemDefinition == inventoryItemModel.itemDefinition)
+        if (content.itemDefinition?.GetId() == inventoryItemModel.itemDefinition.GetId())
             content.quantity += inventoryItemModel.quantity;
         else
             content = inventoryItemModel;

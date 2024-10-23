@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 7da78110e28e0f74aaa3ef4a41f4c0ed, type: 3}
   itemDefinition:
-    sprite: {fileID: 21300000, guid: 7da78110e28e0f74aaa3ef4a41f4c0ed, type: 3}
+    id: 11
     itemType: 0
     description: ' Parsnip seed'
     longDescription: Parsnip seed

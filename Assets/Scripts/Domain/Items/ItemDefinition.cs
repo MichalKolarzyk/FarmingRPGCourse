@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class ItemDefinition
+public class ItemDefinition : IDefinition
 {
     public ItemType itemType;
     public string description;
@@ -13,6 +13,16 @@ public class ItemDefinition
     public bool canBeDropped;
     public bool canBeEaten;
     public bool canBeCarried;
+
+    public string GetId()
+    {
+        return $"{description}${longDescription}${itemType}";
+    }
+
+    public bool IsEmpty()
+    {
+        return string.IsNullOrEmpty(description);
+    }
 }
 
 public enum ItemType{

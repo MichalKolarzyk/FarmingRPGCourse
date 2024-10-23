@@ -46,7 +46,7 @@ public class Inventory : Entity
 
         InventorySlot GetSlot()
         {
-            var slot = slots.Find(s => s.content.itemDefinition == newItem.itemDefinition);
+            var slot = slots.Find(s => s.content.itemDefinition?.GetId() == newItem.itemDefinition.GetId());
             if (slot != null)
                 return slot;
 

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 public class ScriptableObjectService<T> : IService
-    where T : ScriptableObject
+    where T : ScriptableObject, IDefinition
 {
     protected string assetFilter;
     private readonly List<T> values;
@@ -19,6 +19,10 @@ public class ScriptableObjectService<T> : IService
     public T GetValue(Predicate<T> predicate)
     {
         return values.Find(predicate);
+    }
+
+    public T GetById(string id){
+        return values.Find(d => d.GetId() == id);
     }
 
     private List<T> LoadScriptableObjects()

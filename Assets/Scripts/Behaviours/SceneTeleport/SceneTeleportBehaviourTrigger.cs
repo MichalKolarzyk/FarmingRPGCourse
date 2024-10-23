@@ -19,6 +19,6 @@ public class SceneTeleportBehaviourTrigger : MonoBehaviour
   private IEnumerator OnAfterLoadNewSceneHandler(OnSceneChange eventArgs)
   {
     gameObject.transform.position = new Vector3(eventArgs.newSpawnPoint.positionX, eventArgs.newSpawnPoint.positionY, gameObject.transform.position.z);
-    yield return null;
+    yield return new WaitForSeconds(0.5f);
   }
 }

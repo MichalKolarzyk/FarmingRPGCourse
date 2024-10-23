@@ -31,7 +31,6 @@ public class JsonSaveService : ISaveService
     saveName = Path.ChangeExtension(saveName, "json");
     string fullFilename = Path.Combine(savePath, saveName);
 
-    Debug.Log(fullFilename);
     if(!File.Exists(fullFilename))
       throw new System.Exception($"File does not exists {fullFilename}");
 

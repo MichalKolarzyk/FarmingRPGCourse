@@ -9,9 +9,14 @@ public class ItemFactory : IService
     prefab = ResourcesService.Instance.Get(GameObjectPrefab.Item);
   }
 
-  public ItemContext Create(Transform parent)
+  public ItemContext Create(ref Item item, Transform parent, Grid grid)
   {
-    var itemGameObject = Object.Instantiate(prefab, parent);
-    return itemGameObject.GetComponent<ItemContext>();
+    var newPosition = grid.WorldToCell(item.position.ToVector3());
+    item.position = Position.FromVector(newPosition);
+
+    var itemGameObject = Object.Instantiate(prefab, newPosition, Quaternion.identity, parent);
+    var itemContext = itemGameObject.GetComponent<ItemContext>();
+    itemContext.Set(ref item);
+    return itemContext;
   }
 }
