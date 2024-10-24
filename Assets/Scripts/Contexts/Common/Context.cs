@@ -18,7 +18,7 @@ public abstract class Context<T> : MonoBehaviour
         model.OnDomainEvent -= eventBus.Publish;
     }
 
-    public T Get()
+    public T Model()
     {
         return model;
     }

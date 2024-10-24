@@ -12,4 +12,5 @@ public class SceneData : Entity{
   public SceneData(){}
   public SceneInstance sceneInstance;
   public List<Item> items;
+  public Map map;
 }

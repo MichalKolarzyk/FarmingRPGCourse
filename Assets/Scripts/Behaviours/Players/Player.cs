@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
 
   void Start()
   {
-    movementModel = GetComponent<Context<Movement>>().Get();
-    inventoryModel = GetComponent<Context<Inventory>>().Get();
+    movementModel = GetComponent<Context<Movement>>().Model();
+    inventoryModel = GetComponent<Context<Inventory>>().Model();
   }
 
 

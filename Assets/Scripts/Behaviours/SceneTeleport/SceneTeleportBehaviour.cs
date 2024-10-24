@@ -15,7 +15,7 @@ public class SceneTeleportBehaviour : MonoBehaviour
         if(!isTrigger)
             return;
 
-        var model = sceneObjectMonoBehaviour.Get();
+        var model = sceneObjectMonoBehaviour.Model();
         model.ChangeScene(toSpawnPoint.definition);
     }
 }

@@ -13,7 +13,7 @@ public class ItemPickUpBehaviour : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider2D)
     {
-        var inventory = inventoryContext.Get();
+        var inventory = inventoryContext.Model();
         var collectionItemContext = FindObjectOfType<CollectionContext<Item>>();
 
         if (collider2D.TryGetComponent(out ItemContext itemContext))

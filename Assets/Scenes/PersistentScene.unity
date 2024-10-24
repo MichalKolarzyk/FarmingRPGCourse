@@ -705,7 +705,6 @@ MonoBehaviour:
     playerPosition:
       x: 0
       y: 0
-    sceneDataList: []
 --- !u!114 &1476837875
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -54,7 +54,7 @@ public class CurrentSceneContext : Context<CurrentScene>
     private void CreateGameData(){
         var sceneDataGameObject = new GameObject();
         var sceneDataContext = sceneDataGameObject.AddComponent<SceneDataContext>();
-        var sceneData = Get().GetSceneData();
+        var sceneData = Model().GetSceneData();
         sceneDataContext.Set(ref sceneData);
     }
 }

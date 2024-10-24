@@ -16,21 +16,21 @@ public class UIInventoryBar : MonoBehaviour
     private UIInventorySlot[] uiInventorySlots;
     private MainCameraService mainCameraService;
     private ScriptableObjectService<ItemInfo> itemInfoScriptableObjectService;
-    private CollectionContext<Item> itemCollectionContext;
     private CinemachineVirtualCamera cinemachineVirtualCamera;
+    private DropItemFromInventoryAction dropItemFromInventoryAction;
 
     public event EventHandler<PointerEventData> OnPointerEnterEvent;
     public event EventHandler<PointerEventData> OnPointerExitEvent;
 
     void OnEnable()
     {
+        dropItemFromInventoryAction = FindAnyObjectByType<DropItemFromInventoryAction>();
         cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         var player = FindObjectOfType<Player>();
         inventoryContext = player.GetComponent<PlayerInventoryContext>();
-        itemCollectionContext = FindObjectOfType<CollectionContext<Item>>();
         itemInfoScriptableObjectService = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
         inventoryContext.Subscribe<OnInventoryUpdated>(OnInventoryUpdated);
-        model = inventoryContext.Get();
+        model = inventoryContext.Model();
 
         foreach (var inventorySlot in uiInventorySlots)
         {
@@ -115,17 +115,12 @@ public class UIInventoryBar : MonoBehaviour
         }
         else
         {
-            var canRemove = model.TryRemove(new InventoryItem
+            var inventoryItem = new InventoryItem
             {
                 itemDefinition = slotItemDefinition,
                 quantity = 1,
-            });
-
-            if (canRemove){
-                var wordMousePosition = mainCameraService.GetWordMousePosition();
-                var model = new Item(slotItemDefinition, Position.FromVector(wordMousePosition));
-                itemCollectionContext.Add(model);
-            }
+            };
+            dropItemFromInventoryAction.Execute(inventoryContext.Model(), inventoryItem, mainCameraService.GetWordMousePosition());
         }
 
         Destroy(draggedItem);

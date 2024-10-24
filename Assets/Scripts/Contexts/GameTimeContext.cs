@@ -31,6 +31,6 @@ public class GameTimeContext : Context<GameTime>
         yield return new WaitForSeconds(1);
         isWaiting = false;
 
-        Get().NextMinute();
+        Model().NextMinute();
     }
 }

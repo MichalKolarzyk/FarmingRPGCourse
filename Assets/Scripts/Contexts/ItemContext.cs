@@ -33,7 +33,7 @@ public class ItemContext : Context<Item>
 
     protected override void UpdateContext()
     {
-        var newItemInfo = itemInfoService.GetValue(d => d.itemDefinition.description == model.itemDefinition.description) ?? itemInfo;
+        var newItemInfo = itemInfoService.GetById(model.itemDefinition.GetId()) ?? itemInfo;
         itemInfo = newItemInfo;
         spriteRenderer.sprite = itemInfo.sprite;
         transform.position = model.position.ToVector3();
