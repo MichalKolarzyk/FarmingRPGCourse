@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class CurrentSceneContext : Context<CurrentScene>
 {
-    public SceneSpawnPointInfo defaultSceneSpawnPointInfo;
+    public SceneInstance sceneInstance;
     public event Func<OnSceneChange, IEnumerator> OnBeforeSceneChange;
     public event Func<OnSceneChange, IEnumerator> OnBeforeLoadNewScene;
     public event Func<OnSceneChange, IEnumerator> OnAfterLoadNewScene;
@@ -13,7 +13,7 @@ public class CurrentSceneContext : Context<CurrentScene>
 
     public override void Set(ref CurrentScene model)
     {
-        model ??= new(defaultSceneSpawnPointInfo.definition);
+        model ??= new(sceneInstance);
         this.model = model;
         this.model.OnDomainEvent += eventBus.Publish;
         Subscribe<OnSceneChange>(OnChangeHandler);
@@ -41,7 +41,7 @@ public class CurrentSceneContext : Context<CurrentScene>
         }
 
         yield return OnBeforeLoadNewScene?.Invoke(args);
-        yield return SceneManager.LoadSceneAsync((int)args.newSpawnPoint.sceneInstance, LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync((int)args.newScene, LoadSceneMode.Additive);
         var newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
         SceneManager.SetActiveScene(newScene);
         CreateGameData();

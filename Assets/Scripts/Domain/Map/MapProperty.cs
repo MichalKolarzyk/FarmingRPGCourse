@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 [Serializable]
 public class MapProperty{
-  private readonly HashSet<string> values = new();
+  public List<string> values = new();
+
   public void Set(Position position){
     values.Add(PositionToString(position));
   }

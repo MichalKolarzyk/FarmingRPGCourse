@@ -14,12 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300506, guid: 853ac38383c680342ac7e688bf29b197, type: 3}
   itemDefinition:
-    id: 5
     itemType: 6
     description: Basic Scythe
     longDescription: Basic Scythe
     useGridRadius: 2
-    useRadius: 0
+    useRadius: 4
     isStartingItem: 0
     canBePickedUp: 1
     canBeDropped: 1

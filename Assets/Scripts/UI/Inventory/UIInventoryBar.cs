@@ -18,12 +18,14 @@ public class UIInventoryBar : MonoBehaviour
     private ScriptableObjectService<ItemInfo> itemInfoScriptableObjectService;
     private CinemachineVirtualCamera cinemachineVirtualCamera;
     private DropItemFromInventoryAction dropItemFromInventoryAction;
+    private Grid grid;
 
     public event EventHandler<PointerEventData> OnPointerEnterEvent;
     public event EventHandler<PointerEventData> OnPointerExitEvent;
 
     void OnEnable()
     {
+        grid = FindAnyObjectByType<Grid>();
         dropItemFromInventoryAction = FindAnyObjectByType<DropItemFromInventoryAction>();
         cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         var player = FindObjectOfType<Player>();
@@ -98,8 +100,9 @@ public class UIInventoryBar : MonoBehaviour
     {
         if (draggedItem == null)
             return;
-
-        draggedItem.transform.position = Input.mousePosition;
+        var newPosition = grid.LocalToCell(Input.mousePosition);
+        print(mainCameraService.GetWordMousePosition());
+        draggedItem.transform.position = newPosition;
     }
 
     private void OnEndDragEventHandler(object sender, PointerEventData e)

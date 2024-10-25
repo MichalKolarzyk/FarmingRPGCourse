@@ -14,12 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 37e09848a493a0a4b89a743f73f75963, type: 3}
   itemDefinition:
-    id: 7
     itemType: 6
     description: Cactus1
     longDescription: 
     useGridRadius: 0
-    useRadius: 0
+    useRadius: 4
     isStartingItem: 0
     canBePickedUp: 0
     canBeDropped: 0

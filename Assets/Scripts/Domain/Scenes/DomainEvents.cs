@@ -1,11 +1,11 @@
 public class OnSceneChange : DomainEvent
 {
-    public SceneSpawnPointDefinition newSpawnPoint;
+    public SceneInstance newScene;
     public SceneInstance previousScene;
 
-    public OnSceneChange(SceneSpawnPointDefinition newSpawnPoint, SceneInstance previousScene)
+    public OnSceneChange(SceneInstance previousScene, SceneInstance newScene)
     {
-        this.newSpawnPoint = newSpawnPoint;
         this.previousScene = previousScene;
+        this.newScene = newScene;
     }
 }

@@ -2,8 +2,7 @@ public class PlayerPositionContext : Context<Position>
 {
   public override void Set(ref Position model)
   {
-    var currentSceneContext = FindObjectOfType<CurrentSceneContext>();
-    model ??= currentSceneContext.defaultSceneSpawnPointInfo.definition.GetPositoin();
+    model ??= Position.FromVector(transform.position);
     this.model = model;
     transform.position = this.model.ToVector3();
   }

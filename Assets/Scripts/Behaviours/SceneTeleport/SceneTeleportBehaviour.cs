@@ -1,21 +1,22 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class SceneTeleportBehaviour : MonoBehaviour
 {
     public SceneSpawnPointInfo toSpawnPoint;
-    CurrentSceneContext sceneObjectMonoBehaviour;
+    CurrentSceneContext currentSceneContext;
     void Awake(){
-        sceneObjectMonoBehaviour = FindObjectOfType<CurrentSceneContext>();
+        currentSceneContext = FindObjectOfType<CurrentSceneContext>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider2D)
     {
-        var isTrigger = collider2D.TryGetComponent(out SceneTeleportBehaviourTrigger trigger);
-        if(!isTrigger)
+        if(!collider2D.TryGetComponent<SceneTeleportBehaviourTrigger>(out var trigger))
             return;
 
-        var model = sceneObjectMonoBehaviour.Model();
-        model.ChangeScene(toSpawnPoint.definition);
+        var model = currentSceneContext.Model();
+        model.ChangeScene(toSpawnPoint.definition.sceneInstance);
+        trigger.SetSpawnPoint(toSpawnPoint.definition.GetPositoin());
     }
 }

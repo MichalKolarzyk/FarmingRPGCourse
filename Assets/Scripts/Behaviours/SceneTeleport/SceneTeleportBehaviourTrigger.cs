@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ using UnityEngine;
 public class SceneTeleportBehaviourTrigger : MonoBehaviour
 {
   CurrentSceneContext sceneObjectMonoBehaviour;
+  Position spawnPoint;
   void OnEnable()
   {
     sceneObjectMonoBehaviour = FindObjectOfType<CurrentSceneContext>();
@@ -16,9 +18,16 @@ public class SceneTeleportBehaviourTrigger : MonoBehaviour
     sceneObjectMonoBehaviour.OnAfterLoadNewScene -= OnAfterLoadNewSceneHandler;
   }
 
-  private IEnumerator OnAfterLoadNewSceneHandler(OnSceneChange eventArgs)
+  public void SetSpawnPoint(Position newSpawnPoint){
+    spawnPoint = newSpawnPoint;
+  }
+
+  private IEnumerator OnAfterLoadNewSceneHandler(OnSceneChange change)
   {
-    gameObject.transform.position = new Vector3(eventArgs.newSpawnPoint.positionX, eventArgs.newSpawnPoint.positionY, gameObject.transform.position.z);
+    if(spawnPoint != null){
+      gameObject.transform.position = spawnPoint.ToVector3();
+    }
+    spawnPoint = null;
     yield return new WaitForSeconds(0.5f);
   }
 }

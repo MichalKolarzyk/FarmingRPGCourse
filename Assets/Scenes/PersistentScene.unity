@@ -641,7 +641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df2911153bfad894d8cb0d6accbbcdcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSceneSpawnPointInfo: {fileID: 11400000, guid: caa728e1a86016e478010f9ec20f1d71, type: 2}
+  sceneInstance: 1
 --- !u!114 &1476837874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,10 +659,7 @@ MonoBehaviour:
       isPaused: 0
       ticks: 0
     currentScene:
-      spawnPoint:
-        positionX: 0
-        positionY: 0
-        sceneInstance: 0
+      sceneInstance: 0
       sceneDatas: []
     playerInventory:
       slots: []

@@ -3,26 +3,26 @@ using System.Collections.Generic;
 [Serializable]
 public class CurrentScene: Entity
 {
-    public SceneSpawnPointDefinition spawnPoint = new();
+    public SceneInstance sceneInstance;
     public List<SceneData> sceneDatas = new();
-    public CurrentScene(SceneSpawnPointDefinition sceneSpawnPointDefinition) {
-        spawnPoint = sceneSpawnPointDefinition;
+    public CurrentScene(SceneInstance sceneInstance) {
+        this.sceneInstance = sceneInstance;
     }
 
-    public void ChangeScene(SceneSpawnPointDefinition newSpawnPoint)
+    public void ChangeScene(SceneInstance newSceneInstance)
     {
-        AddEvent(new OnSceneChange(newSpawnPoint, spawnPoint.sceneInstance));
-        spawnPoint = newSpawnPoint;
+        AddEvent(new OnSceneChange(sceneInstance, newSceneInstance));
+        sceneInstance = newSceneInstance;
     }
 
     public void Start(){
-        AddEvent(new OnSceneChange(spawnPoint, SceneInstance.None));
+        AddEvent(new OnSceneChange(SceneInstance.None, sceneInstance));
     }
 
     public SceneData GetSceneData(){
-        var sceneData =  sceneDatas.Find(s => s.sceneInstance == spawnPoint.sceneInstance);
+        var sceneData =  sceneDatas.Find(s => s.sceneInstance == sceneInstance);
         if(sceneData == null){
-            sceneData = new SceneData(spawnPoint.sceneInstance);
+            sceneData = new SceneData(sceneInstance);
             sceneDatas.Add(sceneData);
         }
         return sceneData;
