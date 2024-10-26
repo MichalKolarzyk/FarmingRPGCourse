@@ -6,10 +6,9 @@ public class UIInventory : MonoBehaviour
 {
     private UIInventoryBar uIInventoryBar;
     private UIInventoryPopup uIInventoryPopup;
-    private VerticalLayoutGroup verticalLayoutGroup;
     void Awake(){
         uIInventoryBar = GetComponentInChildren<UIInventoryBar>();
-        uIInventoryPopup = GetComponentInChildren<UIInventoryPopup>();
+        uIInventoryPopup = FindObjectOfType<UIInventoryPopup>();
     }
 
     void Start(){
@@ -27,6 +26,5 @@ public class UIInventory : MonoBehaviour
         var uiSlot = sender as UIInventorySlot;
         var itemDefinition = uiSlot.model.content.itemDefinition;
         uIInventoryPopup.Show(itemDefinition);
-        uIInventoryPopup.transform.position = new Vector3(uiSlot.transform.position.x, uIInventoryPopup.transform.position.y, uIInventoryPopup.transform.position.z);
     }
 }

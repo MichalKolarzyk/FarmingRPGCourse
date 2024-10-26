@@ -14,6 +14,9 @@ public class UIGameMonoBehaviour : MonoBehaviour
 
     void OnEnable()
     {
+        var header = uiDocument.rootVisualElement.Q("Header");
+        header.pickingMode = PickingMode.Ignore;
+        
         var view = uiDocument.rootVisualElement.Q("ClockView");
         var clockView = new UIClockView(view);
         clockController = new UIClockController(gameTimeContext, clockView);
