@@ -16,7 +16,7 @@ public class CurrentScene: Entity
     }
 
     public void Start(){
-        AddEvent(new OnSceneChange(SceneInstance.None, sceneInstance));
+        AddEvent(new OnSceneChange(SceneInstance.PersistentScene, sceneInstance));
     }
 
     public SceneData GetSceneData(){

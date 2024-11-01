@@ -34,25 +34,29 @@ public class CurrentSceneContext : Context<CurrentScene>
     IEnumerator OnChangeHandlerCoroutine(OnSceneChange args)
     {
         yield return OnBeforeSceneChange?.Invoke(args);
-
-        if (args.previousScene != SceneInstance.None)
-        {
+        var previousScene = GetScene(args.previousScene);
+        if(previousScene.isLoaded && args.previousScene != SceneInstance.PersistentScene){
             yield return SceneManager.UnloadSceneAsync((int)args.previousScene);
         }
 
-        yield return OnBeforeLoadNewScene?.Invoke(args);
-        yield return SceneManager.LoadSceneAsync((int)args.newScene, LoadSceneMode.Additive);
-        var newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
+        var newScene = GetScene(args.newScene);
+        if(!newScene.isLoaded){
+            yield return OnBeforeLoadNewScene?.Invoke(args);
+            yield return SceneManager.LoadSceneAsync((int)args.newScene, LoadSceneMode.Additive);
+            newScene = GetScene(args.newScene);
+        }
         SceneManager.SetActiveScene(newScene);
         CreateGameData();
         yield return OnAfterLoadNewScene?.Invoke(args);
-
-
         yield return OnAfterSceneChange?.Invoke(args);
     }
 
+    private Scene GetScene(SceneInstance sceneInstance){
+        return SceneManager.GetSceneByBuildIndex((int)sceneInstance);
+    }
+
     private void CreateGameData(){
-        var sceneDataGameObject = new GameObject();
+        var sceneDataGameObject = new GameObject("SceneDataContext");
         var sceneDataContext = sceneDataGameObject.AddComponent<SceneDataContext>();
         var sceneData = Model().GetSceneData();
         sceneDataContext.Set(ref sceneData);

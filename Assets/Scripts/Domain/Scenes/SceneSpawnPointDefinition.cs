@@ -1,19 +1,22 @@
 using System;
 
 [Serializable]
-public class SceneSpawnPointDefinition{
+public class SceneSpawnPointDefinition
+{
   public float positionX;
   public float positionY;
   public SceneInstance sceneInstance;
 
-  public Position GetPositoin(){
+  public Position GetPositoin()
+  {
     return new Position(positionX, positionY);
   }
 }
 
-public enum SceneInstance{
-    None = -1,
-    Farm = 1,
-    Field = 2,
-    Cabin = 3,
+public enum SceneInstance
+{
+  PersistentScene = 0,
+  Scene1_Farm = 1,
+  Scene2_Field = 2,
+  Scene3_Cabin = 3,
 }

@@ -30,4 +30,5 @@ public class ResourcesService : IService
     }
 
     public static GameObjectPrefab Item = new("Items/Item");
+    public static GameObjectPrefab DraggableItem = new("Items/DraggableItem");
   }
