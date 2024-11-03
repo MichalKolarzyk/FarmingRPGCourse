@@ -6,6 +6,7 @@ public class UIDragGridSnap : MonoBehaviour{
   public Sprite greenGrid;
   private Image gridImage;
   private Grid grid;
+  public Vector3 gridPosition;
 
   void Awake(){
     gridImage = GetComponent<Image>();
@@ -22,9 +23,9 @@ public class UIDragGridSnap : MonoBehaviour{
   }
 
   public void SetPosition(Vector3 screenPosition){
-    // var worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-    // var cellPosition = grid.LocalToCell(worldPosition);
-    // transform.position =  Camera.main.WorldToScreenPoint(cellPosition);
-    transform.position = screenPosition;
+    var worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+    gridPosition = grid.LocalToCell(worldPosition) + grid.cellSize/2;
+    transform.position =  Camera.main.WorldToScreenPoint(gridPosition);
+    //transform.position = screenPosition;
   }
 }

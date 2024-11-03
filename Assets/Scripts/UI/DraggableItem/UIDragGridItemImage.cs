@@ -5,6 +5,10 @@ public class UIDragGridItemImage : MonoBehaviour
 {
   public Image image;
 
+  void Awake(){
+    image = GetComponent<Image>();
+  }
+
 
   public void Show(ItemInfo itemInfo)
   {

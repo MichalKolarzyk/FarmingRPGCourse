@@ -13,6 +13,7 @@ public class ApplicationController : MonoBehaviour{
     container.Register<ItemFactory>();
     container.Register<MainCameraService>();
     container.Register<Repository>();
+    container.Register<DraggableItemFactory>();
   }
 
   void Start(){

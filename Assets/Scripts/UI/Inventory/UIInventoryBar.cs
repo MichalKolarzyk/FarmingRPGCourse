@@ -7,10 +7,10 @@ using UnityEngine.UI;
 
 public class UIInventoryBar : MonoBehaviour
 {
-    public GameObject draggedItemPrefab;
     private PlayerInventoryContext inventoryContext;
     private Inventory model;
-    private GameObject draggedItem;
+    private DraggableItem draggedItem;
+    private DraggableItemFactory draggableItemFactory;
     private RectTransform rectTransform;
     private bool isInventoryBarPositionBottom = true;
     private UIInventorySlot[] uiInventorySlots;
@@ -28,6 +28,7 @@ public class UIInventoryBar : MonoBehaviour
         var player = FindObjectOfType<Player>();
         inventoryContext = player.GetComponent<PlayerInventoryContext>();
         itemInfoScriptableObjectService = ServiceContainer.Instance.Get<ScriptableObjectService<ItemInfo>>();
+        draggableItemFactory = ServiceContainer.Instance.Get<DraggableItemFactory>();
         inventoryContext.Subscribe<OnInventoryUpdated>(OnInventoryUpdated);
         model = inventoryContext.Model();
 
@@ -88,17 +89,19 @@ public class UIInventoryBar : MonoBehaviour
         if (slotModel == null || slotModel.IsEmpty)
             return;
 
-        draggedItem = Instantiate(draggedItemPrefab, transform);
-        var image = draggedItem.GetComponentInChildren<Image>();
-        image.sprite = itemInfoScriptableObjectService.GetById(slotModel.content.itemDefinition.GetId()).sprite;
+        draggedItem = draggableItemFactory.Create(transform.parent);
+        var itemInfo = itemInfoScriptableObjectService.GetById(slotModel.content.itemDefinition.GetId());
+        draggedItem.Show(true, itemInfo);
     }
 
     private void OnDragEvenHandler(object sender, PointerEventData e)
     {
         if (draggedItem == null)
             return;
-            
-        draggedItem.transform.position = Input.mousePosition;
+        var uiSlot = sender as UIInventorySlot;
+        draggedItem.SetPosition(Input.mousePosition);
+        var canDrop = dropItemFromInventoryAction.CanDrop(uiSlot.model.content.itemDefinition, draggedItem.GetGridPosition());
+        draggedItem.SetGridSnap(canDrop);
     }
 
     private void OnEndDragEventHandler(object sender, PointerEventData e)
@@ -114,15 +117,11 @@ public class UIInventoryBar : MonoBehaviour
         }
         else
         {
-            var inventoryItem = new InventoryItem
-            {
-                itemDefinition = slotItemDefinition,
-                quantity = 1,
-            };
-            dropItemFromInventoryAction.Execute(inventoryContext.Model(), inventoryItem, mainCameraService.GetWordMousePosition());
+            var inventoryItem = InventoryItem.One(slotItemDefinition);
+            dropItemFromInventoryAction.Execute(inventoryContext.Model(), inventoryItem, draggedItem.GetGridPosition());
         }
 
-        Destroy(draggedItem);
+        draggedItem.Hide();
 
         bool EndDragOnUIInventorySlot(out UIInventorySlot uIInventorySlot)
         {

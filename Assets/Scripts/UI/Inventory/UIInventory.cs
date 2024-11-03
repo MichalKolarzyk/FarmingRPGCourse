@@ -4,10 +4,10 @@ using UnityEngine.EventSystems;
 public class UIInventory : MonoBehaviour
 {
     private UIInventoryBar uIInventoryBar;
-    private UIInventoryPopup uIInventoryPopup;
+    private UIPopup uIInventoryPopup;
     void Awake(){
         uIInventoryBar = GetComponentInChildren<UIInventoryBar>();
-        uIInventoryPopup = FindObjectOfType<UIInventoryPopup>();
+        uIInventoryPopup = FindObjectOfType<UIPopup>();
     }
 
     void Start(){

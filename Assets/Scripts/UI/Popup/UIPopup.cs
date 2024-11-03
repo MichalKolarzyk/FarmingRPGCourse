@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class UIInventoryPopup : MonoBehaviour
+public class UIPopup : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textHeader1 = null;
     [SerializeField] private TextMeshProUGUI textHeader2 = null;
